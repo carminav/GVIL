@@ -1,0 +1,5 @@
+S:\Users\Carmina\AndroidstudioProjects\3dGif\_3dGif\build\intermediates\classes\debug
+S:\Users\Carmina\AndroidstudioProjects\3dGif\_3dGif\build\intermediates\pre-dexed\debug\support-annotations-20.0.0-4ac715799064727e2166f13d48c5b923e9ae125c.jar
+S:\Users\Carmina\AndroidstudioProjects\3dGif\_3dGif\build\intermediates\pre-dexed\debug\internal_impl-20.0.0-26ce788bd218fa0d35e1b8f703492d790231a900.jar
+S:\Users\Carmina\AndroidstudioProjects\3dGif\_3dGif\build\intermediates\pre-dexed\debug\classes-b0a70426e0fd110480041baea1f9071c4354cbc6.jar
+S:\Users\Carmina\AndroidstudioProjects\3dGif\_3dGif\build\intermediates\pre-dexed\debug\classes-25bd2ef18cbe027144e9987ade1fa9a6cd156c6f.jar
