@@ -15,11 +15,9 @@ public class Splash extends ActionBarActivity {
 
 	private static int SPLASH_TIME_OUT = 4000;
 	private static final String DEBUG_TAG = "Splash";
-	
 	private boolean active = true;
 	
 
-	@SuppressLint("NewApi") 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
@@ -43,34 +41,14 @@ public class Splash extends ActionBarActivity {
 					//do nothing
 				} finally {
 					finish();
-					startActivity(new Intent(Splash.this, Preview.class));
-					//startActivity(new Intent(Splash.this, ImageGallery.class));
+					startActivity(new Intent(Splash.this, CameraPreview.class));
 				}
 			}
 		};
 		splashThread.start();
 	
 	}
-    
-	
-    @Override
-    protected void onResume() {
-    	super.onResume();
 
-		View decorView = getWindow().getDecorView();
-
-		// Hide the status bar.
-		int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-		decorView.setSystemUiVisibility(uiOptions);
-
-		// Hide action bar
-		ActionBar actionBar = getActionBar();
-		actionBar.hide();
-		
-		
-
-    }
-    
     @Override
     protected void onPause() {
     	super.onPause();

@@ -9,4 +9,9 @@
         <!-- API 14 theme customizations can go here. -->
     </style>
 
+    <style name="Theme.AppCompat.Light.NoActionBar" parent="@style/Theme.AppCompat">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
 </resources>

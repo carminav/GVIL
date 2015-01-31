@@ -15,7 +15,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.ShapeDrawable;
 import android.hardware.Camera;
 import android.hardware.Camera.AutoFocusCallback;
 import android.hardware.Camera.Size;
@@ -37,16 +36,14 @@ import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.RelativeLayout.LayoutParams;
 
 
 //TODO: Add Rotation Vector sensor usage and replace accelerometer data in view
-public class Preview extends Activity {
+public class CameraPreview extends Activity {
 	
 	
 	private static final String DEBUG_TAG = "Preview";
@@ -114,7 +111,7 @@ public class Preview extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		this.setContentView(R.layout.activity_main);
+		this.setContentView(R.layout.camera_preview);
 		
 		target = new ImageView(this);
 		target.setBackgroundResource(R.drawable.ic_action_locate);
@@ -193,7 +190,7 @@ public class Preview extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(Preview.this, ImageGallery.class);
+				Intent i = new Intent(CameraPreview.this, ImageGallery.class);
 				startActivity(i);
 				
 			}
@@ -220,7 +217,7 @@ public class Preview extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(Preview.this, TestGifView.class);
+				Intent i = new Intent(CameraPreview.this, TestGifView.class);
 				i.putExtra("lastIndices", mCount);
 				startActivity(i);
 			}

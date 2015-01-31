@@ -24,6 +24,14 @@
     <style name="TextAppearance.AppCompat.Widget.Base.ActionMode.Subtitle.Inverse" parent="android:TextAppearance.Holo.Widget.ActionMode.Subtitle.Inverse"/>
     <style name="TextAppearance.AppCompat.Widget.Base.ActionMode.Title" parent="android:TextAppearance.Holo.Widget.ActionMode.Title"/>
     <style name="TextAppearance.AppCompat.Widget.Base.ActionMode.Title.Inverse" parent="android:TextAppearance.Holo.Widget.ActionMode.Title.Inverse"/>
+    <!-- From: file:/S:/Users/Carmina/AndroidstudioProjects/3dGif/_3dGif/src/main/res/values-v14/styles.xml -->
+    <eat-comment/>
+    <style name="Theme.AppCompat.Light.NoActionBar" parent="@style/Theme.AppCompat">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+    <!-- From: file:/S:/Users/Carmina/AndroidstudioProjects/3dGif/_3dGif/build/intermediates/exploded-aar/com.android.support/appcompat-v7/20.0.0/res/values-v14/values.xml -->
+    <eat-comment/>
     <style name="Theme.Base.AppCompat" parent="android:Theme.Holo">
 
         <!-- Copy system flag values for our use -->
