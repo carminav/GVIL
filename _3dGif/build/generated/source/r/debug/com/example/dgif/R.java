@@ -726,6 +726,7 @@ containing a value of this type.
         public static final int dialog_fixed_height_minor=0x7f070014;
         public static final int dialog_fixed_width_major=0x7f070015;
         public static final int dialog_fixed_width_minor=0x7f070016;
+        public static final int grid_item_size=0x7f070017;
     }
     public static final class drawable {
         public static final int abc_ab_bottom_solid_dark_holo=0x7f020000;

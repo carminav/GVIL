@@ -58,7 +58,7 @@ public class CameraPreview extends Activity {
 	public final static int PIC_HEIGHT = 640; //2592;
 	public final static int VIEW_PIC_RATIO = VIEW_WIDTH / PIC_WIDTH;
 	
-	private final static String THEME_COLOR = "#7D0000";
+
 
 	protected static final int LOAD_CAM_PREV = 0;
 	
@@ -69,7 +69,7 @@ public class CameraPreview extends Activity {
 	private FrameLayout mPreviewFrame;
 	
 	private Button mGalleryButton;
-	private Button mMovifyButton;
+
 	
 
 	
@@ -126,7 +126,7 @@ public class CameraPreview extends Activity {
 		
 		mPreviewFrame = (FrameLayout) findViewById(R.id.camera_preview);
 		mGalleryButton = (Button) findViewById(R.id.gallery_button);
-		mMovifyButton = (Button) findViewById(R.id.movify_button);
+
 		
 		mTrashButton = (Button) findViewById(R.id.trash_button);
 
@@ -230,7 +230,7 @@ public class CameraPreview extends Activity {
 		new Thread(new LoadCameraAndPrev()).start();
 		onPauseCalled = false;
 		
-		drawHeader();
+		//drawHeader();
 		
 		
 	}
@@ -247,8 +247,8 @@ public class CameraPreview extends Activity {
 		//decorView.setSystemUiVisibility(uiOptions);
 
 		// Hide action bar
-		ActionBar actionBar = getActionBar();
-		actionBar.hide();
+//		ActionBar actionBar = getActionBar();
+//		actionBar.hide();
 		
 	
         if (onPauseCalled) {
@@ -260,54 +260,50 @@ public class CameraPreview extends Activity {
 		
 	}
 	
-	
-	private void drawHeader() {
-		
-		int color = Color.parseColor(THEME_COLOR);
-	  
-		//Get Screen Dimensions
-		Display display = getWindowManager().getDefaultDisplay();
-		Point size = new Point();
-		display.getSize(size);
-		int width = size.x;
-		int height = size.y;
-		Log.d(DEBUG_TAG, "Screen dimensions: " + width + " x " + height);
-		
-		//int headerHeight = (int) (0.07 * height);
-		int headerHeight = 41;
-		
-		//Draw Header
-		LinearLayout header = new LinearLayout(this);
-		RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, headerHeight);
-		header.setLayoutParams(p);
-		header.setOrientation(LinearLayout.HORIZONTAL);
-		header.setBackgroundColor(Color.BLACK);
-		header.setVisibility(View.VISIBLE);
-		
-		mFrameWrapper.addView(header);
-		
-		//Draw Footer
-		
-		//int footerHeight = (int) (.13 * height);
-		int footerHeight = 50;
-		RelativeLayout footer = new RelativeLayout(this);
-		
-		RelativeLayout.LayoutParams p2 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, footerHeight);
-		//p2.setMargins(0, height - footerHeight - 50, 0, 0);
-		p2.setMargins(0, height - footerHeight - 50, 0, 0);
-		footer.setLayoutParams(p2);
-		footer.setBackgroundColor(Color.BLACK);
-		footer.setVisibility(View.VISIBLE);
-	//	footer.setTop(height - headerHeight);
-		
-		mFrameWrapper.addView(footer);
-		
-		
-		
-		
-	
-		
-	}
+//
+//	private void drawHeader() {
+//
+//		int color = Color.parseColor(THEME_COLOR);
+//
+//		//Get Screen Dimensions
+//		Display display = getWindowManager().getDefaultDisplay();
+//		Point size = new Point();
+//		display.getSize(size);
+//		int width = size.x;
+//		int height = size.y;
+//		Log.d(DEBUG_TAG, "Screen dimensions: " + width + " x " + height);
+//
+//		//int headerHeight = (int) (0.07 * height);
+//		int headerHeight = 41;
+//
+//		//Draw Header
+//		LinearLayout header = new LinearLayout(this);
+//		RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, headerHeight);
+//		header.setLayoutParams(p);
+//		header.setOrientation(LinearLayout.HORIZONTAL);
+//		header.setBackgroundColor(Color.BLACK);
+//		header.setVisibility(View.VISIBLE);
+//
+//		mFrameWrapper.addView(header);
+//
+//		//Draw Footer
+//
+//		//int footerHeight = (int) (.13 * height);
+//		int footerHeight = 50;
+//		RelativeLayout footer = new RelativeLayout(this);
+//
+//		RelativeLayout.LayoutParams p2 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, footerHeight);
+//		//p2.setMargins(0, height - footerHeight - 50, 0, 0);
+//		p2.setMargins(0, height - footerHeight - 50, 0, 0);
+//		footer.setLayoutParams(p2);
+//		footer.setBackgroundColor(Color.BLACK);
+//		footer.setVisibility(View.VISIBLE);
+//	//	footer.setTop(height - headerHeight);
+//
+//		mFrameWrapper.addView(footer);
+//
+//
+//	}
 
 
 	@Override
@@ -454,8 +450,15 @@ public class CameraPreview extends Activity {
 			//restart preview
 			startPreview(mPreview.getHolder());
 			
-			blinkingArrowView.setVisibility(View.VISIBLE);
-			blinkingArrow.start();
+//			blinkingArrowView.setVisibility(View.VISIBLE);
+//			blinkingArrow.start();
+
+            Camera.Parameters p = mCamera.getParameters();
+            Camera.Size size = p.getPictureSize();
+            Camera.Size s = p.getPreviewSize();
+            Log.d(DEBUG_TAG, "Picture Size: " + size.width + " x " + size.height);
+            Log.d(DEBUG_TAG, "Preview Size: " + s.width + " x " + s.height);
+
 			
 			//TODO: Make counter. When n pictures are taken, create gif. 
 			/* Set picture to image overlay */
@@ -487,7 +490,8 @@ public class CameraPreview extends Activity {
 			//put in imageview
 		    mOverlayView.setImageBitmap(scaledBM);
 		    mTrashButton.setVisibility(View.VISIBLE);
-		    
+
+            Log.d(DEBUG_TAG, "Overlay Top: " + mOverlayView.getTop());
 		    
 		    mCaptureButton.bringToFront();
 		    mTrashButton.bringToFront();

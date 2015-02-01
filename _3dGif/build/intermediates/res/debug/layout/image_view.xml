@@ -5,16 +5,16 @@
     
     <ImageView
         android:id="@+id/gridImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/grid_item_size"
+        android:layout_height="@dimen/grid_item_size"
 
         android:src="@drawable/bg_splash"
         />
 
     <CheckBox
         android:id="@+id/checkBox"
-        android:layout_width="66dp"
-        android:layout_height="63dp" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
     
 </FrameLayout>
 <!-- From: file:/S:/Users/Carmina/AndroidstudioProjects/3dGif/_3dGif/src/main/res/layout/image_view.xml -->

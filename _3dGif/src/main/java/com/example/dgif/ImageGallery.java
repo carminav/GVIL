@@ -55,7 +55,8 @@ public class ImageGallery extends Activity {
 		
 		
 		mImageAdapter = new ImageAdapter(this);
-		mPics = m.getAllImages();
+        int size = getResources().getDimensionPixelSize(R.dimen.grid_item_size);
+		mPics = m.getAllImages(size, size);
 		mPicSelected = new boolean[mPics.length];
 		
 		gridview = (GridView) findViewById(R.id.gridview);
@@ -149,8 +150,10 @@ public class ImageGallery extends Activity {
 				}
 				
 			});
-			
+
+
 			holder.imageview.setImageBitmap(mPics[position]);
+            holder.imageview.setScaleType(ImageView.ScaleType.CENTER_CROP);
 			holder.checkbox.setChecked(mPicSelected[position]);
 			holder.id = position;
 			

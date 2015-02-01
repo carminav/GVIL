@@ -118,7 +118,7 @@ public class TestGifView extends Activity {
 		});
 				
 		
-		images = m.getAllImages();
+		images = m.getAllImages(640, 480);
 		
 		mView = (ImageView) findViewById(R.id.testGifView);
 		
