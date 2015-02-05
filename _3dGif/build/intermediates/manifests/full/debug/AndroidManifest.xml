@@ -44,7 +44,8 @@
         <activity
             android:name="com.example.dgif.TestGifView"
             android:label="@string/title_activity_test_gif_view"
-            android:parentActivityName="com.example.dgif.ImageGallery" >
+            android:parentActivityName="com.example.dgif.ImageGallery"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ImageGallery" />

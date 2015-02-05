@@ -135,11 +135,14 @@
 
         <ImageView
             android:id="@+id/image_overlay_view"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:alpha="0.5"
             android:background="#ffffff"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:scaleType="fitXY"
+
+            />
    
 </RelativeLayout>
 <!-- From: file:/S:/Users/Carmina/AndroidstudioProjects/3dGif/_3dGif/src/main/res/layout/camera_preview.xml -->

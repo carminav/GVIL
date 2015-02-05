@@ -2,7 +2,11 @@ package com.example.dgif;
 
 
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.Buffer;
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -12,8 +16,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ImageFormat;
+import android.graphics.Matrix;
 import android.graphics.Point;
+import android.graphics.Rect;
+import android.graphics.YuvImage;
 import android.graphics.drawable.AnimationDrawable;
 import android.hardware.Camera;
 import android.hardware.Camera.AutoFocusCallback;
@@ -25,6 +34,7 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -54,11 +64,12 @@ public class CameraPreview extends Activity {
 	
 	public final static int VIEW_WIDTH = 720;
 	public final static int VIEW_HEIGHT = 1280;
-	public final static int PIC_WIDTH = 480; //1458;
-	public final static int PIC_HEIGHT = 640; //2592;
+	public final static int PIC_WIDTH =  1024; //480; //1458;
+	public final static int PIC_HEIGHT =   1280;//640; //2592;
 	public final static int VIEW_PIC_RATIO = VIEW_WIDTH / PIC_WIDTH;
+    public final static int DPI = 316;
 	
-
+    byte[] mSurfaceBytes;
 
 	protected static final int LOAD_CAM_PREV = 0;
 	
@@ -70,7 +81,7 @@ public class CameraPreview extends Activity {
 	
 	private Button mGalleryButton;
 
-	
+	private int[] mPixels;
 
 	
 	private float mMotionX;
@@ -366,6 +377,22 @@ public class CameraPreview extends Activity {
 			public void onClick(View v) {
 				if (mCamera != null && mIsPreviewing) {
 					mCount++;
+
+//
+//                    mPreview.setDrawingCacheEnabled(true);
+//                    mPreview.buildDrawingCache(true);
+//                    Bitmap bmp = Bitmap.createBitmap(mPreview.getDrawingCache());
+//                    mPreview.setDrawingCacheEnabled(false);
+//
+//                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+//                    bmp.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+//                    byte[] bitmapdata = bos.toByteArray();
+//
+//                    mMemoryManager.saveImage(bitmapdata);
+//                    mOverlayView.setImageBitmap(bmp);
+//                    mOverlayView.setVisibility(View.VISIBLE);
+
+
     				mCamera.takePicture(null, null, mPictureCallback);
 				}
 				
@@ -376,9 +403,80 @@ public class CameraPreview extends Activity {
 
 
 	}
-	
+//
+//    private void setImageOverlay() {
+//
+//
+//
+//    }
+//
+//    private Bitmap getSurfaceViewPixels() {
+//
+//    }
 
-	/* START PREVIEW 
+
+    //Method from Ketai project! Not mine! See below...
+    void decodeYUV420SP(int[] rgb, byte[] yuv420sp, int width, int height) {
+
+        final int frameSize = width * height;
+
+        for (int j = 0, yp = 0; j < height; j++) {       int uvp = frameSize + (j >> 1) * width, u = 0, v = 0;
+            for (int i = 0; i < width; i++, yp++) {
+                int y = (0xff & ((int) yuv420sp[yp])) - 16;
+                if (y < 0)
+                    y = 0;
+                if ((i & 1) == 0) {
+                    v = (0xff & yuv420sp[uvp++]) - 128;
+                    u = (0xff & yuv420sp[uvp++]) - 128;
+                }
+
+                int y1192 = 1192 * y;
+                int r = (y1192 + 1634 * v);
+                int g = (y1192 - 833 * v - 400 * u);
+                int b = (y1192 + 2066 * u);
+
+                if (r < 0)                  r = 0;               else if (r > 262143)
+                    r = 262143;
+                if (g < 0)                  g = 0;               else if (g > 262143)
+                    g = 262143;
+                if (b < 0)                  b = 0;               else if (b > 262143)
+                    b = 262143;
+
+                rgb[yp] = 0xff000000 | ((r << 6) & 0xff0000) | ((g >> 2) & 0xff00) | ((b >> 10) & 0xff);
+            }
+        }
+    }
+
+    public static void YUV_NV21_TO_RGB(int[] argb, byte[] yuv, int width, int height) {
+        final int frameSize = width * height;
+
+        final int ii = 0;
+        final int ij = 0;
+        final int di = +1;
+        final int dj = +1;
+
+        int a = 0;
+        for (int i = 0, ci = ii; i < height; ++i, ci += di) {
+            for (int j = 0, cj = ij; j < width; ++j, cj += dj) {
+                int y = (0xff & ((int) yuv[ci * width + cj]));
+                int v = (0xff & ((int) yuv[frameSize + (ci >> 1) * width + (cj & ~1) + 0]));
+                int u = (0xff & ((int) yuv[frameSize + (ci >> 1) * width + (cj & ~1) + 1]));
+                y = y < 16 ? 16 : y;
+
+                int r = (int) (1.164f * (y - 16) + 1.596f * (v - 128));
+                int g = (int) (1.164f * (y - 16) - 0.813f * (v - 128) - 0.391f * (u - 128));
+                int b = (int) (1.164f * (y - 16) + 2.018f * (u - 128));
+
+                r = r < 0 ? 0 : (r > 255 ? 255 : r);
+                g = g < 0 ? 0 : (g > 255 ? 255 : g);
+                b = b < 0 ? 0 : (b > 255 ? 255 : b);
+
+                argb[a++] = 0xff000000 | (r << 16) | (g << 8) | b;
+            }
+        }
+    }
+
+    /* START PREVIEW
 	 * - Sets preview display as surface holder
 	 * - starts camera's preview
 	 */
@@ -410,6 +508,7 @@ public class CameraPreview extends Activity {
 			Log.d(DEBUG_TAG, "stop preview");
 			mIsPreviewing = false;
 			mCamera.stopPreview();
+            mCamera.setPreviewCallback(null);
 
 		}
 	}
@@ -420,6 +519,7 @@ public class CameraPreview extends Activity {
 	private void releaseCamera() {
 		if (mCamera != null) {
 			mSensorManager.unregisterListener(mAutoFocusCallback, mAccelerometer);
+            mCamera.setPreviewCallback(null);
 			mCamera.release();
 			mCamera = null;
 
@@ -429,29 +529,100 @@ public class CameraPreview extends Activity {
 
 	
 	Camera.PictureCallback mPictureCallback = new Camera.PictureCallback() {
-		
+
+
+
+        public Bitmap loadScaledOverlayBitmap(byte[] data) {
+
+            /* Crop from both sides */
+            int cropWidth = (PIC_WIDTH - VIEW_WIDTH) / 2;
+            Log.d("LOAD SCALED OVERLAY", "crop width: " + cropWidth);
+
+            //convert 1280 x 1024 bitmap to 1280 x 720
+            Bitmap bm = BitmapFactory.decodeByteArray(data, 0, data.length);
+
+            Log.d("LOAD SCALED OVERLAY", "bitmap width: " + bm.getWidth());
+            Log.d("LOAD SCALED OVERLAY", "bitmap height: " + bm.getHeight());
+
+            //test
+            //cropWidth -= 30;
+            //test
+
+            Bitmap croppedBM = Bitmap.createBitmap(bm, cropWidth, 0, VIEW_WIDTH, VIEW_HEIGHT);
+
+            Log.d("LOAD SCALED OVERLAY", "final bitmap width: " + croppedBM.getWidth());
+            Log.d("LOAD SCALED OVERLAY", "final bitmap height: " + croppedBM.getHeight());
+
+
+
+            return croppedBM;
+        }
+
+        private Bitmap screenShot(View v) {
+//            Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
+//            Canvas canvas = new Canvas(bitmap);
+//            view.draw(canvas);
+
+
+            v.setDrawingCacheEnabled(true);
+            Bitmap bitmap = Bitmap.createBitmap(v.getDrawingCache());
+            v.setDrawingCacheEnabled(false);
+
+//            DisplayMetrics dm = getResources().getDisplayMetrics();
+//            v.measure(View.MeasureSpec.makeMeasureSpec(dm.widthPixels, View.MeasureSpec.EXACTLY),
+//                    View.MeasureSpec.makeMeasureSpec(dm.heightPixels, View.MeasureSpec.EXACTLY));
+//            v.layout(0, 0, v.getMeasuredWidth(), v.getMeasuredHeight());
+//            Bitmap returnedBitmap = Bitmap.createBitmap(v.getMeasuredWidth(),
+//                    v.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+//            Canvas c = new Canvas(returnedBitmap);
+//            v.draw(c);
+//
+//            return returnedBitmap;
+
+            return bitmap;
+        }
+
+
+
+        private Bitmap constructBitmap() {
+            Size prevSize = mCamera.getParameters().getPreviewSize();
+            Bitmap bm = Bitmap.createBitmap(prevSize.width, prevSize.height, Bitmap.Config.ARGB_8888);
+            bm.copyPixelsFromBuffer(IntBuffer.wrap(mPixels));
+            return bm;
+        }
+
 		@Override
 		public void onPictureTaken(byte[] data, Camera camera) {
 			
 			mIsPreviewing = false;
-			
-			//Give user time to view image
-			//TODO: Change to new activity preview screen so user can choose to 
-			// retake picture or keep
-//			try {
-//				Thread.sleep(3000);
-//			} catch (InterruptedException e) {
-//				Log.e(DEBUG_TAG, "Thread sleep failure on picture taken");
-//			}
+
+
 			
 			//save image
-			mMemoryManager.saveImage(data);
-			
+            //TODO: move saveImage to when user agrees to save it, not upon picture taking
+			//mMemoryManager.saveImage(data);
+            Bitmap b = constructBitmap();
+
+            Matrix matrix = new Matrix();
+            matrix.postRotate(90);
+
+            Bitmap scaledBitmap = Bitmap.createScaledBitmap(b,VIEW_HEIGHT,VIEW_WIDTH,true);
+
+            Bitmap rotatedBitmap = Bitmap.createBitmap(scaledBitmap , 0, 0, scaledBitmap .getWidth(), scaledBitmap .getHeight(), matrix, true);
+
+            mOverlayView.setImageBitmap(rotatedBitmap);
+
+
+            //Get current mPixels
+            Log.i("PIXELS", "mPixels[10] = " +  mPixels[10]);
+            Log.i("PIXELS", "mPixels length: " + Integer.toHexString(mPixels.length));
+            int format = mCamera.getParameters().getPreviewFormat();
+            int bitsPerPixel = ImageFormat.getBitsPerPixel(format / 8);
+			Log.i("PIXELS", "mPixels bitsPerPixel: " + bitsPerPixel);
+
+
 			//restart preview
 			startPreview(mPreview.getHolder());
-			
-//			blinkingArrowView.setVisibility(View.VISIBLE);
-//			blinkingArrow.start();
 
             Camera.Parameters p = mCamera.getParameters();
             Camera.Size size = p.getPictureSize();
@@ -460,38 +631,34 @@ public class CameraPreview extends Activity {
             Log.d(DEBUG_TAG, "Preview Size: " + s.width + " x " + s.height);
 
 			
-			//TODO: Make counter. When n pictures are taken, create gif. 
-			/* Set picture to image overlay */
-			Bitmap bm = BitmapFactory.decodeByteArray(data, 0, data.length);
-			
-			//resize
-			/***OLD**/
-			int cropFromBothSides = 45;
-			int newWidth = 480 - (2 * cropFromBothSides);
-			double newRatio = (double)720 / newWidth;
-			int newHeight = (int) (640 * newRatio);
-			
-			Bitmap croppedBM = Bitmap.createBitmap(bm, cropFromBothSides - 5, 0, newWidth, 640);
-			Log.d(DEBUG_TAG, "cropped bm: " + croppedBM.getWidth() + " x " + croppedBM.getHeight());
-			//scale
-			//Bitmap scaledBM = Bitmap.createScaledBitmap(croppedBM, 720, 1100, true);
-			Bitmap scaledBM = Bitmap.createScaledBitmap(croppedBM, 720, 1050, true);
-			
-			//set scale type
-			mOverlayView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-			/********/
-			
+//			//TODO: Make counter. When n pictures are taken, give option to create gif.
+//			/* Set picture to image overlay */
+//			Bitmap bm = BitmapFactory.decodeByteArray(data, 0, data.length);
+//
+//			//resize
+//			/***OLD**/
+//			int cropFromBothSides = 45;
+//			int newWidth = 480 - (2 * cropFromBothSides);
+//			double newRatio = (double)720 / newWidth;
+//			int newHeight = (int) (640 * newRatio);
+//
+//			Bitmap croppedBM = Bitmap.createBitmap(bm, cropFromBothSides - 5, 0, newWidth, 640);
+//			Log.d(DEBUG_TAG, "cropped bm: " + croppedBM.getWidth() + " x " + croppedBM.getHeight());
+//
+//			Bitmap scaledBM = Bitmap.createScaledBitmap(croppedBM, 720, 1050, true);
+//
+//
+//			//put in imageview
+//		    mOverlayView.setImageBitmap(scaledBM);
 
-			//shift
-			//Bitmap shiftedBM = Bitmap.createBitmap(scaledBM, x, y, width, height, m, filter)
-			
-			
-			
-			//put in imageview
-		    mOverlayView.setImageBitmap(scaledBM);
+           // mOverlayView.setImageBitmap(loadScaledOverlayBitmap(data));
+
+
+          //  mMemoryManager.saveImage(byteArray);
+          //  mOverlayView.setImageBitmap(screenShot(mPreview));
 		    mTrashButton.setVisibility(View.VISIBLE);
 
-            Log.d(DEBUG_TAG, "Overlay Top: " + mOverlayView.getTop());
+
 		    
 		    mCaptureButton.bringToFront();
 		    mTrashButton.bringToFront();
@@ -511,6 +678,9 @@ public class CameraPreview extends Activity {
 				mHeader.bringToFront();
 				
 			}
+
+            Log.d("MOVERLAY", "mOverlay width: " + mOverlayView.getWidth());
+            Log.d("MOVERLAY", "mOverlay height: " + mOverlayView.getHeight());
 			
 			
 		}
@@ -546,14 +716,20 @@ public class CameraPreview extends Activity {
 			p.setPreviewSize(VIEW_HEIGHT, VIEW_WIDTH);      //Note that height and width are switched 
 			
 			p.setRotation(90);
+            p.setPreviewFormat(ImageFormat.NV21);
+
+
 			
 			p.setPictureSize(PIC_HEIGHT, PIC_WIDTH);
-			List<Size> sizes = p.getSupportedPictureSizes();
+			List<Integer> formats = p.getSupportedPreviewFormats();
+            Log.d("FORMATS", "formats size: " + formats.size());
 			//List<Size> sHeights = p.getSupportedPictureSizes();
-			Log.d(DEBUG_TAG, "supported picture sizes:");
-			for (int i = 0; i < sizes.size(); i++) {
-				Log.d(DEBUG_TAG, sizes.get(i).width + " x " + sizes.get(i).height);
+			Log.d(DEBUG_TAG, "SUPPORTED FORMATS:");
+			for (int i = 0; i < formats.size(); i++) {
+				Log.d(DEBUG_TAG, "format: " + formats.get(i));
 			}
+
+
 			
 			mCamera.setParameters(p);
 			
@@ -658,55 +834,57 @@ public class CameraPreview extends Activity {
 	/*CAM VIEW CLASS
 	 * Serves as the preview screen for seeing what the camera sees live
 	 */
-	private class CamView extends SurfaceView implements SurfaceHolder.Callback {
+	private class CamView extends SurfaceView implements SurfaceHolder.Callback, Camera.PreviewCallback {
 
 		private SurfaceHolder mHolder;
 		private Camera mCamera;
+
 		
 		public CamView(Context context, Camera camera) {
 			super(context);
 			mCamera = camera;
-			
 			mHolder = getHolder();
-			
 			mHolder.addCallback(this);
-			
+			mCamera.setPreviewCallback(this);
 		}
 
 		@Override
 		public void surfaceCreated(SurfaceHolder holder) {
-			Log.i(DEBUG_TAG, "surface created");
 			startPreview(mHolder);
-			
-			//TODO: Add Loading Circle before camera shows up 
-			
 		}
 
 		@Override
 		public void surfaceChanged(SurfaceHolder holder, int format, int width,
 				int height) {
-			Log.i(DEBUG_TAG, "surface changed");
-			
 			if (mHolder.getSurface() == null) {
-				Log.e(DEBUG_TAG, "mHolder is null in surfaceChanged");
 				return;
 			}
 			
 			stopPreview();
-
+            mCamera.setPreviewCallback(this);
 			startPreview(mHolder);
 
 		}
 
 		@Override
 		public void surfaceDestroyed(SurfaceHolder holder) {
-			
 			//do nothing
 		}
 
 
+        @Override
+        public void onPreviewFrame(byte[] bytes, Camera camera) {
 
-	}
+            mSurfaceBytes = bytes;
+
+            Size previewSize = camera.getParameters().getPreviewSize();
+            int format = camera.getParameters().getPreviewFormat();
+            int[] pixels = new int[previewSize.width * previewSize.height * (ImageFormat.getBitsPerPixel(format) / 8)];
+            decodeYUV420SP(pixels, bytes, previewSize.width, previewSize.height);
+            mPixels = pixels;
+        }
+
+    }
 	
 	
 

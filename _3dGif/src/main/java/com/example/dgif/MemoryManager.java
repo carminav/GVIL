@@ -23,7 +23,7 @@ import android.util.Log;
  */
 
 //TODO: Make Memory Manager a Singleton Class? But it needs a context
-//load images more efficiently
+
 public class MemoryManager {
 
 	private static final String DEBUG_TAG = "Memory Manager";
@@ -54,37 +54,10 @@ public class MemoryManager {
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
-	public File getMovieDirectory(String name) {
-		if (isExternalStorageWritable()) {
-			return new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES), name);
-		} else {
-			Log.e(DEBUG_TAG, "external file could not be created");
-			return null;
-		}
-
-	}
-	
-//	public void saveImage(byte[] data) {
-//		String root = Environment.getExternalStorageDirectory().toString();
-//		File dir = new File(root + "/3dgifData");
-//		dir.mkdirs();
-//		Random generator = new Random();
-//		int n = 10000;
-//		n = generator.nextInt(n);
-//		String filename = "Img-" + n;
-//		File file = new File(dir, filename);
-//		if (file.exists()) file.delete();
-//		try {
-//			FileOutputStream out = new FileOutputStream(file);
-//			
-//		}
-//	}
 
 	/*GET ALL IMAGES
 	 * Returns an array of bitmaps located in app's internal memory
+	 * Loads scaled version of each Bitmap to save memory
 	 */
 	public Bitmap[] getAllImages(int reqW, int reqH) {
 
@@ -92,14 +65,8 @@ public class MemoryManager {
 		Bitmap[] images = new Bitmap[files.length];
 
 		for (int i = 0; i < images.length; i++) {
-
             String filename = files[i];
-
-
             images[i] = loadScaledBitmapFromFIS(filename, reqW, reqH);
-
-            Log.d(DEBUG_TAG, "images[i] is null = " + (images[i] == null));
-
         }
 
 		return images;

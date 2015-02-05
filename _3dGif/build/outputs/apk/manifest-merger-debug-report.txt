@@ -95,13 +95,15 @@ activity#com.example.dgif.TestGifView
 ADDED from AndroidManifest.xml:42:9
 	android:label
 		ADDED from AndroidManifest.xml:44:13
+	android:theme
+		ADDED from AndroidManifest.xml:46:13
 	android:parentActivityName
 		ADDED from AndroidManifest.xml:45:13
 	android:name
 		ADDED from AndroidManifest.xml:43:13
 meta-data#android.support.PARENT_ACTIVITY
-ADDED from AndroidManifest.xml:46:13
+ADDED from AndroidManifest.xml:47:13
 	android:name
-		ADDED from AndroidManifest.xml:47:17
-	android:value
 		ADDED from AndroidManifest.xml:48:17
+	android:value
+		ADDED from AndroidManifest.xml:49:17
