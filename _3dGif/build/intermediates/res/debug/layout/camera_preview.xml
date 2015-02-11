@@ -95,7 +95,8 @@
             android:columnCount="7"
             android:padding="10dp"
             android:rowCount="1"
-            tools:context=".GridXMLActivity" >
+            tools:context=".GridXMLActivity"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/xcoordLabel"

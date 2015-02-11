@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -43,13 +44,18 @@ public class TestGifView extends Activity {
 	
 	SeekBar mSpeedBar;
 	TextView mSpeedView;
+
+    private Button mBtnGyroscope;
 	
 	SeekBar mBlendBar;
 	TextView mBlendView;
 
+    GyroscopeGif mGyro;
 	
 	BitmapDrawable[] mBlends;
     String[] mFilenames;
+
+    TextView yLabel;
 
     MemoryManager m;
 
@@ -60,7 +66,9 @@ public class TestGifView extends Activity {
 	private static final int DEFAULT_NUM_BLENDS = 1;
 	
 	int mDuration; 
-	int mNumBlends; 
+	int mNumBlends;
+
+    boolean mGyroMode;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +76,8 @@ public class TestGifView extends Activity {
 		setContentView(R.layout.activity_test_gif_view);
 		
 		m = new MemoryManager(this);
+
+        mGyroMode = false;
 		
 		mSpeedBar = (SeekBar) findViewById(R.id.speedBar);
 		mSpeedView = (TextView) findViewById(R.id.speedView);
@@ -78,12 +88,33 @@ public class TestGifView extends Activity {
 		mDuration = mSpeedBar.getProgress();
 		mNumBlends = mBlendBar.getProgress();
 
+        mBtnGyroscope = (Button) findViewById(R.id.btn_start_gyro);
+
+        yLabel = (TextView) findViewById(R.id.y_label);
 
 		mFilenames = fileList();
 		
 		mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
 
+        mBtnGyroscope.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mGyro != null) {
+                    if (mGyroMode) {
+                        mGyro.stop();
+                        mGyroMode = false;
+                        mBtnGyroscope.setText("Start Gyroscope");
+                        yLabel.setText("Y:  ");
+                    } else {
+                        mGyro.start();
+                        mGyroMode = true;
+                        mBtnGyroscope.setText("Stop Gyroscope");
+                    }
+                }
 
+
+            }
+        });
 
 		mSpeedBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
@@ -155,6 +186,8 @@ public class TestGifView extends Activity {
         if (mProgressBar.getProgress() == 0) {
             setDrawable(false);
         } else setDrawable(true);
+
+        mGyro = new GyroscopeGif(this, gif, mView, yLabel);
 		
 	}
 

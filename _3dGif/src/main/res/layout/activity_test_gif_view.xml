@@ -20,12 +20,19 @@
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"
         />
-    
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="start gyroscope"
+        android:id="@+id/btn_start_gyro"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/progressBar"
+        android:layout_toStartOf="@+id/progressBar" />
     
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/testGifView"
+        android:layout_above="@id/btn_start_gyro"
         android:layout_alignLeft="@+id/testGifView"
         android:orientation="vertical"
         android:id="@+id/linearLayout">
@@ -78,7 +85,14 @@
         </LinearLayout>
     </LinearLayout>
 
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Y:  "
+        android:id="@+id/y_label"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/progressBar"
+        android:layout_alignTop="@+id/btn_start_gyro" />
 
 
 </RelativeLayout>
