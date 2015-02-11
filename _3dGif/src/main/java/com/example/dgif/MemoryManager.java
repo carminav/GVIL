@@ -33,6 +33,8 @@ public class MemoryManager {
 	private Context context;
 
 
+
+
 	public MemoryManager(Context context) {
 		this.context = context;
 	}
@@ -107,8 +109,6 @@ public class MemoryManager {
             }
         }
 
-        Log.d(DEBUG_TAG, "inSampleSize: " + inSampleSize);
-        Log.d(DEBUG_TAG, "reqW: " + reqW + " reqH: " + reqH);
         options.inSampleSize = inSampleSize;
 
         try {

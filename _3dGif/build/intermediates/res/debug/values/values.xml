@@ -135,6 +135,11 @@
     <item name="progress_circular" type="id"/>
     <item name="progress_horizontal" type="id"/>
     <integer name="abc_max_action_buttons">2</integer>
+    <!-- From: file:/S:/Users/Carmina/AndroidstudioProjects/3dGif/_3dGif/src/main/res/values/integers.xml -->
+    <eat-comment/>
+    <integer name="initial_num_intermediates">0</integer>
+    <!-- From: file:/S:/Users/Carmina/AndroidstudioProjects/3dGif/_3dGif/build/intermediates/exploded-aar/com.android.support/appcompat-v7/20.0.0/res/values/values.xml -->
+    <eat-comment/>
     <string name="abc_action_bar_home_description">Navigate home</string>
     <string name="abc_action_bar_up_description">Navigate up</string>
     <string name="abc_action_menu_overflow_description">More options</string>

@@ -10,11 +10,16 @@ import android.graphics.Bitmap.Config;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.Animation;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.GridLayout.LayoutParams;
@@ -24,6 +29,8 @@ import android.widget.TextView;
 
 
 public class TestGifView extends Activity {
+
+    private static final String DEBUG_TAG = "TEST GIF VIEW";
 
 	ImageView mView;
 	AnimationDrawable gif = null;
@@ -39,9 +46,14 @@ public class TestGifView extends Activity {
 	
 	SeekBar mBlendBar;
 	TextView mBlendView;
+
 	
 	BitmapDrawable[] mBlends;
+    String[] mFilenames;
 
+    MemoryManager m;
+
+    ProgressBar mProgressBar;
 	
 	//TODO: fix out of memory error
 	private static final int DEFAULT_DURATION = 50;
@@ -55,7 +67,7 @@ public class TestGifView extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_test_gif_view);
 		
-		MemoryManager m = new MemoryManager(this);
+		m = new MemoryManager(this);
 		
 		mSpeedBar = (SeekBar) findViewById(R.id.speedBar);
 		mSpeedView = (TextView) findViewById(R.id.speedView);
@@ -65,16 +77,21 @@ public class TestGifView extends Activity {
 		
 		mDuration = mSpeedBar.getProgress();
 		mNumBlends = mBlendBar.getProgress();
+
+
+		mFilenames = fileList();
 		
-		
-		
-		
+		mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+
+
+
 		mSpeedBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
 			@Override
 			public void onProgressChanged(SeekBar seekBar, int progress,
 					boolean fromUser) {
 				mSpeedView.setText(""+progress);
+
 				
 			}
 
@@ -114,29 +131,30 @@ public class TestGifView extends Activity {
 				mNumBlends = seekBar.getProgress();
 				setDrawable(true);
 			}
-			
+
+
 		});
 				
 		
-		images = m.getAllImages(640, 480);
+
 		
 		mView = (ImageView) findViewById(R.id.testGifView);
-		
-//		RelativeLayout wrapper = (RelativeLayout) findViewById(R.id.activity_test_gif_view);
-//		
-//		int width = wrapper.getWidth();
-//		int height = wrapper.getHeight();
-//		
-//		RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(width, height);
-//
-//		mView.setLayoutParams(p);
-		
+
+
+        //This returns a boolean array if previous activity was ImageGallery and null otherwise
 		mPicsSelected = getIntent().getExtras().getBooleanArray("picsSelected");
+
+
+        //This returns an integer if previous activity was CameraPreview and -1 otherwise
 		int lastIndices = getIntent().getExtras().getInt("lastIndices", -1);
-	
-		
+
+
 		mBitmaps = getSelectedImages(lastIndices);
-		setDrawable(true);
+
+
+        if (mProgressBar.getProgress() == 0) {
+            setDrawable(false);
+        } else setDrawable(true);
 		
 	}
 
@@ -145,19 +163,37 @@ public class TestGifView extends Activity {
 	//are selected
 	private ArrayList<BitmapDrawable> getSelectedImages(int lastIndices) {
 		ArrayList<BitmapDrawable> list = new ArrayList<BitmapDrawable>();
-		if (lastIndices == -1) { 
+
+        //Previous activity: ImageGallery
+		if (lastIndices == -1) {
+
 			for (int i = 0; i < mPicsSelected.length; i++) {
 				if (mPicsSelected[i]) {
-					BitmapDrawable b = new BitmapDrawable(getResources(), images[i]);
+
+                    //get name of file for easy lookup
+                    String name = mFilenames[i];
+
+                    //Load image from memory based on filename
+                    Bitmap bm = m.loadScaledBitmapFromFIS(name, 720, 1280);
+
+					BitmapDrawable b = new BitmapDrawable(getResources(), scaledBitmap(bm));
 					list.add(b);
 				}
 			}
 		} else {
+		//Previous activity: CameraPreview
+
+			int first = mFilenames.length - lastIndices;
 			
-			int first = images.length - lastIndices;
-			
-			for (int i = first; i < images.length; i++) {
-				BitmapDrawable b = new BitmapDrawable(getResources(), images[i]);
+			for (int i = first; i < mFilenames.length; i++) {
+
+                //get name of file for easy lookup
+                String name = mFilenames[i];
+
+                //Load image from memory based on filename
+                Bitmap bm = m.loadScaledBitmapFromFIS(name, 720, 1280);
+
+				BitmapDrawable b = new BitmapDrawable(getResources(), scaledBitmap(bm));
 				list.add(b);
 			}
 			
@@ -232,8 +268,15 @@ public class TestGifView extends Activity {
 		return anim;
 
 	} 
-	
-	
+
+
+    private Bitmap scaledBitmap(Bitmap bm) {
+        Log.i(DEBUG_TAG, "bm size: " + bm.getWidth() + " + " + bm.getHeight());
+        return Bitmap.createScaledBitmap(bm, bm.getWidth(), 900, true);
+
+    }
+
+
 	/* GET INTERMEDIATE IMAGE 
 	 * Uses linear interpolation to get the intermediate blend of pics a and b
 	 * based on a weight.
@@ -288,42 +331,61 @@ public class TestGifView extends Activity {
 			gif.stop();
 			mView.setBackground(null);
 		}
-		
-		gif = createGif(createNewBlend);
-		gif.setOneShot(false);
-		
-		mView.setBackground(gif);
-		
-		gif.start();
+
+
+
+        if (createNewBlend) {
+            new SetDrawableTask().execute(mBitmaps);
+        } else {
+            gif = createGif(createNewBlend);
+            gif.setOneShot(false);
+
+            mView.setBackground(gif);
+
+            gif.start();
+        }
 	}
 
-	
+
 	
 	@Override
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
-		
 		if (gif.isRunning()) {
 			gif.stop();
 		}
 	}
 
+    class SetDrawableTask extends AsyncTask<ArrayList<BitmapDrawable>, Void, AnimationDrawable> {
+        @Override
+        protected void onPreExecute() {
+            mProgressBar.setVisibility(View.VISIBLE);
+            mProgressBar.bringToFront();
+        }
 
+        @Override
+        protected AnimationDrawable doInBackground(ArrayList<BitmapDrawable>... bitmaps) {
+            return createGif(true);
+        }
+
+        @Override
+        protected void onPostExecute(AnimationDrawable animationDrawable) {
+            mProgressBar.setVisibility(View.GONE);
+            gif = animationDrawable;
+            gif.setOneShot(false);
+            mView.setBackground(gif);
+            gif.start();
+        }
+    }
 
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		
 		if (!gif.isRunning()) {
 			gif.start();
 		}
-		
-		// Hide action bar
-//		ActionBar actionBar = getActionBar();
-//		actionBar.hide();
-				
 	}
 
 

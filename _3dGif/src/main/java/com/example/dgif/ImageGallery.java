@@ -31,6 +31,8 @@ public class ImageGallery extends Activity {
 	
 	private Bitmap[] mPics;
 	private boolean[] mPicSelected;
+
+    private String[] mFilenames;
 	private ImageAdapter mImageAdapter;
 	
 	@Override
@@ -61,6 +63,8 @@ public class ImageGallery extends Activity {
 		
 		gridview = (GridView) findViewById(R.id.gridview);
 		gridview.setAdapter(mImageAdapter);
+
+        mFilenames = fileList();
 		
 
 	}

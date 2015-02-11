@@ -380,6 +380,17 @@ public class CameraPreview extends Activity {
             return bm;
         }
 
+
+
+//        private Bitmap getCroppedBitmap(byte[] data) {
+//            int[] pixels = new int[VIEW_WIDTH * VIEW_HEIGHT];
+//            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+//            Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+//            bitmap.getPixels;
+//
+//        }
+
+
 		@Override
 		public void onPictureTaken(byte[] data, Camera camera) {
 			
@@ -390,6 +401,7 @@ public class CameraPreview extends Activity {
 			//save image
             //TODO: move saveImage to when user agrees to save it, not upon picture taking
 
+            //set overlay
             Bitmap b = constructBitmap();
             Matrix matrix = new Matrix();
             matrix.postRotate(90);
