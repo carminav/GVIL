@@ -1,7 +1,9 @@
 package com.example.dgif;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -13,6 +15,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -238,65 +241,47 @@ public class TestGifView extends Activity {
 	//TODO: Run in a separate thread and/or async task
 	private AnimationDrawable createGif(boolean createNewBlends) {
 		int count = mBitmaps.size();
-		
+        String tag = "CREATE GIF";
+		Log.d(tag, "Begin");
 		/* Create new blends if necessary */
 		if (createNewBlends) {
 			
 			int totalNumBlends = (count - 1) * mNumBlends;
 			mBlends =  new BitmapDrawable[totalNumBlends];
-
 			for (int i = 0; i < (count - 1); i++) {
 				Bitmap a = mBitmaps.get(i).getBitmap();
 				Bitmap b = mBitmaps.get(i + 1).getBitmap();
 				for (int j = 0; j < mNumBlends; j++) {
 					double weight = ((1 / (double)(mNumBlends + 1))) * (j + 1);
 					Bitmap bm = getIntermediateImage(a,b, weight);
-					mBlends[i + j] = new BitmapDrawable(getResources(), bm);
+					mBlends[(i * mNumBlends) + j] = new BitmapDrawable(getResources(), bm);
 				}
 			}
 		}
-		
-		
+
 		
 		AnimationDrawable anim = new AnimationDrawable();
 		
-		
-		
+
 		//forward
 		for (int i = 0; i < count; i++) {
 			anim.addFrame(mBitmaps.get(i), mDuration);
+            Log.d(tag, "Add orig frame:" + i);
 			if (i < count - 1) {
 				for (int j = 0; j < mNumBlends; j++) {
-					anim.addFrame(mBlends[i + j], mDuration);
+                    Log.d(tag, "Add inter frame:" + ((i * mNumBlends) + j));
+					anim.addFrame(mBlends[(i * mNumBlends) + j], mDuration);
 				}
 			}
 		}
-		
-		BitmapDrawable[] x = new BitmapDrawable[anim.getNumberOfFrames()];
-		for (int i = 0; i < x.length; i++) {
-			x[i] = (BitmapDrawable) anim.getFrame(i);
+
+        Log.d(tag, "forward frames: " + anim.getNumberOfFrames());
+        //TODO: Change this and play around with keeping edge frames
+
+        //reverse
+		for (int i = anim.getNumberOfFrames() - 1;  i >= 0; i--) {
+			anim.addFrame(anim.getFrame(i), mDuration);
 		}
-		
-		for (int i = x.length - 1;  i >= 0; i--) {
-			anim.addFrame(x[i], mDuration); 
-		}
-		
-//		//TODO: Fix bug here. It crashes for certain numbers of blends
-//		//reverse
-//		for (int i = count - 1; i >= 0; i--) {
-//			anim.addFrame(mBitmaps.get(i), mDuration);
-//			Log.d("TEST VIEW GIF", "i: " + i);
-//			if (i > 0) {
-////				for (int j = mNumBlends - 1; j >= 0; j--) {
-////					anim.addFrame(mBlends[mBlends.length - ((i - 1) * (mNumBlends - j))], mDuration);
-////				}
-//				for (int j = 0; j < mNumBlends; j++) {
-//					anim.addFrame(mBlends[mBlends.length - j - 1], mDuration);
-//				}
-//			}
-//			
-//		}
-		
 	
 		return anim;
 
@@ -365,8 +350,6 @@ public class TestGifView extends Activity {
 			mView.setBackground(null);
 		}
 
-
-
         if (createNewBlend) {
             new SetDrawableTask().execute(mBitmaps);
         } else {
@@ -413,6 +396,29 @@ public class TestGifView extends Activity {
             gif.setOneShot(false);
             mView.setBackground(gif);
             gif.start();
+        }
+    }
+
+
+    /* */
+    class DrawIntermediateFrameTask extends AsyncTask<Object, Void, Bitmap> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected Bitmap doInBackground(Object... params) {
+            Double weight = (Double) params[2];
+            return getIntermediateImage((Bitmap) params[0], (Bitmap) params[1], weight);
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            super.onPostExecute(bitmap);
+
+
         }
     }
 
