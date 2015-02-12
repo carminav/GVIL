@@ -50,7 +50,7 @@ public class TestGifView extends Activity {
 	SeekBar mBlendBar;
 	TextView mBlendView;
 
-    GyroscopeGif mGyro;
+    GyroGif mGyro;
 	
 	BitmapDrawable[] mBlends;
     String[] mFilenames;
@@ -106,7 +106,7 @@ public class TestGifView extends Activity {
                         mBtnGyroscope.setText("Start Gyroscope");
                         yLabel.setText("Y:  ");
                     } else {
-                        mGyro.start();
+                        mGyro.start(gif);
                         mGyroMode = true;
                         mBtnGyroscope.setText("Stop Gyroscope");
                     }
@@ -187,7 +187,7 @@ public class TestGifView extends Activity {
             setDrawable(false);
         } else setDrawable(true);
 
-        mGyro = new GyroscopeGif(this, gif, mView, yLabel);
+        mGyro = new GyroGif(this, mView, yLabel);
 		
 	}
 
@@ -388,6 +388,10 @@ public class TestGifView extends Activity {
 		if (gif.isRunning()) {
 			gif.stop();
 		}
+
+        if (mGyro.isRunning()) {
+            mGyro.stop();
+        }
 	}
 
     class SetDrawableTask extends AsyncTask<ArrayList<BitmapDrawable>, Void, AnimationDrawable> {
