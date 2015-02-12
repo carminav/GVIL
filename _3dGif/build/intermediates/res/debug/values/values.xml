@@ -157,6 +157,7 @@
     <eat-comment/>
     <string name="action_settings">Settings</string>
     <string name="app_name">3dGif</string>
+    <string name="fontawesome_menu_glyph_unicode">\uF0C9</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_image_gallery">ImageGallery</string>
     <string name="title_activity_main">Main</string>

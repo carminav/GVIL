@@ -12,4 +12,6 @@
     <string name="title_activity_image_gallery">ImageGallery</string>
     <string name="title_activity_test_gif_view">TestGifView</string>
 
+    <string name="fontawesome_menu_glyph_unicode">\uF0C9</string>
+
 </resources>

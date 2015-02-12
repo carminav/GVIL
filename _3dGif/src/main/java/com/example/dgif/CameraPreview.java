@@ -22,6 +22,7 @@ import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.graphics.YuvImage;
 import android.graphics.drawable.AnimationDrawable;
 import android.hardware.Camera;
@@ -132,7 +133,10 @@ public class CameraPreview extends Activity {
 		mGalleryButton = (Button) findViewById(R.id.gallery_button);
 		mTrashButton = (Button) findViewById(R.id.trash_button);
 
-		
+
+        Typeface fontFamily = Typeface.createFromAsset(getAssets(), "fonts/fontawesome-webfont.ttf");
+		mGalleryButton.setTypeface(fontFamily);
+
 	    mCoordXView = (TextView) findViewById(R.id.xcoordView);
 	    mCoordYView = (TextView) findViewById(R.id.ycoordView);
 	    mCoordZView = (TextView) findViewById(R.id.zcoordView);

@@ -59,12 +59,15 @@
     
     <Button 
         android:id="@+id/gallery_button"
-        android:background="@drawable/ic_action_overflow"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
         android:layout_alignLeft="@id/camera_preview"
         android:layout_alignBottom="@id/camera_preview"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginBottom="16dp"
+        android:text="@string/fontawesome_menu_glyph_unicode"
+        android:textSize="40dp"
+        />
 
 
         <Button
