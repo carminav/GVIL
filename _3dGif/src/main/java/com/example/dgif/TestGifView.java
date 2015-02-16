@@ -36,7 +36,7 @@ public class TestGifView extends Activity {
 
     private static final String DEBUG_TAG = "TEST GIF VIEW";
 
-	ImageView mView;
+	GyroImageView mView;
 	AnimationDrawable gif = null;
 	Bitmap[] images;
 	boolean[] mPicsSelected;
@@ -96,6 +96,8 @@ public class TestGifView extends Activity {
         yLabel = (TextView) findViewById(R.id.y_label);
 
 		mFilenames = fileList();
+
+
 		
 		mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
 
@@ -172,7 +174,7 @@ public class TestGifView extends Activity {
 		
 
 		
-		mView = (ImageView) findViewById(R.id.testGifView);
+		mView = (GyroImageView) findViewById(R.id.testGifView);
 
 
         //This returns a boolean array if previous activity was ImageGallery and null otherwise

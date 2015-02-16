@@ -1,7 +1,10 @@
 package com.example.dgif;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -19,10 +22,12 @@ public class GyroGif implements SensorEventListener {
 
     private Context mContext;
     private AnimationDrawable mGif;
-    private ImageView mImageView;
+    private GyroImageView mImageView;
     private float lastValue;
     boolean start;
     private TextView mYLabel;
+
+    private Canvas mCanvas;
 
     int mLastIndex;
 
@@ -37,12 +42,10 @@ public class GyroGif implements SensorEventListener {
     private float mDelta;
 
 
-    public GyroGif(Context context, ImageView imageView, TextView yLabel) {
+    public GyroGif(Context context, GyroImageView imageView, TextView yLabel) {
         mContext = context;
         mImageView = imageView;
         mYLabel = yLabel;
-
-
 
         mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
 
@@ -68,7 +71,7 @@ public class GyroGif implements SensorEventListener {
         printDebug();
 
         if (!mGif.isRunning()) {
-
+            mImageView.setBitmap(null);
             mImageView.setBackground(mGif);
             mGif.start();
         }
@@ -82,6 +85,19 @@ public class GyroGif implements SensorEventListener {
         return start;
     }
 
+
+    public static Bitmap drawableToBitmap (Drawable drawable) {
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable)drawable).getBitmap();
+        }
+
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
+        return bitmap;
+    }
 
     @Override
     public void onSensorChanged(SensorEvent event) {
@@ -112,10 +128,14 @@ public class GyroGif implements SensorEventListener {
             int index = (int) (value / mDelta);
             if (value > 0 && index != 0) {
                 frame = mGif.getFrame(index);
-                mImageView.setBackground(frame);
+                //mImageView.setBackground(frame);
+                mImageView.setBitmap(drawableToBitmap(frame));
+                mImageView.invalidate();
             } else if (value < 0 && index != 0) {
                 frame = mGif.getFrame(-index);
-                mImageView.setBackground(frame);
+                //mImageView.setBackground(frame);
+                mImageView.setBitmap(drawableToBitmap(frame));
+                mImageView.invalidate();
             } else {
                 index = 0;
                // mImageView.setBackground(mGif.getFrame(index));
