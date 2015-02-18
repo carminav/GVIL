@@ -21,19 +21,18 @@
     </layouts>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="auto" />
+    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="ORIENTATION" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="app: com.example.dgif" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1ad757b0-a009-4144-879a-2a50e5a6597d" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/utils/RenderUtils.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_3dGif/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/_3dGif/src/main/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/ImageGallery.java" afterPath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/ImageGallery.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/Splash.java" afterPath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/Splash.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/sensorlisteners/GifCompass.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/sensorlisteners/AutoFocusSensorListener.java" afterPath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/sensorlisteners/AutoFocusSensorListener.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/customviews/CameraPreview.java" afterPath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/customviews/CameraPreview.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/sensorlisteners/Compass.java" afterPath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/sensorlisteners/Compass.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/GyroGif.java" afterPath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/GyroGif.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/TestGifView.java" afterPath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/TestGifView.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MOVED" beforePath="S:\Users\Carmina\AndroidstudioProjects\3dGif\_3dGif\src\main\java\com\example\dgif\CameraPreview.java" afterPath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/customviews/CameraPreview.java" />
-      <change type="MOVED" beforePath="S:\Users\Carmina\AndroidstudioProjects\3dGif\_3dGif\src\main\java\com\example\dgif\MemoryManager.java" afterPath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/utils/MemoryManager.java" />
     </list>
     <ignored path="3dGif.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -59,8 +58,8 @@
       <file leaf-file-name="TestGifView.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/TestGifView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-16.392857" vertical-offset="0" max-vertical-offset="6766">
-              <caret line="50" column="4" selection-start-line="50" selection-start-column="4" selection-end-line="50" selection-end-column="4" />
+            <state vertical-scroll-proportion="-6.678571" vertical-offset="2244" max-vertical-offset="6664">
+              <caret line="167" column="30" selection-start-line="167" selection-start-column="30" selection-end-line="167" selection-end-column="30" />
               <folding />
             </state>
           </provider>
@@ -69,8 +68,8 @@
       <file leaf-file-name="GyroGif.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/GyroGif.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="433" max-vertical-offset="2856">
-              <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="790" max-vertical-offset="2805">
+              <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -78,25 +77,17 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GyroImageView.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/customviews/GyroImageView.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="595">
-              <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Compass.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="Compass.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/sensorlisteners/Compass.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1938">
-              <caret line="40" column="83" selection-start-line="40" selection-start-column="83" selection-end-line="40" selection-end-column="83" />
+            <state vertical-scroll-proportion="0.59694654" vertical-offset="476" max-vertical-offset="1428">
+              <caret line="51" column="55" selection-start-line="51" selection-start-column="55" selection-end-line="51" selection-end-column="55" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#2592#2593#0" expanded="true" />
-                <element signature="e#2627#2628#0" expanded="true" />
+                <element signature="e#2123#2124#0" expanded="true" />
+                <element signature="e#2158#2159#0" expanded="true" />
+                <element signature="e#2402#2403#0" expanded="true" />
+                <element signature="e#2457#2458#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -105,8 +96,8 @@
       <file leaf-file-name="CameraPreview.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/customviews/CameraPreview.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-181.75" vertical-offset="11" max-vertical-offset="7004">
-              <caret line="355" column="40" selection-start-line="355" selection-start-column="40" selection-end-line="355" selection-end-column="40" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="4165" max-vertical-offset="7242">
+              <caret line="319" column="30" selection-start-line="319" selection-start-column="30" selection-end-line="319" selection-end-column="30" />
               <folding />
             </state>
           </provider>
@@ -116,31 +107,21 @@
         <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/ImageGallery.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2669">
-              <caret line="27" column="33" selection-start-line="27" selection-start-column="33" selection-end-line="27" selection-end-column="33" />
+              <caret line="33" column="39" selection-start-line="33" selection-start-column="39" selection-end-line="33" selection-end-column="39" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="RenderUtils.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/utils/RenderUtils.java">
+      <file leaf-file-name="GifCompass.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/sensorlisteners/GifCompass.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.96030533" vertical-offset="102" max-vertical-offset="1700">
-              <caret line="43" column="0" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1751">
+              <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AutoFocusSensorListener.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/sensorlisteners/AutoFocusSensorListener.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="272" max-vertical-offset="1258">
-              <caret line="23" column="41" selection-start-line="23" selection-start-column="41" selection-end-line="23" selection-end-column="41" />
-              <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="e#1443#1444#0" expanded="true" />
+                <element signature="e#1473#1474#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -756,7 +737,6 @@
         <option value="$PROJECT_DIR$/_3dGif/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/_3dGif/src/main/res/layout/camera_preview.xml" />
         <option value="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/Compass.java" />
-        <option value="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/GyroGif.java" />
         <option value="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/GyroCompass.java" />
         <option value="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/com/example/dgif/customviews/GyroImageView.java" />
         <option value="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/com/example/dgif/sensorlisteners/GyroCompass.java" />
@@ -764,13 +744,16 @@
         <option value="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/com/example/dgif/customviews/CameraSurfaceView.java" />
         <option value="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/com/example/dgif/sensorlisteners/AutoFocuser.java" />
         <option value="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/com/example/dgif/sensorlisteners/AutoFocusSensorListener.java" />
-        <option value="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/sensorlisteners/AutoFocusSensorListener.java" />
         <option value="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/utils/PixelUtils.java" />
         <option value="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/CameraPreview.java" />
-        <option value="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/customviews/CameraPreview.java" />
         <option value="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/ImageGallery.java" />
         <option value="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/utils/RenderUtils.java" />
+        <option value="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/GyroGif.java" />
+        <option value="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/sensorlisteners/AutoFocusSensorListener.java" />
+        <option value="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/sensorlisteners/GifCompass.java" />
         <option value="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/TestGifView.java" />
+        <option value="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/customviews/CameraPreview.java" />
+        <option value="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/sensorlisteners/Compass.java" />
       </list>
     </option>
   </component>
@@ -966,7 +949,7 @@
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="utils" />
+              <option name="myItemId" value="customviews" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1492,14 +1475,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/Splash.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.1557252" vertical-offset="102" max-vertical-offset="1054">
-          <caret line="17" column="34" selection-start-line="17" selection-start-column="34" selection-end-line="17" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/_3dGif/src/main/res/layout/activity_splash.xml">
       <provider editor-type-id="android-designer">
         <state />
@@ -1624,9 +1599,49 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/sensorlisteners/AutoFocusSensorListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="255" max-vertical-offset="1241">
+          <caret line="21" column="25" selection-start-line="21" selection-start-column="25" selection-end-line="21" selection-end-column="25" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/utils/RenderUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.70076334" vertical-offset="0" max-vertical-offset="1700">
+          <caret line="27" column="43" selection-start-line="27" selection-start-column="43" selection-end-line="27" selection-end-column="43" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/Splash.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.519084" vertical-offset="0" max-vertical-offset="1054">
+          <caret line="24" column="49" selection-start-line="24" selection-start-column="49" selection-end-line="24" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/sensorlisteners/GifCompass.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1751">
+          <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1443#1444#0" expanded="true" />
+            <element signature="e#1473#1474#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/customviews/GyroImageView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="595">
+        <state vertical-scroll-proportion="0.3114504" vertical-offset="0" max-vertical-offset="655">
           <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
           <folding />
         </state>
@@ -1634,28 +1649,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/GyroGif.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="433" max-vertical-offset="2856">
-          <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="790" max-vertical-offset="2805">
+          <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/sensorlisteners/AutoFocusSensorListener.java">
+    <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/TestGifView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="272" max-vertical-offset="1258">
-          <caret line="23" column="41" selection-start-line="23" selection-start-column="41" selection-end-line="23" selection-end-column="41" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/customviews/CameraPreview.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-181.75" vertical-offset="11" max-vertical-offset="7004">
-          <caret line="355" column="40" selection-start-line="355" selection-start-column="40" selection-end-line="355" selection-end-column="40" />
+        <state vertical-scroll-proportion="-6.678571" vertical-offset="2244" max-vertical-offset="6664">
+          <caret line="167" column="30" selection-start-line="167" selection-start-column="30" selection-end-line="167" selection-end-column="30" />
           <folding />
         </state>
       </provider>
@@ -1663,37 +1668,29 @@
     <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/ImageGallery.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2669">
-          <caret line="27" column="33" selection-start-line="27" selection-start-column="33" selection-end-line="27" selection-end-column="33" />
+          <caret line="33" column="39" selection-start-line="33" selection-start-column="39" selection-end-line="33" selection-end-column="39" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/TestGifView.java">
+    <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/customviews/CameraPreview.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-16.392857" vertical-offset="0" max-vertical-offset="6766">
-          <caret line="50" column="4" selection-start-line="50" selection-start-column="4" selection-end-line="50" selection-end-column="4" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="4165" max-vertical-offset="7242">
+          <caret line="319" column="30" selection-start-line="319" selection-start-column="30" selection-end-line="319" selection-end-column="30" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/sensorlisteners/Compass.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="331" max-vertical-offset="1938">
-          <caret line="40" column="83" selection-start-line="40" selection-start-column="83" selection-end-line="40" selection-end-column="83" />
+        <state vertical-scroll-proportion="0.59694654" vertical-offset="476" max-vertical-offset="1428">
+          <caret line="51" column="55" selection-start-line="51" selection-start-column="55" selection-end-line="51" selection-end-column="55" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2592#2593#0" expanded="true" />
-            <element signature="e#2627#2628#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/utils/RenderUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.96030533" vertical-offset="102" max-vertical-offset="1700">
-          <caret line="43" column="0" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#2123#2124#0" expanded="true" />
+            <element signature="e#2158#2159#0" expanded="true" />
+            <element signature="e#2402#2403#0" expanded="true" />
+            <element signature="e#2457#2458#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -44,7 +44,6 @@ public class AutoFocusSensorListener implements SensorEventListener, Camera.Auto
             try {
 
                 mCamera.autoFocus(this);
-                Log.e(TAG, "try autofocus SUCCESS");
             } catch (RuntimeException e) {
                 Log.e(TAG, "try autofocus FAIL");
             }

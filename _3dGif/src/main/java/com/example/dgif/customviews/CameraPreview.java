@@ -2,6 +2,8 @@ package com.example.dgif.customviews;
 
 import java.io.IOException;
 import java.nio.IntBuffer;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -87,6 +89,10 @@ public class CameraPreview extends Activity {
 	
 	private RelativeLayout mFrameWrapper;
 
+    private ArrayList<Float> mOrientations;
+
+
+
 
 
 	
@@ -117,6 +123,8 @@ public class CameraPreview extends Activity {
 
 		// Begin loading camera resource
 		new Thread(new LoadCameraAndPrev()).start();
+
+        mOrientations = new ArrayList<Float>();
 
 	}
 
@@ -158,6 +166,7 @@ public class CameraPreview extends Activity {
                     mOverlayView.setVisibility(View.GONE);
                 mTrashButton.setVisibility(View.GONE);
                 mPreviewButton.setVisibility(View.GONE);
+                mOrientations.clear();
             }
 
         });
@@ -168,12 +177,15 @@ public class CameraPreview extends Activity {
             public void onClick(View v) {
                 Intent i = new Intent(CameraPreview.this, TestGifView.class);
                 i.putExtra("lastIndices", mCount);
+                i.putExtra("orientations", mOrientations.toArray());
+                Log.d("ORIENTATION", Arrays.toString(mOrientations.toArray()));
                 startActivity(i);
             }
 
         });
 
     }
+
 
 
     // Make sure camera and other resources restart/start
@@ -194,6 +206,7 @@ public class CameraPreview extends Activity {
 		mCompass.stop();
 		stopPreview();
 		releaseCamera();
+
 		
 		if (mOverlayView.getVisibility() == View.VISIBLE) {
 			mOverlayView.setVisibility(View.GONE);
@@ -203,7 +216,8 @@ public class CameraPreview extends Activity {
 			mTrashButton.setVisibility(View.GONE);
 			mPreviewButton.setVisibility(View.GONE);
 		}
-		
+
+        mOrientations.clear();
 		mCount = 0;
 		onPauseCalled = true;
 	}
@@ -303,9 +317,12 @@ public class CameraPreview extends Activity {
 		public void onPictureTaken(byte[] data, Camera camera) {
 
 
-            Log.d("ROLL", "Roll: " + mCompass.getRoll());
+            Log.d("ORIENTATION", "Roll: " + mCompass.getRoll());
 			mIsPreviewing = false;
             mMemoryManager.saveImage(data);
+
+
+            mOrientations.add(mCompass.getRoll());
 
 
             //set overlay
@@ -354,7 +371,6 @@ public class CameraPreview extends Activity {
 			//Open Camera
 			try {
 				mCamera = Camera.open();
-				Log.i(DEBUG_TAG, "Camera opened");
 			} catch (RuntimeException e) {
 				Log.e(DEBUG_TAG, "Camera will not open. onCreate");
 				finish();

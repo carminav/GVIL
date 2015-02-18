@@ -10,10 +10,19 @@ import android.widget.TextView;
 
 import com.example.dgif.customviews.GyroImageView;
 
+import org.w3c.dom.Text;
+
 /**
- * Created by Carmina on 2/17/2015.
+ * Created by Carmina on 2/18/2015.
+ * Controls animation of the GIF upon orientation change
  */
-public class Compass implements SensorEventListener {
+public class GifCompass implements SensorEventListener {
+
+
+    private GyroImageView mView;
+    private AnimationDrawable mGif;
+    private TextView mLabel;
+    private float mDelta[];
 
     private SensorManager mSensorManager;
     private Sensor accelerometer;
@@ -26,13 +35,20 @@ public class Compass implements SensorEventListener {
 
     private float mCurrentRoll;
 
-    private TextView mLabel;
+    public GifCompass(Context c, GyroImageView imageView, AnimationDrawable gif, TextView label) {
+        mView = imageView;
+        mGif = gif;
+        mLabel = label;
+        mDelta = null;
 
-    public Compass(Context c, TextView label) {
         mSensorManager = (SensorManager) c.getSystemService(Context.SENSOR_SERVICE);
         accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         magnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-        mLabel = label;
+
+    }
+
+    public void setOrientationDeltaArray(float[] delta) {
+        mDelta = delta;
     }
 
     @Override
@@ -50,10 +66,8 @@ public class Compass implements SensorEventListener {
                 SensorManager.getOrientation(R, orientation);
                 float roll = orientation[ROLL_INDEX]; // orientation contains: azimut, pitch and roll
                 float roundedRoll = (roll * 100) / 100;
-
-                    mLabel.setText("Roll: " + roundedRoll);
-                    mCurrentRoll = roundedRoll;
-
+                mLabel.setText("Roll: " + roundedRoll);
+                mCurrentRoll = roundedRoll;
             }
         }
     }
@@ -61,18 +75,23 @@ public class Compass implements SensorEventListener {
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) { }
 
-    public float getRoll() {
-        return mCurrentRoll;
-    }
-
     public void start() {
+
+        if (mGif.isRunning()) {
+            mGif.stop();
+            mView.setBackground(null);
+        }
+
         mSensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI);
         mSensorManager.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_UI);
     }
 
     public void stop() {
         mSensorManager.unregisterListener(this);
+
+        if (!mGif.isRunning()) {
+            mView.setBackground(mGif);
+            mGif.start();
+        }
     }
-
-
 }

@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.example.dgif.customviews.GyroImageView;
 import com.example.dgif.sensorlisteners.Compass;
+import com.example.dgif.sensorlisteners.GifCompass;
 import com.example.dgif.utils.MemoryManager;
 import com.example.dgif.utils.RenderUtils;
 
@@ -30,7 +31,7 @@ public class TestGifView extends Activity {
 
     private static final String DEBUG_TAG = "TEST GIF VIEW";
 
-    Compass mCompass;
+    GifCompass mCompass;
 
 	GyroImageView mView;
 	AnimationDrawable gif = null;
@@ -58,6 +59,8 @@ public class TestGifView extends Activity {
 
     ProgressBar mProgressBar;
 
+    private float[] mDelta;
+
 	
 	int mDuration; 
 	int mNumBlends;
@@ -72,7 +75,7 @@ public class TestGifView extends Activity {
 		m = new MemoryManager(this);
 
         mGyroMode = false;
-		
+		mDelta = null;
 		initViewObjects();
 		
 		mDuration = mSpeedBar.getProgress();
@@ -96,7 +99,7 @@ public class TestGifView extends Activity {
 
         mGyro = new GyroGif(this, mView, yLabel);
 
-        mCompass = new Compass(this, mView, gif, yLabel);
+        mCompass = new GifCompass(this, mView, gif, yLabel);
 		
 	}
 
@@ -114,8 +117,7 @@ public class TestGifView extends Activity {
     }
 
 
-	//TODO: Instead of scanning all of mPicsSelected, just use array of indexes which
-	//are selected
+
 	private ArrayList<BitmapDrawable> getSelectedImages(int lastIndices) {
 		ArrayList<BitmapDrawable> list = new ArrayList<BitmapDrawable>();
 
@@ -178,24 +180,17 @@ public class TestGifView extends Activity {
 			}
 		}
 
-		
 		AnimationDrawable anim = new AnimationDrawable();
-		
 
 		//forward
 		for (int i = 0; i < count; i++) {
 			anim.addFrame(mBitmaps.get(i), mDuration);
-            Log.d(tag, "Add orig frame:" + i);
 			if (i < count - 1) {
 				for (int j = 0; j < mNumBlends; j++) {
-                    Log.d(tag, "Add inter frame:" + ((i * mNumBlends) + j));
 					anim.addFrame(mBlends[(i * mNumBlends) + j], mDuration);
 				}
 			}
 		}
-
-        Log.d(tag, "forward frames: " + anim.getNumberOfFrames());
-        //TODO: Change this and play around with keeping edge frames
 
         //reverse
 		for (int i = anim.getNumberOfFrames() - 1;  i >= 0; i--) {
