@@ -177,8 +177,9 @@ public class CameraPreview extends Activity {
             public void onClick(View v) {
                 Intent i = new Intent(CameraPreview.this, TestGifView.class);
                 i.putExtra("lastIndices", mCount);
-                i.putExtra("orientations", mOrientations.toArray());
-                Log.d("ORIENTATION", Arrays.toString(mOrientations.toArray()));
+                float[] deltaArray = toFloatArray(mOrientations);
+                i.putExtra("orientations",  deltaArray);
+                Log.d("ORIENTATION", Arrays.toString(deltaArray));
                 startActivity(i);
             }
 
@@ -186,6 +187,14 @@ public class CameraPreview extends Activity {
 
     }
 
+    private float[] toFloatArray(ArrayList<Float> arrayList) {
+        float[] array = new float[arrayList.size()];
+        for (int i = 0; i < array.length; i++) {
+            array[i] = arrayList.get(i);
+        }
+
+        return array;
+    }
 
 
     // Make sure camera and other resources restart/start

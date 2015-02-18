@@ -41,6 +41,8 @@ public class GyroGif implements SensorEventListener {
 
     private float mDelta;
 
+    private float mOrientations;
+
     public GyroGif() {}
 
 

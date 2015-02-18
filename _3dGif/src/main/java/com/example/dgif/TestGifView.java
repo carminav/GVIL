@@ -1,6 +1,7 @@
 package com.example.dgif;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -61,6 +62,9 @@ public class TestGifView extends Activity {
 
     private float[] mDelta;
 
+    private float[] mOrientations;
+
+
 	
 	int mDuration; 
 	int mNumBlends;
@@ -96,6 +100,8 @@ public class TestGifView extends Activity {
         if (mProgressBar.getProgress() == 0) {
             setDrawable(false);
         } else setDrawable(true);
+
+        //setDrawable(true);
 
         mGyro = new GyroGif(this, mView, yLabel);
 
@@ -140,6 +146,8 @@ public class TestGifView extends Activity {
 		} else {
 		//Previous activity: CameraPreview
 
+            mOrientations = getIntent().getExtras().getFloatArray("orientations");
+
 			int first = mFilenames.length - lastIndices;
 			
 			for (int i = first; i < mFilenames.length; i++) {
@@ -158,15 +166,59 @@ public class TestGifView extends Activity {
 		
 		return list;
 	}
-	
+
+
+    private float[] calculateDelta() {
+
+        int size = mBitmaps.size() + (mBitmaps.size() - 1) * mNumBlends;
+        Log.d(DEBUG_TAG, "orientations with blends: " + size);
+        float[] newOrientations;
+
+
+        if (mNumBlends > 0) {
+            newOrientations = new float[size];
+            float step = (float) 1 / (mNumBlends + 1);
+            Log.d("ORIENTATION" , "step: " + step);
+            for (int i = 0; i < size; i++) {
+                int mod = i % (mNumBlends + 1);
+                if (mod == 0) {
+                    newOrientations[i] = mOrientations[i / (mNumBlends + 1)];
+                } else {
+                    float a = mOrientations[(int) (i / (mNumBlends + 1))];
+                    Log.d("ORIENTATION", "mOrientations: ");
+                    float b = mOrientations[(int) (i / (mNumBlends + 1)) + 1];
+                    float newOrient = (float) (a + (b - a) * step * i);
+                    newOrientations[i] = newOrient;
+                }
+            }
+
+        } else newOrientations = mOrientations;
+
+        float[] delta = new float[size - 1];
+
+        for (int i = 0; i < delta.length; i++) {
+            delta[i] = newOrientations[i + 1] - newOrientations[i];
+        }
+
+        Log.d("ORIENTATION", "new orientations: " + Arrays.toString(newOrientations));
+        Log.d("ORIENTATION", "delta: " + Arrays.toString(delta));
+        return delta;
+    }
+
 
 	private AnimationDrawable createGif(boolean createNewBlends) {
 		int count = mBitmaps.size();
+
         String tag = "CREATE GIF";
-		Log.d(tag, "Begin");
+
+
+        if (mDelta == null) {
+            mDelta = calculateDelta();
+        }
+
 		/* Create new blends if necessary */
 		if (createNewBlends) {
-			
+			mDelta = calculateDelta();
 			int totalNumBlends = (count - 1) * mNumBlends;
 			mBlends =  new BitmapDrawable[totalNumBlends];
 			for (int i = 0; i < (count - 1); i++) {
@@ -291,7 +343,7 @@ public class TestGifView extends Activity {
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		if (!gif.isRunning()) {
+		if (gif != null && !gif.isRunning()) {
 			gif.start();
 		}
 	}
