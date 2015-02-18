@@ -1,4 +1,4 @@
-package com.example.dgif;
+package com.example.dgif.utils;
 
 
 import java.io.File;

@@ -26,18 +26,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1ad757b0-a009-4144-879a-2a50e5a6597d" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/sensorlisteners/AutoFocusSensorListener.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/sensorlisteners/Compass.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/intermediates/model_data.bin" afterPath="$PROJECT_DIR$/build/intermediates/model_data.bin" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/utils/RenderUtils.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_3dGif/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/_3dGif/src/main/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/CameraPreview.java" afterPath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/CameraPreview.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/GyroGif.java" afterPath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/GyroGif.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_3dGif/build/generated/source/r/debug/com/example/dgif/R.java" afterPath="$PROJECT_DIR$/_3dGif/build/generated/source/r/debug/com/example/dgif/R.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/ImageGallery.java" afterPath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/ImageGallery.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/Splash.java" afterPath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/Splash.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/TestGifView.java" afterPath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/TestGifView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_3dGif/src/main/res/layout/activity_test_gif_view.xml" afterPath="$PROJECT_DIR$/_3dGif/src/main/res/layout/activity_test_gif_view.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_3dGif/src/main/res/layout/camera_preview.xml" afterPath="$PROJECT_DIR$/_3dGif/src/main/res/layout/camera_preview.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MOVED" beforePath="S:\Users\Carmina\AndroidstudioProjects\3dGif\_3dGif\src\main\java\com\example\dgif\GyroImageView.java" afterPath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/customviews/GyroImageView.java" />
+      <change type="MOVED" beforePath="S:\Users\Carmina\AndroidstudioProjects\3dGif\_3dGif\src\main\java\com\example\dgif\CameraPreview.java" afterPath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/customviews/CameraPreview.java" />
+      <change type="MOVED" beforePath="S:\Users\Carmina\AndroidstudioProjects\3dGif\_3dGif\src\main\java\com\example\dgif\MemoryManager.java" afterPath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/utils/MemoryManager.java" />
     </list>
     <ignored path="3dGif.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -63,8 +59,8 @@
       <file leaf-file-name="TestGifView.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/TestGifView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="25.464285" vertical-offset="4147" max-vertical-offset="7752">
-              <caret line="223" column="39" selection-start-line="223" selection-start-column="39" selection-end-line="223" selection-end-column="39" />
+            <state vertical-scroll-proportion="-16.392857" vertical-offset="0" max-vertical-offset="6766">
+              <caret line="50" column="4" selection-start-line="50" selection-start-column="4" selection-end-line="50" selection-end-column="4" />
               <folding />
             </state>
           </provider>
@@ -95,7 +91,7 @@
       <file leaf-file-name="Compass.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/sensorlisteners/Compass.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="331" max-vertical-offset="1938">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1938">
               <caret line="40" column="83" selection-start-line="40" selection-start-column="83" selection-end-line="40" selection-end-column="83" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -106,11 +102,31 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CameraPreview.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/CameraPreview.java">
+      <file leaf-file-name="CameraPreview.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/customviews/CameraPreview.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.22488038" vertical-offset="7101" max-vertical-offset="9095">
-              <caret line="446" column="58" selection-start-line="446" selection-start-column="58" selection-end-line="446" selection-end-column="58" />
+            <state vertical-scroll-proportion="-181.75" vertical-offset="11" max-vertical-offset="7004">
+              <caret line="355" column="40" selection-start-line="355" selection-start-column="40" selection-end-line="355" selection-end-column="40" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ImageGallery.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/ImageGallery.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2669">
+              <caret line="27" column="33" selection-start-line="27" selection-start-column="33" selection-end-line="27" selection-end-column="33" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="RenderUtils.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/utils/RenderUtils.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.96030533" vertical-offset="102" max-vertical-offset="1700">
+              <caret line="43" column="0" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -731,7 +747,6 @@
         <option value="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/PImage.java" />
         <option value="$PROJECT_DIR$/_3dGif/src/main/res/values/integers.xml" />
         <option value="$PROJECT_DIR$/_3dGif/src/main/res/values/dimens.xml" />
-        <option value="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/ImageGallery.java" />
         <option value="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/MemoryManager.java" />
         <option value="$PROJECT_DIR$/_3dGif/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/GyroscopeGif.java" />
@@ -739,7 +754,6 @@
         <option value="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/GyroImageView.java" />
         <option value="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/FusedGyroscopeSensor.java" />
         <option value="$PROJECT_DIR$/_3dGif/src/main/AndroidManifest.xml" />
-        <option value="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/TestGifView.java" />
         <option value="$PROJECT_DIR$/_3dGif/src/main/res/layout/camera_preview.xml" />
         <option value="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/Compass.java" />
         <option value="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/GyroGif.java" />
@@ -751,7 +765,12 @@
         <option value="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/com/example/dgif/sensorlisteners/AutoFocuser.java" />
         <option value="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/com/example/dgif/sensorlisteners/AutoFocusSensorListener.java" />
         <option value="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/sensorlisteners/AutoFocusSensorListener.java" />
+        <option value="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/utils/PixelUtils.java" />
         <option value="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/CameraPreview.java" />
+        <option value="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/customviews/CameraPreview.java" />
+        <option value="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/ImageGallery.java" />
+        <option value="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/utils/RenderUtils.java" />
+        <option value="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/TestGifView.java" />
       </list>
     </option>
   </component>
@@ -768,7 +787,7 @@
     <OptionsSetting value="true" id="Update" />
     <OptionsSetting value="true" id="Status" />
     <OptionsSetting value="true" id="Edit" />
-    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="2" id="Add" />
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
   <component name="ProjectReloadState">
@@ -927,6 +946,28 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="dgif" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="3dGif" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="_3dGif" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dgif" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="utils" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -1181,7 +1222,7 @@
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32973504" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17697228" sideWeight="0.50073206" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32973504" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32973504" sideWeight="0.5389126" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32973504" sideWeight="0.5389126" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32973504" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.16577825" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1247,13 +1288,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/CameraPreview.java">
+    <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/customviews/CameraPreview.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="10778">
           <caret line="129" column="68" selection-start-line="129" selection-start-column="68" selection-end-line="129" selection-end-column="68" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1289,13 +1328,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/CameraPreview.java">
+    <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/customviews/CameraPreview.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="10710">
           <caret line="457" column="42" selection-start-line="457" selection-start-column="42" selection-end-line="457" selection-end-column="42" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1318,7 +1355,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/MemoryManager.java">
+    <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/utils/MemoryManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="612" max-vertical-offset="2584">
           <caret line="36" column="0" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
@@ -1334,13 +1371,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/CameraPreview.java">
+    <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/customviews/CameraPreview.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="6936" max-vertical-offset="11730">
           <caret line="445" column="12" selection-start-line="445" selection-start-column="12" selection-end-line="445" selection-end-column="12" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1368,7 +1403,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/MemoryManager.java">
+    <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/utils/MemoryManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2312">
           <caret line="48" column="24" selection-start-line="48" selection-start-column="24" selection-end-line="48" selection-end-column="24" />
@@ -1376,13 +1411,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/CameraPreview.java">
+    <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/customviews/CameraPreview.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="3298" max-vertical-offset="12342">
           <caret line="194" column="41" selection-start-line="194" selection-start-column="41" selection-end-line="194" selection-end-column="41" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1515,14 +1548,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/ImageGallery.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="144" max-vertical-offset="3043">
-          <caret line="30" column="4" selection-start-line="30" selection-start-column="4" selection-end-line="30" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/AppData/Local/Android/sdk/platforms/android-19/android.jar!/java/lang/Runnable.class">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.1557252" vertical-offset="0" max-vertical-offset="655">
@@ -1559,7 +1584,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/MemoryManager.java">
+    <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/utils/MemoryManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.57099235" vertical-offset="0" max-vertical-offset="2312">
           <caret line="36" column="0" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
@@ -1599,14 +1624,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/TestGifView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="25.464285" vertical-offset="4147" max-vertical-offset="7752">
-          <caret line="223" column="39" selection-start-line="223" selection-start-column="39" selection-end-line="223" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/customviews/GyroImageView.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="595">
@@ -1625,6 +1642,40 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/sensorlisteners/AutoFocusSensorListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="272" max-vertical-offset="1258">
+          <caret line="23" column="41" selection-start-line="23" selection-start-column="41" selection-end-line="23" selection-end-column="41" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/customviews/CameraPreview.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-181.75" vertical-offset="11" max-vertical-offset="7004">
+          <caret line="355" column="40" selection-start-line="355" selection-start-column="40" selection-end-line="355" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/ImageGallery.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2669">
+          <caret line="27" column="33" selection-start-line="27" selection-start-column="33" selection-end-line="27" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/TestGifView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-16.392857" vertical-offset="0" max-vertical-offset="6766">
+          <caret line="50" column="4" selection-start-line="50" selection-start-column="4" selection-end-line="50" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/sensorlisteners/Compass.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="331" max-vertical-offset="1938">
@@ -1637,20 +1688,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/sensorlisteners/AutoFocusSensorListener.java">
+    <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/utils/RenderUtils.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="272" max-vertical-offset="1258">
-          <caret line="23" column="41" selection-start-line="23" selection-start-column="41" selection-end-line="23" selection-end-column="41" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/CameraPreview.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.22488038" vertical-offset="7101" max-vertical-offset="9095">
-          <caret line="446" column="58" selection-start-line="446" selection-start-column="58" selection-end-line="446" selection-end-column="58" />
+        <state vertical-scroll-proportion="0.96030533" vertical-offset="102" max-vertical-offset="1700">
+          <caret line="43" column="0" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

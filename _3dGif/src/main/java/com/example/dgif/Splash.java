@@ -1,11 +1,10 @@
 package com.example.dgif;
 
-import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.view.View;
+
+import com.example.dgif.customviews.CameraPreview;
 
 /* @author Carmina Villaflores
  * Splash screen which appears upon starting up 3dGif APP 

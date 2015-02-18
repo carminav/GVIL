@@ -34,7 +34,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.dgif.CameraPreview"
+            android:name="com.example.dgif.customviews.CameraPreview"
             android:label="@string/title_activity_main"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" >

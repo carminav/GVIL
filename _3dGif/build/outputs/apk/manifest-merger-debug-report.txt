@@ -83,7 +83,7 @@ category#android.intent.category.LAUNCHER
 ADDED from AndroidManifest.xml:32:17
 	android:name
 		ADDED from AndroidManifest.xml:32:27
-activity#com.example.dgif.CameraPreview
+activity#com.example.dgif.customviews.CameraPreview
 ADDED from AndroidManifest.xml:35:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:38:13

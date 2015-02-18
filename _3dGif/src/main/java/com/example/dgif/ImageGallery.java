@@ -14,15 +14,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import com.example.dgif.utils.MemoryManager;
+
 public class ImageGallery extends Activity {
-//TODO: Add navigation buttons to navigate from preview screen to image gallery
-//TODO: Create custom image view so that each emage has a white background in the gallery
-//TODO: Make each view a square and zoomed in 	
-//TODO: Fix checkbox/imageview spacing. 
+
     private GridView gridview;
 	
 	private static final int SIZE = 200;
@@ -73,9 +71,7 @@ public class ImageGallery extends Activity {
 
 		
 		LayoutInflater mInflater;
-		
 
-		
 		public ImageAdapter(Context c) {
 			
 			//Inflater instantiates a layout XML to its corresponding View object
@@ -163,24 +159,7 @@ public class ImageGallery extends Activity {
 			
 			
 			return convertView;
-			
-				
-			
-//			ImageView imageView = null;
-//			
-//			//if view is not recycled, initialize attributes
-//			if (convertView == null) {
-//				imageView = new ImageView(mContext);
-//				imageView.setLayoutParams(new GridView.LayoutParams(SIZE,SIZE));
-//				imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-//				imageView.setPadding(20, 20, 20, 20);
-//			} else {
-//				imageView = (ImageView) convertView;
-//			}
-//			
-//			imageView.setImageBitmap(images[position]);
-//
-//			return imageView;
+
 		}
 		
 	}

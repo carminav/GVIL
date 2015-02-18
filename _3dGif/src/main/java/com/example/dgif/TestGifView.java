@@ -22,6 +22,8 @@ import android.widget.TextView;
 
 import com.example.dgif.customviews.GyroImageView;
 import com.example.dgif.sensorlisteners.Compass;
+import com.example.dgif.utils.MemoryManager;
+import com.example.dgif.utils.RenderUtils;
 
 
 public class TestGifView extends Activity {
@@ -32,12 +34,10 @@ public class TestGifView extends Activity {
 
 	GyroImageView mView;
 	AnimationDrawable gif = null;
-	Bitmap[] images;
+
 	boolean[] mPicsSelected;
 	ArrayList<BitmapDrawable> mBitmaps;
 
-	public final static int PIC_WIDTH = 480; //1458;
-	public final static int PIC_HEIGHT = 640; //2592;	
 	
 	SeekBar mSpeedBar;
 	TextView mSpeedView;
@@ -57,10 +57,7 @@ public class TestGifView extends Activity {
     MemoryManager m;
 
     ProgressBar mProgressBar;
-	
-	//TODO: fix out of memory error
-	private static final int DEFAULT_DURATION = 50;
-	private static final int DEFAULT_NUM_BLENDS = 1;
+
 	
 	int mDuration; 
 	int mNumBlends;
@@ -72,134 +69,26 @@ public class TestGifView extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_test_gif_view);
 
-
-
 		m = new MemoryManager(this);
 
         mGyroMode = false;
 		
-		mSpeedBar = (SeekBar) findViewById(R.id.speedBar);
-		mSpeedView = (TextView) findViewById(R.id.speedView);
-		
-		mBlendBar = (SeekBar) findViewById(R.id.blendBar);
-		mBlendView = (TextView) findViewById(R.id.blendView);
+		initViewObjects();
 		
 		mDuration = mSpeedBar.getProgress();
 		mNumBlends = mBlendBar.getProgress();
 
-        mBtnGyroscope = (Button) findViewById(R.id.btn_start_gyro);
-
-        yLabel = (TextView) findViewById(R.id.y_label);
-
 		mFilenames = fileList();
 
-
-		
-		mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
-
-        mBtnGyroscope.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                if (mGyro != null) {
-//                    if (mGyroMode) {
-//                        mGyro.stop();
-//                        mGyroMode = false;
-//                        mBtnGyroscope.setText("Start Gyroscope");
-//                        yLabel.setText("Y:  ");
-//                    } else {
-//                        mGyro.start(gif);
-//                        mGyroMode = true;
-//                        mBtnGyroscope.setText("Stop Gyroscope");
-//                    }
-//                }
-
-
-                 if (mCompass != null) {
-                    if (mGyroMode) {
-                        mCompass.stop();
-                        mGyroMode = false;
-                        mBtnGyroscope.setText("Start Compass");
-                        yLabel.setText("Y:  ");
-                    } else {
-                       // mGyro.start(gif);
-                        mCompass.start();
-                        mGyroMode = true;
-                        mBtnGyroscope.setText("Stop Compass");
-                    }
-                }
-
-
-
-
-            }
-        });
-
-		mSpeedBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
-
-			@Override
-			public void onProgressChanged(SeekBar seekBar, int progress,
-					boolean fromUser) {
-				mSpeedView.setText(""+progress);
-
-				
-			}
-
-			@Override
-			public void onStartTrackingTouch(SeekBar seekBar) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onStopTrackingTouch(SeekBar seekBar) {
-				
-				mDuration = seekBar.getProgress();
-				setDrawable(false);
-				
-			}
-			
-		}); 
-		
-		mBlendBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
-
-			@Override
-			public void onProgressChanged(SeekBar seekBar, int progress,
-					boolean fromUser) {
-				mBlendView.setText(""+progress);
-				
-			}
-
-			@Override
-			public void onStartTrackingTouch(SeekBar seekBar) {
-				//do nothing
-				
-			}
-
-			@Override
-			public void onStopTrackingTouch(SeekBar seekBar) {
-				mNumBlends = seekBar.getProgress();
-				setDrawable(true);
-			}
-
-
-		});
-				
-		
-
-		
-		mView = (GyroImageView) findViewById(R.id.testGifView);
-
+		setListeners();
 
         //This returns a boolean array if previous activity was ImageGallery and null otherwise
 		mPicsSelected = getIntent().getExtras().getBooleanArray("picsSelected");
 
-
         //This returns an integer if previous activity was CameraPreview and -1 otherwise
 		int lastIndices = getIntent().getExtras().getInt("lastIndices", -1);
 
-
 		mBitmaps = getSelectedImages(lastIndices);
-
 
         if (mProgressBar.getProgress() == 0) {
             setDrawable(false);
@@ -211,7 +100,20 @@ public class TestGifView extends Activity {
 		
 	}
 
-	
+    private void initViewObjects() {
+
+        mSpeedBar = (SeekBar) findViewById(R.id.speedBar);
+        mSpeedView = (TextView) findViewById(R.id.speedView);
+        mBlendBar = (SeekBar) findViewById(R.id.blendBar);
+        mBlendView = (TextView) findViewById(R.id.blendView);
+        mBtnGyroscope = (Button) findViewById(R.id.btn_start_gyro);
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+        yLabel = (TextView) findViewById(R.id.y_label);
+        mView = (GyroImageView) findViewById(R.id.testGifView);
+
+    }
+
+
 	//TODO: Instead of scanning all of mPicsSelected, just use array of indexes which
 	//are selected
 	private ArrayList<BitmapDrawable> getSelectedImages(int lastIndices) {
@@ -255,7 +157,7 @@ public class TestGifView extends Activity {
 		return list;
 	}
 	
-	//TODO: Run in a separate thread and/or async task
+
 	private AnimationDrawable createGif(boolean createNewBlends) {
 		int count = mBitmaps.size();
         String tag = "CREATE GIF";
@@ -270,7 +172,7 @@ public class TestGifView extends Activity {
 				Bitmap b = mBitmaps.get(i + 1).getBitmap();
 				for (int j = 0; j < mNumBlends; j++) {
 					double weight = ((1 / (double)(mNumBlends + 1))) * (j + 1);
-					Bitmap bm = getIntermediateImage(a,b, weight);
+					Bitmap bm = RenderUtils.getIntermediateImage(a,b, weight);
 					mBlends[(i * mNumBlends) + j] = new BitmapDrawable(getResources(), bm);
 				}
 			}
@@ -311,55 +213,6 @@ public class TestGifView extends Activity {
 
     }
 
-
-	/* GET INTERMEDIATE IMAGE 
-	 * Uses linear interpolation to get the intermediate blend of pics a and b
-	 * based on a weight.
-	 */
-	private static Bitmap getIntermediateImage(Bitmap a, Bitmap b, double weight) {
-		Log.d("TEST GIF VIEW", "Intermediate Image Reached");
-		int height = a.getHeight();
-		int width = a.getWidth();
-		Bitmap blend = Bitmap.createBitmap(width, height, Config.ARGB_8888);
-		
-		for (int y = 0; y < height; y++) {
-			for (int x = 0; x < width; x++) {
-			
-			/*Get color information for pixels at x,y*/	
-				
-		    /* Pixel A */		
-			int pixelA =  a.getPixel(x, y);
-			int redA = Color.red(pixelA);
-			int greenA = Color.green(pixelA);
-			int blueA = Color.blue(pixelA);
-			int alphaA = Color.alpha(pixelA);
-						
-			/* Pixel B */
-			int pixelB = b.getPixel(x, y);
-			int redB = Color.red(pixelB);
-			int greenB = Color.green(pixelB);
-			int blueB = Color.blue(pixelB);
-			int alphaB = Color.alpha(pixelB);
-			
-			/* Blended Pixel */
-			int red = (int) ((1 - weight) * redA + weight * redB);
-			int green = (int) ((1 - weight) * greenA + weight * greenB);
-			int blue = (int) ((1 - weight) * blueA + weight * blueB);
-			int alpha = (int) ((1 - weight) * alphaA + weight * alphaB);
-			
-			int blendedColor = Color.argb(alpha, red, green, blue);
-			
-			
-			blend.setPixel(x, y, blendedColor);
-				
-			}
-		}
-	    
-		
-		return blend;
-	}
-	
-	
 	private void setDrawable (boolean createNewBlend) {
 		
 		if (gif != null && gif.isRunning()) {
@@ -428,7 +281,7 @@ public class TestGifView extends Activity {
         @Override
         protected Bitmap doInBackground(Object... params) {
             Double weight = (Double) params[2];
-            return getIntermediateImage((Bitmap) params[0], (Bitmap) params[1], weight);
+            return RenderUtils.getIntermediateImage((Bitmap) params[0], (Bitmap) params[1], weight);
         }
 
         @Override
@@ -468,4 +321,98 @@ public class TestGifView extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
+    private void setListeners() {
+
+        mBtnGyroscope.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                if (mGyro != null) {
+//                    if (mGyroMode) {
+//                        mGyro.stop();
+//                        mGyroMode = false;
+//                        mBtnGyroscope.setText("Start Gyroscope");
+//                        yLabel.setText("Y:  ");
+//                    } else {
+//                        mGyro.start(gif);
+//                        mGyroMode = true;
+//                        mBtnGyroscope.setText("Stop Gyroscope");
+//                    }
+//                }
+
+
+                if (mCompass != null) {
+                    if (mGyroMode) {
+                        mCompass.stop();
+                        mGyroMode = false;
+                        mBtnGyroscope.setText("Start Compass");
+                        yLabel.setText("Y:  ");
+                    } else {
+                        // mGyro.start(gif);
+                        mCompass.start();
+                        mGyroMode = true;
+                        mBtnGyroscope.setText("Stop Compass");
+                    }
+                }
+
+
+
+
+            }
+        });
+
+        mSpeedBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress,
+                                          boolean fromUser) {
+                mSpeedView.setText(""+progress);
+
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+                mDuration = seekBar.getProgress();
+                setDrawable(false);
+
+            }
+
+        });
+
+        mBlendBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress,
+                                          boolean fromUser) {
+                mBlendView.setText(""+progress);
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                //do nothing
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                mNumBlends = seekBar.getProgress();
+                setDrawable(true);
+            }
+
+
+        });
+
+    }
+
+
+
 }
