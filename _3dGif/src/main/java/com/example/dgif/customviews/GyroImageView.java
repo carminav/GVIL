@@ -1,10 +1,9 @@
-package com.example.dgif;
+package com.example.dgif.customviews;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.ImageView;
 
 /**
@@ -35,8 +34,6 @@ public class GyroImageView extends ImageView {
             c.scale(scaleX,1,0,0);
             c.drawBitmap(mBitmap, 0 , 0, null);
         }
-
-
 
     }
 }

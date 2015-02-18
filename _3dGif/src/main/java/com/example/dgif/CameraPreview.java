@@ -2,28 +2,18 @@ package com.example.dgif;
 
 
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.Buffer;
-import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.List;
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.ImageFormat;
 import android.graphics.Matrix;
-import android.graphics.Point;
-import android.graphics.Rect;
 import android.graphics.Typeface;
-import android.graphics.YuvImage;
 import android.graphics.drawable.AnimationDrawable;
 import android.hardware.Camera;
 import android.hardware.Camera.AutoFocusCallback;
@@ -35,9 +25,7 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -48,9 +36,11 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.example.dgif.sensorlisteners.AutoFocusSensorListener;
+import com.example.dgif.sensorlisteners.Compass;
 
 
 //TODO: Add Rotation Vector sensor usage and replace accelerometer data in view
@@ -95,7 +85,7 @@ public class CameraPreview extends Activity {
 	private float mMotionZView;
 	private GridLayout mHeader;
 	
-	private AutoFocusListener mAutoFocusCallback;
+	private AutoFocusSensorListener mAutoFocusCallback;
 	private Sensor mAccelerometer;
 	private SensorManager mSensorManager;
 	
@@ -106,12 +96,16 @@ public class CameraPreview extends Activity {
 	private TextView mCoordXView;
 	private TextView mCoordYView;
 	private TextView mCoordZView;
+
+    private TextView mRollLabel;
 	
 	private ImageView blinkingArrowView;
 	private AnimationDrawable blinkingArrow;
 	
 	private ImageView mOverlayView;
 	private Bitmap mLastImage;
+
+    Compass mCompass;
 	
 	private RelativeLayout mFrameWrapper;
 	Button mCaptureButton;
@@ -134,6 +128,11 @@ public class CameraPreview extends Activity {
 		mTrashButton = (Button) findViewById(R.id.trash_button);
 
 
+
+        mRollLabel = (TextView) findViewById(R.id.rollLabel);
+
+        mCompass = new Compass(this, mRollLabel);
+
         Typeface fontFamily = Typeface.createFromAsset(getAssets(), "fonts/fontawesome-webfont.ttf");
 		mGalleryButton.setTypeface(fontFamily);
 
@@ -149,36 +148,13 @@ public class CameraPreview extends Activity {
 		
 		mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 		mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-		mAutoFocusCallback = new AutoFocusListener();
+
 		
 		mIsPreviewing = false;
 		mHandler = new UIHandler();
-		
-		mMotionX = 0;
-		mMotionY = 0;
-		mMotionZ = 0;
-		
-		mMotionXView = 0;
-		mMotionYView = 0;
-		mMotionZView = 0;
-		
-		
-		
-		mFrameWrapper.setOnTouchListener(new OnTouchListener() {
 
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
+		
 
-
-				float x = event.getX();
-				float y = event.getY();
-
-                //TODO: autofocus on touch
-				
-				return false;
-			}
-			
-		});
 		
 		mGalleryButton.setOnClickListener(new OnClickListener() {
 
@@ -232,7 +208,7 @@ public class CameraPreview extends Activity {
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-	
+	    mCompass.start();
         if (onPauseCalled) {
         	new Thread(new LoadCameraAndPrev()).start();
         }
@@ -242,7 +218,7 @@ public class CameraPreview extends Activity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		
+		mCompass.stop();
 		stopPreview();
 		releaseCamera();
 		
@@ -397,7 +373,9 @@ public class CameraPreview extends Activity {
 
 		@Override
 		public void onPictureTaken(byte[] data, Camera camera) {
-			
+
+
+            Log.d("ROLL", "Roll: " + mCompass.getRoll());
 			mIsPreviewing = false;
 
             mMemoryManager.saveImage(data);
@@ -463,6 +441,8 @@ public class CameraPreview extends Activity {
 				Log.e(DEBUG_TAG, "Camera will not open. onCreate");
 				finish();
 			}
+
+            mAutoFocusCallback = new AutoFocusSensorListener(mCamera);
 			
 			Camera.Parameters p = mCamera.getParameters();
 			p.setPreviewSize(VIEW_HEIGHT, VIEW_WIDTH);      //Note that height and width are switched 
@@ -512,63 +492,6 @@ public class CameraPreview extends Activity {
 		
 	}
 	
-	
-	/* AUTO FOCUS LISTENER CLASS
-	 * - Used to auto focus whenever there is a change in movement
-	 */
-	private class AutoFocusListener implements SensorEventListener, AutoFocusCallback {
-
-		@Override
-		public void onAutoFocus(boolean success, Camera camera) {
-			//Log.d(DEBUG_TAG, "onAutoFocus");
-			
-		}
-
-		@Override
-		public void onSensorChanged(SensorEvent event) {
-			
-			if(Math.abs(event.values[0] - mMotionX) > 1 
-		            || Math.abs(event.values[1] - mMotionY) > 1 
-		            || Math.abs(event.values[2] - mMotionZ) > 1 ) {
-		           ;
-		            try {
-		          
-		                mCamera.autoFocus(this);
-		            } catch (RuntimeException e) { 
-		            	Log.e(DEBUG_TAG, "try autofocus FAIL");
-		            }
-		            
-		            mMotionX = event.values[0];
-		            mMotionY = event.values[1];
-		            mMotionZ = event.values[2];
-		            
-		            
-		        }
-			
-			if(Math.abs(event.values[0] - mMotionXView) > 0.05 
-		            || Math.abs(event.values[1] - mMotionYView) > 0.05 
-		            || Math.abs(event.values[2] - mMotionZView) > 0.05 ) {
-				
-				mMotionXView = (float) Math.round(event.values[0] * 1000)/1000;
-				mMotionYView = (float) Math.round(event.values[1] * 1000)/1000;
-				mMotionZView = (float) Math.round(event.values[2] * 1000)/1000;
-				
-				mCoordXView.setText("" + mMotionXView);
-				mCoordYView.setText("" + mMotionYView);
-				mCoordZView.setText("" + mMotionZView);
-			}
-			
-		}
-
-		
-
-		@Override
-		public void onAccuracyChanged(Sensor sensor, int accuracy) {
-			// TODO Auto-generated method stub
-			
-		}
-		
-	}
 	
 
 	

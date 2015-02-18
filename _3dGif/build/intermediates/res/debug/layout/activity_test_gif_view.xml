@@ -14,7 +14,7 @@
         android:visibility="visible"
         android:layout_centerInParent="true"/>
 
-    <com.example.dgif.GyroImageView
+    <com.example.dgif.customviews.GyroImageView
         android:id="@+id/testGifView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

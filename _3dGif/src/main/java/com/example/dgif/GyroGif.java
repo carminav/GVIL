@@ -11,9 +11,9 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.util.Log;
-import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.dgif.customviews.GyroImageView;
 
 /**
  * Created by Carmina on 2/11/2015.
@@ -42,6 +42,11 @@ public class GyroGif implements SensorEventListener {
     private float mDelta;
 
 
+
+
+    public GyroGif() {}
+
+
     public GyroGif(Context context, GyroImageView imageView, TextView yLabel) {
         mContext = context;
         mImageView = imageView;
@@ -63,6 +68,8 @@ public class GyroGif implements SensorEventListener {
         upperBound = 0;
         lowerBound = 0;
         mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE), SensorManager.SENSOR_DELAY_GAME);
+
+
     }
 
     public void stop() {
@@ -110,7 +117,7 @@ public class GyroGif implements SensorEventListener {
         }
 
         float value = event.values[0];
-       // mYLabel.setText("X: " + value);
+        mYLabel.setText("X: " + value);
 
         if (value > upperBound) {
             upperBound = value;
@@ -122,18 +129,17 @@ public class GyroGif implements SensorEventListener {
 
 
 
+
         float radius = RANGE / 2;
         if (value >= -radius && value <= radius) {
             Drawable frame = null;
             int index = (int) (value / mDelta);
             if (value > 0 && index != 0) {
                 frame = mGif.getFrame(index);
-                //mImageView.setBackground(frame);
                 mImageView.setBitmap(drawableToBitmap(frame));
                 mImageView.invalidate();
             } else if (value < 0 && index != 0) {
                 frame = mGif.getFrame(-index);
-                //mImageView.setBackground(frame);
                 mImageView.setBitmap(drawableToBitmap(frame));
                 mImageView.invalidate();
             } else {

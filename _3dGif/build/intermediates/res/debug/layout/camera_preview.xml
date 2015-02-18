@@ -99,7 +99,7 @@
             android:padding="10dp"
             android:rowCount="1"
             tools:context=".GridXMLActivity"
-            android:visibility="gone">
+            >
 
             <TextView
                 android:id="@+id/xcoordLabel"
@@ -125,6 +125,11 @@
                 android:id="@+id/zcoordLabel"
                 android:layout_column="4"
                 android:text="z: " />
+
+            <TextView
+                android:id="@+id/rollLabel"
+                android:layout_column="5"
+                android:text="ROLL: " />
 
             <TextView
                 android:id="@+id/zcoordView"

@@ -265,7 +265,7 @@ int id action_context_bar 0x7f08001d
 int id action_menu_divider 0x7f080001
 int id action_menu_presenter 0x7f080002
 int id action_mode_close_button 0x7f080024
-int id action_settings 0x7f08005c
+int id action_settings 0x7f08005d
 int id activity_chooser_view_content 0x7f080025
 int id activity_test_gif_view 0x7f08003f
 int id always 0x7f080013
@@ -273,12 +273,12 @@ int id back_button 0x7f08004f
 int id beginning 0x7f08000f
 int id blendBar 0x7f080046
 int id blendView 0x7f080047
-int id blinking_arrow_view 0x7f080058
+int id blinking_arrow_view 0x7f080059
 int id btn_start_gyro 0x7f080042
 int id camera_preview 0x7f08004a
 int id camera_wrapper 0x7f080049
 int id capture_button 0x7f08004b
-int id checkBox 0x7f08005b
+int id checkBox 0x7f08005c
 int id checkbox 0x7f08002d
 int id collapseActionView 0x7f080014
 int id coord_view 0x7f080051
@@ -291,14 +291,14 @@ int id end 0x7f080010
 int id expand_activities_button 0x7f080026
 int id expanded_menu 0x7f08002c
 int id gallery_button 0x7f08004e
-int id gridImage 0x7f08005a
+int id gridImage 0x7f08005b
 int id gridview 0x7f08003c
 int id home 0x7f080003
 int id homeAsUp 0x7f08000a
 int id icon 0x7f08002a
 int id ifRoom 0x7f080015
 int id image 0x7f080027
-int id image_overlay_view 0x7f080059
+int id image_overlay_view 0x7f08005a
 int id linearLayout 0x7f080043
 int id listMode 0x7f080006
 int id list_item 0x7f080029
@@ -312,6 +312,7 @@ int id progressBar 0x7f080040
 int id progress_circular 0x7f080004
 int id progress_horizontal 0x7f080005
 int id radio 0x7f08002f
+int id rollLabel 0x7f080057
 int id search_badge 0x7f080032
 int id search_bar 0x7f080031
 int id search_button 0x7f080033
@@ -346,7 +347,7 @@ int id y_label 0x7f080048
 int id ycoordLabel 0x7f080054
 int id ycoordView 0x7f080055
 int id zcoordLabel 0x7f080056
-int id zcoordView 0x7f080057
+int id zcoordView 0x7f080058
 int integer abc_max_action_buttons 0x7f090000
 int integer initial_num_intermediates 0x7f090001
 int layout abc_action_bar_decor 0x7f030000

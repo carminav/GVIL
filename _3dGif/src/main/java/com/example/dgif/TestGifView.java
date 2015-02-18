@@ -1,11 +1,7 @@
 package com.example.dgif;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -14,27 +10,25 @@ import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
-import android.widget.GridLayout.LayoutParams;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
+import com.example.dgif.customviews.GyroImageView;
+import com.example.dgif.sensorlisteners.Compass;
 
 
 public class TestGifView extends Activity {
 
     private static final String DEBUG_TAG = "TEST GIF VIEW";
+
+    Compass mCompass;
 
 	GyroImageView mView;
 	AnimationDrawable gif = null;
@@ -77,7 +71,9 @@ public class TestGifView extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_test_gif_view);
-		
+
+
+
 		m = new MemoryManager(this);
 
         mGyroMode = false;
@@ -104,18 +100,35 @@ public class TestGifView extends Activity {
         mBtnGyroscope.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mGyro != null) {
+//                if (mGyro != null) {
+//                    if (mGyroMode) {
+//                        mGyro.stop();
+//                        mGyroMode = false;
+//                        mBtnGyroscope.setText("Start Gyroscope");
+//                        yLabel.setText("Y:  ");
+//                    } else {
+//                        mGyro.start(gif);
+//                        mGyroMode = true;
+//                        mBtnGyroscope.setText("Stop Gyroscope");
+//                    }
+//                }
+
+
+                 if (mCompass != null) {
                     if (mGyroMode) {
-                        mGyro.stop();
+                        mCompass.stop();
                         mGyroMode = false;
-                        mBtnGyroscope.setText("Start Gyroscope");
+                        mBtnGyroscope.setText("Start Compass");
                         yLabel.setText("Y:  ");
                     } else {
-                        mGyro.start(gif);
+                       // mGyro.start(gif);
+                        mCompass.start();
                         mGyroMode = true;
-                        mBtnGyroscope.setText("Stop Gyroscope");
+                        mBtnGyroscope.setText("Stop Compass");
                     }
                 }
+
+
 
 
             }
@@ -193,6 +206,8 @@ public class TestGifView extends Activity {
         } else setDrawable(true);
 
         mGyro = new GyroGif(this, mView, yLabel);
+
+        mCompass = new Compass(this, mView, gif, yLabel);
 		
 	}
 
