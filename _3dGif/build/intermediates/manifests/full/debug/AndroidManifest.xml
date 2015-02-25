@@ -47,6 +47,7 @@
             android:name="com.example.dgif.TestGifView"
             android:label="@string/title_activity_test_gif_view"
             android:parentActivityName="com.example.dgif.ImageGallery"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

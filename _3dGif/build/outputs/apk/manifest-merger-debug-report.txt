@@ -101,6 +101,8 @@ ADDED from AndroidManifest.xml:41:9
 		ADDED from AndroidManifest.xml:42:13
 activity#com.example.dgif.TestGifView
 ADDED from AndroidManifest.xml:45:9
+	android:screenOrientation
+		ADDED from AndroidManifest.xml:50:13
 	android:label
 		ADDED from AndroidManifest.xml:47:13
 	android:theme
@@ -110,8 +112,8 @@ ADDED from AndroidManifest.xml:45:9
 	android:name
 		ADDED from AndroidManifest.xml:46:13
 meta-data#android.support.PARENT_ACTIVITY
-ADDED from AndroidManifest.xml:50:13
+ADDED from AndroidManifest.xml:52:13
 	android:name
-		ADDED from AndroidManifest.xml:51:17
+		ADDED from AndroidManifest.xml:53:17
 	android:value
-		ADDED from AndroidManifest.xml:52:17
+		ADDED from AndroidManifest.xml:54:17

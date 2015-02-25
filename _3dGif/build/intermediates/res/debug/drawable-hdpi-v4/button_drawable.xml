@@ -5,4 +5,4 @@
           android:drawable="@drawable/capture_button_shape_pressed" /> <!-- pressed -->
     
     <item android:drawable="@drawable/capture_button_shape" /> <!-- default -->
-</selector> <!-- From: file:/S:/Users/Carmina/AndroidstudioProjects/3dGif/_3dGif/src/main/res/drawable-hdpi/button_drawable.xml -->
+</selector> <!-- From: file:/D:/AndroidStudioProjects/GVIL/_3dGif/src/main/res/drawable-hdpi/button_drawable.xml -->

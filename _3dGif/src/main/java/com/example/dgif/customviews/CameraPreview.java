@@ -31,12 +31,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.dgif.sensorlisteners.Gyro.BaseGyroscopeSensor;
 import com.example.dgif.ImageGallery;
+import com.example.dgif.sensorlisteners.Gyro.CameraPreviewGyroscopeSensor;
 import com.example.dgif.utils.MemoryManager;
 import com.example.dgif.R;
 import com.example.dgif.TestGifView;
 import com.example.dgif.sensorlisteners.AutoFocusSensorListener;
-import com.example.dgif.sensorlisteners.Compass;
 import com.example.dgif.utils.RenderUtils;
 
 
@@ -85,7 +86,7 @@ public class CameraPreview extends Activity {
     private Sensor mAccelerometer;
     private SensorManager mSensorManager;
 
-    Compass mCompass;
+    CameraPreviewGyroscopeSensor mCompass;
 	
 	private RelativeLayout mFrameWrapper;
 
@@ -107,7 +108,7 @@ public class CameraPreview extends Activity {
         Typeface fontFamily = Typeface.createFromAsset(getAssets(), "fonts/fontawesome-webfont.ttf");
 	    mGalleryButton.setTypeface(fontFamily);
 
-        mCompass = new Compass(this, mRollLabel);
+        mCompass = new CameraPreviewGyroscopeSensor(this, mRollLabel);
         mHandler = new UIHandler();
 
 		mMemoryManager = new MemoryManager(this);

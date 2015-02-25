@@ -5,8 +5,6 @@ import java.util.Arrays;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
-import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
@@ -22,8 +20,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 import com.example.dgif.customviews.GyroImageView;
-import com.example.dgif.sensorlisteners.Compass;
-import com.example.dgif.sensorlisteners.GifCompass;
+import com.example.dgif.sensorlisteners.Gyro.GifGyroscopeSensor;
 import com.example.dgif.utils.MemoryManager;
 import com.example.dgif.utils.RenderUtils;
 
@@ -32,7 +29,7 @@ public class TestGifView extends Activity {
 
     private static final String DEBUG_TAG = "TEST GIF VIEW";
 
-    GifCompass mCompass;
+    GifGyroscopeSensor mGyroscopeSensor;
 
 	GyroImageView mView;
 	AnimationDrawable gif = null;
@@ -40,8 +37,9 @@ public class TestGifView extends Activity {
 	boolean[] mPicsSelected;
 	ArrayList<BitmapDrawable> mBitmaps;
 
-	
-	SeekBar mSpeedBar;
+    private static final String STEPS = "STEPS";
+
+    SeekBar mSpeedBar;
 	TextView mSpeedView;
 
     private Button mBtnGyroscope;
@@ -64,7 +62,7 @@ public class TestGifView extends Activity {
 
     private float[] mOrientations;
 
-
+    private Loaded3DObject loaded3DObject = null;
 	
 	int mDuration; 
 	int mNumBlends;
@@ -97,15 +95,14 @@ public class TestGifView extends Activity {
 
 		mBitmaps = getSelectedImages(lastIndices);
 
-        if (mProgressBar.getProgress() == 0) {
-            setDrawable(false);
-        } else setDrawable(true);
+//        if (mProgressBar.getProgress() == 0) {
+//            setDrawable(false);
+//        } else setDrawable(true);
 
-        //setDrawable(true);
 
         mGyro = new GyroGif(this, mView, yLabel);
 
-        mCompass = new GifCompass(this, mView, gif, yLabel);
+        mGyroscopeSensor = new GifGyroscopeSensor(this, yLabel, loaded3DObject);
 		
 	}
 
@@ -145,7 +142,7 @@ public class TestGifView extends Activity {
 			}
 		} else {
 		//Previous activity: CameraPreview
-
+            Log.d(STEPS, " set mOrientations");
             mOrientations = getIntent().getExtras().getFloatArray("orientations");
 
 			int first = mFilenames.length - lastIndices;
@@ -161,6 +158,17 @@ public class TestGifView extends Activity {
 				BitmapDrawable b = new BitmapDrawable(getResources(), scaledBitmap(bm));
 				list.add(b);
 			}
+
+            Log.d(STEPS, " Create Serializable Gif");
+            SerializableGif rawGif = new SerializableGif(list, mOrientations);
+
+            Log.d(STEPS, " Call loaded3DObject constructor");
+            loaded3DObject = new Loaded3DObject(this, rawGif, mView);
+
+            Log.d(STEPS, " Call Start Playing Gif)");
+            loaded3DObject.startPlayingGif();
+
+
 			
 		}
 		
@@ -168,90 +176,90 @@ public class TestGifView extends Activity {
 	}
 
 
-    private float[] calculateDelta() {
-
-        int size = mBitmaps.size() + (mBitmaps.size() - 1) * mNumBlends;
-        Log.d(DEBUG_TAG, "orientations with blends: " + size);
-        float[] newOrientations;
-
-
-        if (mNumBlends > 0) {
-            newOrientations = new float[size];
-            float step = (float) 1 / (mNumBlends + 1);
-            Log.d("ORIENTATION" , "step: " + step);
-            for (int i = 0; i < size; i++) {
-                int mod = i % (mNumBlends + 1);
-                if (mod == 0) {
-                    newOrientations[i] = mOrientations[i / (mNumBlends + 1)];
-                } else {
-                    float a = mOrientations[(int) (i / (mNumBlends + 1))];
-                    Log.d("ORIENTATION", "mOrientations: ");
-                    float b = mOrientations[(int) (i / (mNumBlends + 1)) + 1];
-                    float newOrient = (float) (a + (b - a) * step * i);
-                    newOrientations[i] = newOrient;
-                }
-            }
-
-        } else newOrientations = mOrientations;
-
-        float[] delta = new float[size - 1];
-
-        for (int i = 0; i < delta.length; i++) {
-            delta[i] = newOrientations[i + 1] - newOrientations[i];
-        }
-
-        Log.d("ORIENTATION", "new orientations: " + Arrays.toString(newOrientations));
-        Log.d("ORIENTATION", "delta: " + Arrays.toString(delta));
-        return delta;
-    }
-
-
-	private AnimationDrawable createGif(boolean createNewBlends) {
-		int count = mBitmaps.size();
-
-        String tag = "CREATE GIF";
+//    private float[] calculateDelta() {
+//
+//        int size = mBitmaps.size() + (mBitmaps.size() - 1) * mNumBlends;
+//        Log.d(DEBUG_TAG, "orientations with blends: " + size);
+//        float[] newOrientations;
+//
+//
+//        if (mNumBlends > 0) {
+//            newOrientations = new float[size];
+//            float step = (float) 1 / (mNumBlends + 1);
+//            Log.d("ORIENTATION" , "step: " + step);
+//            for (int i = 0; i < size; i++) {
+//                int mod = i % (mNumBlends + 1);
+//                if (mod == 0) {
+//                    newOrientations[i] = mOrientations[i / (mNumBlends + 1)];
+//                } else {
+//                    float a = mOrientations[(int) (i / (mNumBlends + 1))];
+//                    Log.d("ORIENTATION", "mOrientations: ");
+//                    float b = mOrientations[(int) (i / (mNumBlends + 1)) + 1];
+//                    float newOrient = (float) (a + (b - a) * step * i);
+//                    newOrientations[i] = newOrient;
+//                }
+//            }
+//
+//        } else newOrientations = mOrientations;
+//
+//        float[] delta = new float[size - 1];
+//
+//        for (int i = 0; i < delta.length; i++) {
+//            delta[i] = newOrientations[i + 1] - newOrientations[i];
+//        }
+//
+//        Log.d("ORIENTATION", "new orientations: " + Arrays.toString(newOrientations));
+//        Log.d("ORIENTATION", "delta: " + Arrays.toString(delta));
+//        return delta;
+//    }
 
 
-        if (mDelta == null) {
-            mDelta = calculateDelta();
-        }
-
-		/* Create new blends if necessary */
-		if (createNewBlends) {
-			mDelta = calculateDelta();
-			int totalNumBlends = (count - 1) * mNumBlends;
-			mBlends =  new BitmapDrawable[totalNumBlends];
-			for (int i = 0; i < (count - 1); i++) {
-				Bitmap a = mBitmaps.get(i).getBitmap();
-				Bitmap b = mBitmaps.get(i + 1).getBitmap();
-				for (int j = 0; j < mNumBlends; j++) {
-					double weight = ((1 / (double)(mNumBlends + 1))) * (j + 1);
-					Bitmap bm = RenderUtils.getIntermediateImage(a,b, weight);
-					mBlends[(i * mNumBlends) + j] = new BitmapDrawable(getResources(), bm);
-				}
-			}
-		}
-
-		AnimationDrawable anim = new AnimationDrawable();
-
-		//forward
-		for (int i = 0; i < count; i++) {
-			anim.addFrame(mBitmaps.get(i), mDuration);
-			if (i < count - 1) {
-				for (int j = 0; j < mNumBlends; j++) {
-					anim.addFrame(mBlends[(i * mNumBlends) + j], mDuration);
-				}
-			}
-		}
-
-        //reverse
-		for (int i = anim.getNumberOfFrames() - 1;  i >= 0; i--) {
-			anim.addFrame(anim.getFrame(i), mDuration);
-		}
-	
-		return anim;
-
-	} 
+//	private AnimationDrawable createGif(boolean createNewBlends) {
+//		int count = mBitmaps.size();
+//
+//        String tag = "CREATE GIF";
+//
+//
+//        if (mDelta == null) {
+//            mDelta = calculateDelta();
+//        }
+//
+//		/* Create new blends if necessary */
+//		if (createNewBlends) {
+//			mDelta = calculateDelta();
+//			int totalNumBlends = (count - 1) * mNumBlends;
+//			mBlends =  new BitmapDrawable[totalNumBlends];
+//			for (int i = 0; i < (count - 1); i++) {
+//				Bitmap a = mBitmaps.get(i).getBitmap();
+//				Bitmap b = mBitmaps.get(i + 1).getBitmap();
+//				for (int j = 0; j < mNumBlends; j++) {
+//					double weight = ((1 / (double)(mNumBlends + 1))) * (j + 1);
+//					Bitmap bm = RenderUtils.getIntermediateImage(a,b, weight);
+//					mBlends[(i * mNumBlends) + j] = new BitmapDrawable(getResources(), bm);
+//				}
+//			}
+//		}
+//
+//		AnimationDrawable anim = new AnimationDrawable();
+//
+//		//forward
+//		for (int i = 0; i < count; i++) {
+//			anim.addFrame(mBitmaps.get(i), mDuration);
+//			if (i < count - 1) {
+//				for (int j = 0; j < mNumBlends; j++) {
+//					anim.addFrame(mBlends[(i * mNumBlends) + j], mDuration);
+//				}
+//			}
+//		}
+//
+//        //reverse
+//		for (int i = anim.getNumberOfFrames() - 1;  i >= 0; i--) {
+//			anim.addFrame(anim.getFrame(i), mDuration);
+//		}
+//
+//		return anim;
+//
+//	}
 
 
     private Bitmap scaledBitmap(Bitmap bm) {
@@ -260,24 +268,24 @@ public class TestGifView extends Activity {
 
     }
 
-	private void setDrawable (boolean createNewBlend) {
-		
-		if (gif != null && gif.isRunning()) {
-			gif.stop();
-			mView.setBackground(null);
-		}
-
-        if (createNewBlend) {
-            new SetDrawableTask().execute(mBitmaps);
-        } else {
-            gif = createGif(createNewBlend);
-            gif.setOneShot(false);
-
-            mView.setBackground(gif);
-
-            gif.start();
-        }
-	}
+//	private void setDrawable (boolean createNewBlend) {
+//
+//		if (gif != null && gif.isRunning()) {
+//			gif.stop();
+//			mView.setBackground(null);
+//		}
+//
+//        if (createNewBlend) {
+//            new SetDrawableTask().execute(mBitmaps);
+//        } else {
+//            gif = createGif(createNewBlend);
+//            gif.setOneShot(false);
+//
+//            mView.setBackground(gif);
+//
+//            gif.start();
+//        }
+//	}
 
 
 	
@@ -285,89 +293,72 @@ public class TestGifView extends Activity {
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
-		if (gif.isRunning()) {
-			gif.stop();
-		}
-
-        if (mGyro.isRunning()) {
-            mGyro.stop();
-        }
+//		if (gif.isRunning()) {
+//			gif.stop();
+//		}
+//
+//        if (mGyro.isRunning()) {
+//            mGyro.stop();
+//        }
 	}
 
-    class SetDrawableTask extends AsyncTask<ArrayList<BitmapDrawable>, Void, AnimationDrawable> {
-        @Override
-        protected void onPreExecute() {
-            mProgressBar.setVisibility(View.VISIBLE);
-            mProgressBar.bringToFront();
-        }
-
-        @Override
-        protected AnimationDrawable doInBackground(ArrayList<BitmapDrawable>... bitmaps) {
-            return createGif(true);
-        }
-
-        @Override
-        protected void onPostExecute(AnimationDrawable animationDrawable) {
-            mProgressBar.setVisibility(View.GONE);
-            gif = animationDrawable;
-            gif.setOneShot(false);
-            mView.setBackground(gif);
-            gif.start();
-        }
-    }
-
-
-    /* */
-    class DrawIntermediateFrameTask extends AsyncTask<Object, Void, Bitmap> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-        }
-
-        @Override
-        protected Bitmap doInBackground(Object... params) {
-            Double weight = (Double) params[2];
-            return RenderUtils.getIntermediateImage((Bitmap) params[0], (Bitmap) params[1], weight);
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            super.onPostExecute(bitmap);
+//    class SetDrawableTask extends AsyncTask<ArrayList<BitmapDrawable>, Void, AnimationDrawable> {
+//        @Override
+//        protected void onPreExecute() {
+//            mProgressBar.setVisibility(View.VISIBLE);
+//            mProgressBar.bringToFront();
+//        }
+//
+//        @Override
+//        protected AnimationDrawable doInBackground(ArrayList<BitmapDrawable>... bitmaps) {
+//            return createGif(true);
+//        }
+//
+//        @Override
+//        protected void onPostExecute(AnimationDrawable animationDrawable) {
+//            mProgressBar.setVisibility(View.GONE);
+//            gif = animationDrawable;
+//            gif.setOneShot(false);
+//            mView.setBackground(gif);
+//            gif.start();
+//        }
+//    }
 
 
-        }
-    }
+
 
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		if (gif != null && !gif.isRunning()) {
-			gif.start();
-		}
+//		if (gif != null && !gif.isRunning()) {
+//			gif.start();
+//		}
+        if (loaded3DObject != null) {
+            loaded3DObject.resume();
+        }
 	}
 
 
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.test_gif_view, menu);
-		return true;
-	}
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) {
+//		// Inflate the menu; this adds items to the action bar if it is present.
+//		getMenuInflater().inflate(R.menu.test_gif_view, menu);
+//		return true;
+//	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
+//	@Override
+//	public boolean onOptionsItemSelected(MenuItem item) {
+//		// Handle action bar item clicks here. The action bar will
+//		// automatically handle clicks on the Home/Up button, so long
+//		// as you specify a parent activity in AndroidManifest.xml.
+//		int id = item.getItemId();
+//		if (id == R.id.action_settings) {
+//			return true;
+//		}
+//		return super.onOptionsItemSelected(item);
+//	}
 
     private void setListeners() {
 
@@ -388,15 +379,15 @@ public class TestGifView extends Activity {
 //                }
 
 
-                if (mCompass != null) {
+                if (mGyroscopeSensor != null) {
                     if (mGyroMode) {
-                        mCompass.stop();
+                        mGyroscopeSensor.stop();
                         mGyroMode = false;
                         mBtnGyroscope.setText("Start Compass");
                         yLabel.setText("Y:  ");
                     } else {
                         // mGyro.start(gif);
-                        mCompass.start();
+                        mGyroscopeSensor.start();
                         mGyroMode = true;
                         mBtnGyroscope.setText("Stop Compass");
                     }
@@ -428,8 +419,8 @@ public class TestGifView extends Activity {
             public void onStopTrackingTouch(SeekBar seekBar) {
 
                 mDuration = seekBar.getProgress();
-                setDrawable(false);
-
+                //setDrawable(false);
+                if (loaded3DObject != null) loaded3DObject.changeFrameRate(mDuration);
             }
 
         });
@@ -452,7 +443,8 @@ public class TestGifView extends Activity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 mNumBlends = seekBar.getProgress();
-                setDrawable(true);
+              //  setDrawable(true);
+               if (loaded3DObject != null) loaded3DObject.changeBlendCount(mNumBlends);
             }
 
 

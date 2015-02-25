@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000"
+
     tools:context="com.example.dgif.TestGifView" >
 
 
@@ -95,4 +96,4 @@
         android:layout_alignTop="@+id/btn_start_gyro" />
 
 
-</RelativeLayout><!-- From: file:/S:/Users/Carmina/AndroidstudioProjects/3dGif/_3dGif/src/main/res/layout/activity_test_gif_view.xml -->
+</RelativeLayout><!-- From: file:/D:/AndroidStudioProjects/GVIL/_3dGif/src/main/res/layout/activity_test_gif_view.xml -->

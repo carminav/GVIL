@@ -2,32 +2,32 @@
 <items version="2" >
 
     <item
-        jar="S:\Users\Carmina\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\20.0.0\support-annotations-20.0.0.jar"
+        jar="C:\Users\Carmina\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\20.0.0\support-annotations-20.0.0.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="9d9013e9ff35fc3756411e62873c363c70c638fa">
-        <dex dex="S:\Users\Carmina\AndroidstudioProjects\3dGif\_3dGif\build\intermediates\pre-dexed\debug\support-annotations-20.0.0-4ac715799064727e2166f13d48c5b923e9ae125c.jar" />
+        <dex dex="D:\AndroidStudioProjects\GVIL\_3dGif\build\intermediates\pre-dexed\debug\support-annotations-20.0.0-64c87abffa4917700b0c7cf5c6228a68bc33763a.jar" />
     </item>
     <item
-        jar="S:\Users\Carmina\AndroidstudioProjects\3dGif\_3dGif\build\intermediates\exploded-aar\com.android.support\appcompat-v7\20.0.0\classes.jar"
+        jar="D:\AndroidStudioProjects\GVIL\_3dGif\build\intermediates\exploded-aar\com.android.support\appcompat-v7\20.0.0\classes.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="f21927d22fe31889ecce94dd697a2e75b137e0ef">
-        <dex dex="S:\Users\Carmina\AndroidstudioProjects\3dGif\_3dGif\build\intermediates\pre-dexed\debug\classes-b0a70426e0fd110480041baea1f9071c4354cbc6.jar" />
+        <dex dex="D:\AndroidStudioProjects\GVIL\_3dGif\build\intermediates\pre-dexed\debug\classes-16506f3118d15adbf1163f9cb9f240e1d6210619.jar" />
     </item>
     <item
-        jar="S:\Users\Carmina\AndroidstudioProjects\3dGif\_3dGif\build\intermediates\exploded-aar\com.android.support\support-v4\20.0.0\classes.jar"
+        jar="D:\AndroidStudioProjects\GVIL\_3dGif\build\intermediates\exploded-aar\com.android.support\support-v4\20.0.0\classes.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="8694693636ab36910c8100ce527c258ff3ebece0">
-        <dex dex="S:\Users\Carmina\AndroidstudioProjects\3dGif\_3dGif\build\intermediates\pre-dexed\debug\classes-25bd2ef18cbe027144e9987ade1fa9a6cd156c6f.jar" />
+        <dex dex="D:\AndroidStudioProjects\GVIL\_3dGif\build\intermediates\pre-dexed\debug\classes-323e9502efe97c7a4ef2661e1bc11616d1728b29.jar" />
     </item>
     <item
-        jar="S:\Users\Carmina\AndroidstudioProjects\3dGif\_3dGif\build\intermediates\exploded-aar\com.android.support\support-v4\20.0.0\libs\internal_impl-20.0.0.jar"
+        jar="D:\AndroidStudioProjects\GVIL\_3dGif\build\intermediates\exploded-aar\com.android.support\support-v4\20.0.0\libs\internal_impl-20.0.0.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="e40b3078e3fbd353c9f44da8df25a8fc0078209d">
-        <dex dex="S:\Users\Carmina\AndroidstudioProjects\3dGif\_3dGif\build\intermediates\pre-dexed\debug\internal_impl-20.0.0-26ce788bd218fa0d35e1b8f703492d790231a900.jar" />
+        <dex dex="D:\AndroidStudioProjects\GVIL\_3dGif\build\intermediates\pre-dexed\debug\internal_impl-20.0.0-cb4839d96e0d6b634a3ce18a41b25f2150368af9.jar" />
     </item>
 
 </items>
