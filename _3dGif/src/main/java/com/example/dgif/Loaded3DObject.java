@@ -7,6 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.example.dgif.customviews.GyroImageView;
 import com.example.dgif.sensorlisteners.Gyro.GifGyroscopeSensor;
 import com.example.dgif.utils.RenderUtils;
 
@@ -34,13 +35,13 @@ public class Loaded3DObject {
     private float mDelta;
     private float[] mOrientations = null;
     private int mNumBlends = 0;
-    private ImageView mImageView = null;
+    private GyroImageView mImageView = null;
     private int mFrameRate = 50;
     private Context mContext;
 
     private GifGyroscopeSensor mGyroscopeSensor = null;
 
-    public Loaded3DObject(Context c, SerializableGif rawGif, ImageView iv) {
+    public Loaded3DObject(Context c, SerializableGif rawGif, GyroImageView iv) {
        mContext = c;
        mImageView = iv;
        mFrames = rawGif.getFrames();
@@ -77,7 +78,7 @@ public class Loaded3DObject {
     private void stopPlayingGif() {
         if (mPlayableGif.isRunning()) {
             mPlayableGif.stop();
-            mImageView.setBackground(null);
+            //mImageView.setBackground(null);
         }
     }
 
@@ -247,6 +248,10 @@ public class Loaded3DObject {
 
     public AnimationDrawable getPlayableGif() {
         return mPlayableGif;
+    }
+
+    public GyroImageView getView() {
+        return mImageView;
     }
 
 

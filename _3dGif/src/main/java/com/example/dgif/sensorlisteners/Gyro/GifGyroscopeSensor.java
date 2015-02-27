@@ -29,6 +29,11 @@ public class GifGyroscopeSensor extends BaseGyroscopeSensor {
     private float mDelta;
     private boolean mRunning = false;
     private Loaded3DObject mLoaded3DObject;
+    private int index;
+    private GyroImageView mView;
+    private float prevRoll;
+
+    private boolean initialized = false;
 
     public GifGyroscopeSensor(Context c, TextView label, Loaded3DObject loaded3DObject) {
         super(c);
@@ -36,6 +41,7 @@ public class GifGyroscopeSensor extends BaseGyroscopeSensor {
         mLoaded3DObject = loaded3DObject;
         mFrames = loaded3DObject.getFramesWithBlends();
         mDelta = loaded3DObject.getDelta();
+        mView = loaded3DObject.getView();
     }
 
     public GifGyroscopeSensor(Context c, Loaded3DObject loaded3DObject) {
@@ -43,21 +49,36 @@ public class GifGyroscopeSensor extends BaseGyroscopeSensor {
         mLoaded3DObject = loaded3DObject;
         mFrames = loaded3DObject.getFramesWithBlends();
         mDelta = loaded3DObject.getDelta();
+        index = mFrames.size() / 2; //start in middle
+        mView = loaded3DObject.getView();
     }
 
     // Must be called after blend count changes in Loaded3DObject
     public void update() {
         mDelta = mLoaded3DObject.getDelta();
         mFrames = mLoaded3DObject.getFramesWithBlends();
+        index = mFrames.size() / 2; //reset to start in middle
     }
 
     /* Process values from fusedOrientation vector */
     @Override
     public void onFusedOrientationsCalculated() {
         if (mLabel != null) mLabel.setText(" Roll: " + Math.round(fusedOrientation[2] * R2D));
+        float roll = Math.round(fusedOrientation[2] * R2D);
 
-        
+        if (initialized) {
 
+            float diff = roll - prevRoll;
+            if (diff <= -mDelta && index > 0) {
+                index--;
+            } else if (diff >= mDelta && index < mFrames.size() - 1) {
+                index++;
+            }
+            mView.setBitmap(mFrames.get(index));
+            mView.invalidate();
+        } else initialized = true;
+
+        prevRoll = roll;
 
     }
 
@@ -75,6 +96,7 @@ public class GifGyroscopeSensor extends BaseGyroscopeSensor {
     @Override
     public void stop() {
         super.stop();
+        mView.setBitmap(null);
         mRunning = false;
     }
 }
