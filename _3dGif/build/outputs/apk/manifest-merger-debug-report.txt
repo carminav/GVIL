@@ -99,7 +99,7 @@ ADDED from AndroidManifest.xml:41:9
 		ADDED from AndroidManifest.xml:43:13
 	android:name
 		ADDED from AndroidManifest.xml:42:13
-activity#com.example.dgif.TestGifView
+activity#com.example.dgif.Preview3DObject
 ADDED from AndroidManifest.xml:45:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:50:13

@@ -136,6 +136,8 @@ public abstract class BaseGyroscopeSensor implements SensorEventListener {
         return mCurrentRoll;
     }
 
+    public long getTimeStamp() { return timeStamp; }
+
     @Override
     public void onSensorChanged(SensorEvent event)
     {

@@ -7,6 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.example.dgif.sensorlisteners.Gyro.GifGyroscopeSensor;
 import com.example.dgif.utils.RenderUtils;
 
 import java.util.ArrayList;
@@ -21,7 +22,6 @@ import java.util.ArrayList;
 public class Loaded3DObject {
 
     private static final String TAG = "Loaded3DObject";
-    private static final String STEPS = "STEPS";
 
     private static final boolean GIF_MODE = true;
     private static final boolean GYRO_MODE = false;
@@ -31,22 +31,24 @@ public class Loaded3DObject {
     private Bitmap[] mFrames = null;
     private ArrayList<Bitmap> mFramesWithBlends = null;
     private AnimationDrawable mPlayableGif = null;
-    private float[] mDelta = null;
+    private float mDelta;
     private float[] mOrientations = null;
     private int mNumBlends = 0;
     private ImageView mImageView = null;
     private int mFrameRate = 50;
     private Context mContext;
 
+    private GifGyroscopeSensor mGyroscopeSensor = null;
+
     public Loaded3DObject(Context c, SerializableGif rawGif, ImageView iv) {
        mContext = c;
        mImageView = iv;
        mFrames = rawGif.getFrames();
-        Log.d(STEPS, "rawGif.getFrames() " + rawGif.getFrames().length);
        mOrientations = rawGif.getOrientations();
-       mDelta = calculateDelta();
+       mDelta = calculateSlope(mOrientations);
        mFramesWithBlends = renderUpdatedFramesWithBlends();
        mPlayableGif = renderPlayableGif();
+       mGyroscopeSensor = new GifGyroscopeSensor(c, this);
     }
 
 
@@ -72,8 +74,8 @@ public class Loaded3DObject {
 
 
     // Stop the gif animation and detach it from its image view
-    public void stopPlayingGif() {
-        if (mPlayableGif != null && mPlayableGif.isRunning()) {
+    private void stopPlayingGif() {
+        if (mPlayableGif.isRunning()) {
             mPlayableGif.stop();
             mImageView.setBackground(null);
         }
@@ -81,26 +83,34 @@ public class Loaded3DObject {
 
     // Start the gif animation and attach it to its image view
     // so that its visible again
-    public void startPlayingGif() {
-        boolean d = mPlayableGif != null && !mPlayableGif.isRunning() && mMode;
-        Log.d(STEPS, " Within Start Playing Gif. Will continue: " + d);
-        Log.d(STEPS, "mPlayableGif frames: " + mPlayableGif.getNumberOfFrames());
-        if (mPlayableGif != null && !mPlayableGif.isRunning() && mMode) {
+    private void startPlayingGif() {
+        if (mPlayableGif != null && !mPlayableGif.isRunning()) {
             mImageView.setBackground(mPlayableGif);
             mPlayableGif.start();
         }
     }
 
-    public void resume() {
-        if (mMode == GIF_MODE) {
-            if (mPlayableGif != null) mPlayableGif.start();
+    public void play(boolean gif) {
+        mMode = gif;
+        if (gif) {
+            if (mGyroscopeSensor.isRunning()) mGyroscopeSensor.stop();
+            startPlayingGif();
         } else {
-            // TODO: Handle gyro on resume (register listener?)
+            stopPlayingGif();
+            mGyroscopeSensor.start();
         }
     }
 
-    public void pause() {
+    public void resume() {
+        play(mMode);
+    }
 
+    public void pause() {
+        if (mMode) {
+            stopPlayingGif();
+        } else {
+            mGyroscopeSensor.stop();
+        }
     }
 
     // Render new frames to update delta values and the playable gif
@@ -109,11 +119,10 @@ public class Loaded3DObject {
 
         if (count < 0) Log.e(TAG, "Error: Blend count must be positive");
         else {
-
-            startPlayingGif();
+            mGyroscopeSensor.update();
+            stopPlayingGif();
 
             mNumBlends = count;
-            mDelta = calculateDelta();
             mFramesWithBlends = renderUpdatedFramesWithBlends();
             mPlayableGif = renderPlayableGif();
 
@@ -125,10 +134,7 @@ public class Loaded3DObject {
     // that goes forwards then backwards.
     // This should be called only after mFramesWithBlends is updated accordingly
     public AnimationDrawable renderPlayableGif() {
-        Log.d(STEPS, " Call renderPlayableGif");
         AnimationDrawable anim = new AnimationDrawable();
-
-        Log.d(STEPS, " mFramesWithBlends: " + mFramesWithBlends.size());
 
         //Add frames with blends forward
         for (int i = 0; i < mFramesWithBlends.size(); i++) {
@@ -150,7 +156,6 @@ public class Loaded3DObject {
     //This would be called after the number of blends changes
     private ArrayList<Bitmap> renderUpdatedFramesWithBlends() {
 
-        Log.d(STEPS, " Call render Updated Frames with Blendsr");
         int totalBlends = (mFrames.length - 1) * mNumBlends;
         ArrayList<Bitmap> frames = new ArrayList<Bitmap>();
 
@@ -164,8 +169,12 @@ public class Loaded3DObject {
 
         //add last frame
         frames.add(mFrames[mFrames.length - 1]);
-        Log.d(STEPS, " renderUpdatedFrames gives: " + frames.size() + " frames total");
+
         return frames;
+    }
+
+    public void setMode(boolean gif) {
+        mMode = gif;
     }
 
     //Switch between GIF mode and GYRO mode
@@ -179,16 +188,50 @@ public class Loaded3DObject {
         }
     }
 
-    // Calculate the difference in orientation values
-    // This should be called everytime mNumBlends changes
-    //TODO: Complete this method
-    public float[] calculateDelta() {
+    // Calculates the line of best fit for data points
+    // in order to get the change in orientation that should occur
+    // for the image to switch on gyroscope movement
+    private float calculateSlope(float[] orientations) {
 
-        float[] delta = {1.0f, 1.0f, 1.0f};
+        //TODO: fix timestamps
+        float[] timestamps = new float[orientations.length];
+        for (int i = 0; i < orientations.length; i++) {
+            timestamps[i] = i;
+        }
 
-        return delta;
+        int N = timestamps.length;
+        float sumXY = 0;
+        long sumX = 0;
+        float sumY = 0;
+        long sumX2 = 0;
+
+        for (int i = 0; i < N; i++) {
+            float x = timestamps[i];
+            float y = orientations[i];
+            sumXY += (x * y);
+            sumX += x;
+            sumY += y;
+            sumX2 += (x * x);
+        }
+
+        Log.d("TEST_DELTA", "N " + N);
+        Log.d("TEST_DELTA", "sumXY " + sumXY);
+        Log.d("TEST_DELTA", "sumX " + sumX);
+        Log.d("TEST_DELTA", "sumY " + sumY);
+        Log.d("TEST_DELTA", "sumX2 " + sumX2);
+
+        // (NΣXY - (ΣX)(ΣY)) / (NΣX2 - (ΣX)^2)
+        float slope = ((N * sumXY) - (sumX * sumY)) / (((N * sumX2) - (sumX * sumX)));
+        Log.d("TEST_DELTA", "slopeWithOutBlends: " + slope);
+        Log.d("TEST_DELTA", "slopeWithBlends: " + (slope / (float)(mNumBlends + 1)));
+        return slope;
+
     }
 
+    public float getDelta() {
+        Log.d("TEST_DELTA", "delta: " + (mDelta / (float)(mNumBlends + 1)));
+        return (mDelta / (float)(mNumBlends + 1));
+    }
 
     public boolean isGifMode() {
         return mMode;

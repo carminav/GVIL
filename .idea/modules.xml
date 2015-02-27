@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/3dGif.iml" filepath="$PROJECT_DIR$/3dGif.iml" />
       <module fileurl="file://$PROJECT_DIR$/GVIL.iml" filepath="$PROJECT_DIR$/GVIL.iml" />
       <module fileurl="file://$PROJECT_DIR$/_3dGif/_3dGif.iml" filepath="$PROJECT_DIR$/_3dGif/_3dGif.iml" />
     </modules>

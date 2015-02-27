@@ -31,12 +31,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.dgif.sensorlisteners.Gyro.BaseGyroscopeSensor;
 import com.example.dgif.ImageGallery;
 import com.example.dgif.sensorlisteners.Gyro.CameraPreviewGyroscopeSensor;
 import com.example.dgif.utils.MemoryManager;
 import com.example.dgif.R;
-import com.example.dgif.TestGifView;
+import com.example.dgif.Preview3DObject;
 import com.example.dgif.sensorlisteners.AutoFocusSensorListener;
 import com.example.dgif.utils.RenderUtils;
 
@@ -96,6 +95,7 @@ public class CameraPreview extends Activity {
 
 
 
+
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -126,6 +126,7 @@ public class CameraPreview extends Activity {
 		new Thread(new LoadCameraAndPrev()).start();
 
         mOrientations = new ArrayList<Float>();
+
 
 	}
 
@@ -168,6 +169,7 @@ public class CameraPreview extends Activity {
                 mTrashButton.setVisibility(View.GONE);
                 mPreviewButton.setVisibility(View.GONE);
                 mOrientations.clear();
+
             }
 
         });
@@ -176,17 +178,20 @@ public class CameraPreview extends Activity {
 
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(CameraPreview.this, TestGifView.class);
+                Intent i = new Intent(CameraPreview.this, Preview3DObject.class);
                 i.putExtra("lastIndices", mCount);
-                float[] deltaArray = toFloatArray(mOrientations);
-                i.putExtra("orientations",  deltaArray);
-                Log.d("ORIENTATION", Arrays.toString(deltaArray));
+                float[] orientationsArray = toFloatArray(mOrientations);
+                i.putExtra("orientations",  orientationsArray);
+
+                Log.d("ORIENTATION", Arrays.toString(orientationsArray));
                 startActivity(i);
             }
 
         });
 
     }
+
+
 
     private float[] toFloatArray(ArrayList<Float> arrayList) {
         float[] array = new float[arrayList.size()];
@@ -228,6 +233,7 @@ public class CameraPreview extends Activity {
 		}
 
         mOrientations.clear();
+
 		mCount = 0;
 		onPauseCalled = true;
 	}

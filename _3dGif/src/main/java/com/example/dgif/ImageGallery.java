@@ -45,7 +45,7 @@ public class ImageGallery extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(ImageGallery.this, TestGifView.class);
+				Intent i = new Intent(ImageGallery.this, Preview3DObject.class);
 				i.putExtra("picsSelected", mPicSelected);
 				startActivity(i);
 				

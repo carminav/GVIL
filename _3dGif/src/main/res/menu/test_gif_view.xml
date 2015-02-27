@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.dgif.TestGifView" >
+    tools:context="com.example.dgif.Preview3DObject" >
 
     <item
         android:id="@+id/action_settings"
