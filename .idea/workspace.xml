@@ -26,15 +26,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1ad757b0-a009-4144-879a-2a50e5a6597d" name="Default" comment="">
-      <change type="DELETED" beforePath="D:\AndroidStudioProjects\GVIL\_3dGif\src\main\java\com\example\dgif\GyroGif.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/intermediates/model_data.bin" afterPath="$PROJECT_DIR$/build/intermediates/model_data.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GVIL.iml" afterPath="$PROJECT_DIR$/GVIL.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/sensorlisteners/Gyro/GifGyroscopeSensor.java" afterPath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/sensorlisteners/Gyro/GifGyroscopeSensor.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/Loaded3DObject.java" afterPath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/Loaded3DObject.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/utils/MemoryManager.java" afterPath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/utils/MemoryManager.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/Preview3DObject.java" afterPath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/Preview3DObject.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_3dGif/src/main/java/tests/Preview3DObjectActivityTest.java" afterPath="$PROJECT_DIR$/_3dGif/src/main/java/tests/Preview3DObjectActivityTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="3dGif.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -60,8 +52,8 @@
       <file leaf-file-name="Preview3DObject.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/Preview3DObject.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.51635516" vertical-offset="3978" max-vertical-offset="4658">
-              <caret line="276" column="21" selection-start-line="276" selection-start-column="21" selection-end-line="276" selection-end-column="21" />
+            <state vertical-scroll-proportion="0.19859813" vertical-offset="0" max-vertical-offset="4675">
+              <caret line="27" column="18" selection-start-line="27" selection-start-column="18" selection-end-line="27" selection-end-column="18" />
               <folding />
             </state>
           </provider>
@@ -2227,8 +2219,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/Preview3DObject.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.51635516" vertical-offset="3978" max-vertical-offset="4658">
-          <caret line="276" column="21" selection-start-line="276" selection-start-column="21" selection-end-line="276" selection-end-column="21" />
+        <state vertical-scroll-proportion="0.19859813" vertical-offset="0" max-vertical-offset="4675">
+          <caret line="27" column="18" selection-start-line="27" selection-start-column="18" selection-end-line="27" selection-end-column="18" />
           <folding />
         </state>
       </provider>
