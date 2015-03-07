@@ -2,11 +2,6 @@ package com.example.dgif.sensorlisteners.Gyro;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.example.dgif.Loaded3DObject;
@@ -64,7 +59,7 @@ public class GifGyroscopeSensor extends BaseGyroscopeSensor {
     @Override
     public void onFusedOrientationsCalculated() {
         if (mLabel != null) mLabel.setText(" Roll: " + Math.round(fusedOrientation[2] * R2D));
-        float roll = Math.round(fusedOrientation[2] * R2D);
+        float roll = fusedOrientation[2] * R2D;
 
         if (initialized) {
 

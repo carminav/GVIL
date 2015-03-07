@@ -6,6 +6,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -16,6 +18,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.os.Environment;
 import android.util.Log;
+
+import com.example.dgif.SerializableGif;
 
 /* @author Carmina Villaflores
  * Manages the saving and retrieving of data to internal app memory
@@ -56,6 +60,38 @@ public class MemoryManager {
 			e.printStackTrace();
 		}
 	}
+
+    public void saveRaw3DObject(SerializableGif o) {
+        String filename = IMG_TAG + (new SimpleDateFormat("yyMMddHHmmss").format(new Date()));
+        try {
+            FileOutputStream fos = context.openFileOutput(filename, Context.MODE_PRIVATE);
+            ObjectOutputStream os = new ObjectOutputStream(fos);
+            os.writeObject(o);
+            os.close();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public SerializableGif loadRaw3DObject(String filename) {
+        SerializableGif o = null;
+        try {
+            FileInputStream fis = context.openFileInput(filename);
+            ObjectInputStream is = new ObjectInputStream(fis);
+            o = (SerializableGif) is.readObject();
+            is.close();
+            fis.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return o;
+    }
 
 	/*GET ALL IMAGES
 	 * Returns an array of bitmaps located in app's internal memory

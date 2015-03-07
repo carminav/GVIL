@@ -59,10 +59,6 @@ public class Preview3DObjectActivityTest extends ActivityInstrumentationTestCase
     }
 
 
-
-
-
-
     private void setUpPreview(float[] orientations) {
         Intent i = new Intent();
         i.putExtra(LAST_N_PICS_TAG, LAST_N_PICS);

@@ -39,6 +39,7 @@ public class Loaded3DObject {
     private int mFrameRate = 50;
     private Context mContext;
 
+
     private GifGyroscopeSensor mGyroscopeSensor = null;
 
     public Loaded3DObject(Context c, SerializableGif rawGif, GyroImageView iv) {

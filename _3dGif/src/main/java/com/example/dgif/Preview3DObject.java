@@ -112,7 +112,7 @@ public class Preview3DObject extends Activity {
 
         //Previous activity: ImageGallery
 		if (lastIndices == -1) {
-
+            float[] orientations = new float[mPicsSelected.length];
 			for (int i = 0; i < mPicsSelected.length; i++) {
 				if (mPicsSelected[i]) {
 
@@ -124,8 +124,15 @@ public class Preview3DObject extends Activity {
 
 					BitmapDrawable b = new BitmapDrawable(getResources(), scaledBitmap(bm));
 					list.add(b);
+                    orientations[i] = i;
 				}
 			}
+
+
+            SerializableGif rawGif = new SerializableGif(list, orientations);
+            loaded3DObject = new Loaded3DObject(this, rawGif, mView);
+            loaded3DObject.play(true);
+
 		} else {
 		//Previous activity: CameraPreview
             Log.d(STEPS, " set mOrientations");
