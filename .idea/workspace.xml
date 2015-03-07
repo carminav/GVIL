@@ -25,9 +25,7 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="app: com.example.dgif" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1ad757b0-a009-4144-879a-2a50e5a6597d" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/Preview3DObject.java" afterPath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/Preview3DObject.java" />
-    </list>
+    <list default="true" id="1ad757b0-a009-4144-879a-2a50e5a6597d" name="Default" comment="" />
     <ignored path="3dGif.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -52,8 +50,8 @@
       <file leaf-file-name="Preview3DObject.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/Preview3DObject.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.19859813" vertical-offset="0" max-vertical-offset="4675">
-              <caret line="27" column="18" selection-start-line="27" selection-start-column="18" selection-end-line="27" selection-end-column="18" />
+            <state vertical-scroll-proportion="0.27803737" vertical-offset="0" max-vertical-offset="4675">
+              <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -1265,7 +1263,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -1488,8 +1485,9 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
+      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -2219,8 +2217,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/Preview3DObject.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.19859813" vertical-offset="0" max-vertical-offset="4675">
-          <caret line="27" column="18" selection-start-line="27" selection-start-column="18" selection-end-line="27" selection-end-column="18" />
+        <state vertical-scroll-proportion="0.27803737" vertical-offset="0" max-vertical-offset="4675">
+          <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
           <folding />
         </state>
       </provider>
