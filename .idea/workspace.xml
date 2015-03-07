@@ -25,17 +25,7 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="app: com.example.dgif" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1ad757b0-a009-4144-879a-2a50e5a6597d" name="Default" comment="">
-      <change type="DELETED" beforePath="D:\AndroidStudioProjects\GVIL\_3dGif\src\main\java\com\example\dgif\GyroGif.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/intermediates/model_data.bin" afterPath="$PROJECT_DIR$/build/intermediates/model_data.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GVIL.iml" afterPath="$PROJECT_DIR$/GVIL.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/sensorlisteners/Gyro/GifGyroscopeSensor.java" afterPath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/sensorlisteners/Gyro/GifGyroscopeSensor.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/Loaded3DObject.java" afterPath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/Loaded3DObject.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/utils/MemoryManager.java" afterPath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/utils/MemoryManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/Preview3DObject.java" afterPath="$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/Preview3DObject.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_3dGif/src/main/java/tests/Preview3DObjectActivityTest.java" afterPath="$PROJECT_DIR$/_3dGif/src/main/java/tests/Preview3DObjectActivityTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="1ad757b0-a009-4144-879a-2a50e5a6597d" name="Default" comment="" />
     <ignored path="3dGif.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -60,8 +50,8 @@
       <file leaf-file-name="Preview3DObject.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/Preview3DObject.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.51635516" vertical-offset="3978" max-vertical-offset="4658">
-              <caret line="276" column="21" selection-start-line="276" selection-start-column="21" selection-end-line="276" selection-end-column="21" />
+            <state vertical-scroll-proportion="0.1588785" vertical-offset="0" max-vertical-offset="4658">
+              <caret line="26" column="0" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -1273,7 +1263,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -1498,6 +1487,7 @@
       </pane>
       <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -2227,8 +2217,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/_3dGif/src/main/java/com/example/dgif/Preview3DObject.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.51635516" vertical-offset="3978" max-vertical-offset="4658">
-          <caret line="276" column="21" selection-start-line="276" selection-start-column="21" selection-end-line="276" selection-end-column="21" />
+        <state vertical-scroll-proportion="0.1588785" vertical-offset="0" max-vertical-offset="4658">
+          <caret line="26" column="0" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
           <folding />
         </state>
       </provider>
