@@ -21,6 +21,8 @@ public abstract class BaseGyroscopeSensor implements SensorEventListener {
     private Sensor mGyroscopeSensor;
     private SensorManager mSensorManager;
 
+    protected float mRollAcceleration;
+    protected long mTimestamp;
 
     private static final String tag = BaseGyroscopeSensor.class
             .getSimpleName();
@@ -35,7 +37,7 @@ public abstract class BaseGyroscopeSensor implements SensorEventListener {
 
     private boolean hasOrientation = false;
 
-    private float dT = 0;
+    protected float dT = 0;
 
     private float omegaMagnitude = 0;
 
@@ -78,7 +80,7 @@ public abstract class BaseGyroscopeSensor implements SensorEventListener {
     // convert rotation vector into rotation matrix
     private float[] deltaMatrix = new float[9];
 
-    private long timeStamp;
+    protected long timeStamp;
 
     private boolean initState = false;
 
@@ -255,6 +257,8 @@ public abstract class BaseGyroscopeSensor implements SensorEventListener {
             gyroscope[2] /= omegaMagnitude;
         }
 
+        mRollAcceleration = gyroscope[2];
+
         // Integrate around this axis with the angular speed by the timestep
         // in order to get a delta rotation from this sample over the timestep
         // We will convert this axis-angle representation of the delta rotation
@@ -388,6 +392,7 @@ public abstract class BaseGyroscopeSensor implements SensorEventListener {
 
         mCurrentRoll = Math.round(fusedOrientation[2] * 57.2957795f);
 
+
         System.arraycopy(gyroOrientation, 0, absoluteFrameOrientation, 0, 3);
 
         onFusedOrientationsCalculated();
@@ -441,6 +446,7 @@ public abstract class BaseGyroscopeSensor implements SensorEventListener {
 
         if (this.timeStamp != 0)
         {
+
             dT = (timeStamp - this.timeStamp) * NS2S;
 
             System.arraycopy(gyroscope, 0, this.gyroscope, 0, 3);

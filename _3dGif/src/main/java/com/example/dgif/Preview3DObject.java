@@ -25,7 +25,7 @@ import com.example.dgif.utils.MemoryManager;
 import com.example.dgif.utils.RenderUtils;
 
 
-/* Test COMMENT */
+
 public class Preview3DObject extends Activity {
 
     private static final String DEBUG_TAG = "TEST GIF VIEW";
@@ -73,7 +73,7 @@ public class Preview3DObject extends Activity {
 		m = new MemoryManager(this);
 
         mGyroMode = false;
-        ;
+
 		initViewObjects();
 		
 		mDuration = mSpeedBar.getProgress();

@@ -2,6 +2,7 @@ package com.example.dgif.sensorlisteners.Gyro;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.example.dgif.Loaded3DObject;
@@ -27,6 +28,14 @@ public class GifGyroscopeSensor extends BaseGyroscopeSensor {
     private int index;
     private GyroImageView mView;
     private float prevRoll;
+
+    private static final int MIN_DATA_POINTS = 10;
+
+    private int dataPoints = 0;
+
+    private float EPSILON = 10.0f;
+
+    private float mOrientation = 0;
 
     private boolean initialized = false;
 
@@ -58,22 +67,40 @@ public class GifGyroscopeSensor extends BaseGyroscopeSensor {
     /* Process values from fusedOrientation vector */
     @Override
     public void onFusedOrientationsCalculated() {
-        if (mLabel != null) mLabel.setText(" Roll: " + Math.round(fusedOrientation[2] * R2D));
-        float roll = fusedOrientation[2] * R2D;
 
-        if (initialized) {
+        if (dataPoints == MIN_DATA_POINTS) {
 
-            float diff = roll - prevRoll;
-            if (diff <= -mDelta && index > 0) {
-                index--;
-            } else if (diff >= mDelta && index < mFrames.size() - 1) {
-                index++;
+            // calculate velocity
+            float dOrient = (fusedOrientation[2] * R2D) - mOrientation;
+            float velocity = dOrient / dT;
+         //   Log.d("LOG FUNCTION", "veloc: " + velocity);
+
+            // If enough rotation is occurring, update the GyroImageView
+            if (Math.abs(velocity) > EPSILON) {
+                Log.d("LOG FUNCTION", "veloc: " + velocity);
+                mView.updateDuration(velocity);
             }
-            mView.setBitmap(mFrames.get(index));
-            mView.invalidate();
-        } else initialized = true;
 
-        prevRoll = roll;
+        } else dataPoints++;
+
+        mOrientation = fusedOrientation[2] * R2D;
+
+//        if (mLabel != null) mLabel.setText(" Roll: " + Math.round(fusedOrientation[2] * R2D));
+//        float roll = fusedOrientation[2] * R2D;
+//
+//        if (initialized) {
+//
+//            float diff = roll - prevRoll;
+//            if (diff <= -mDelta && index > 0) {
+//                index--;
+//            } else if (diff >= mDelta && index < mFrames.size() - 1) {
+//                index++;
+//            }
+//            mView.setBitmap(mFrames.get(index));
+//            mView.invalidate();
+//        } else initialized = true;
+//
+//        prevRoll = roll;
 
     }
 
@@ -84,6 +111,7 @@ public class GifGyroscopeSensor extends BaseGyroscopeSensor {
 
     @Override
     public void start() {
+        mView.setFrames(mLoaded3DObject.getFramesWithBlends());
         super.start();
         mRunning = true;
     }
@@ -91,7 +119,8 @@ public class GifGyroscopeSensor extends BaseGyroscopeSensor {
     @Override
     public void stop() {
         super.stop();
-        mView.setBitmap(null);
+       // mView.setBitmap(null);
+        mView.setFrames(null);
         mRunning = false;
     }
 }

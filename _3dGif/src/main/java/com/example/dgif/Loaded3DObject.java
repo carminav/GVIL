@@ -79,7 +79,6 @@ public class Loaded3DObject {
     private void stopPlayingGif() {
         if (mPlayableGif.isRunning()) {
             mPlayableGif.stop();
-            //mImageView.setBackground(null);
         }
     }
 
