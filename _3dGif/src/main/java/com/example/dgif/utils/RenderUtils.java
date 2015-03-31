@@ -42,6 +42,14 @@ public class RenderUtils {
     }
 
 
+    /* GET INTERMEDIATE IMAGE BYTE ARRAY
+       Uses matrix transformations to create an intermediate byte array to be
+       later decoded into a bitmap
+     */
+    public static byte[] getIntermediateImageByteArray(Bitmap a, Bitmap b, double weight) {
+
+        return new byte[10];
+    }
 
     /* GET INTERMEDIATE IMAGE
      * Uses linear interpolation to get the intermediate blend of pics a and b

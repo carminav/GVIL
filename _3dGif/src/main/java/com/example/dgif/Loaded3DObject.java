@@ -32,8 +32,6 @@ public class Loaded3DObject {
     private Bitmap[] mFrames = null;
     private ArrayList<Bitmap> mFramesWithBlends = null;
     private AnimationDrawable mPlayableGif = null;
-    private float mDelta;
-    private float[] mOrientations = null;
     private int mNumBlends = 0;
     private GyroImageView mImageView = null;
     private int mFrameRate = 50;
@@ -46,8 +44,6 @@ public class Loaded3DObject {
        mContext = c;
        mImageView = iv;
        mFrames = rawGif.getFrames();
-       mOrientations = rawGif.getOrientations();
-       mDelta = calculateSlope(mOrientations);
        mFramesWithBlends = renderUpdatedFramesWithBlends();
        mPlayableGif = renderPlayableGif();
        mGyroscopeSensor = new GifGyroscopeSensor(c, this);
@@ -187,51 +183,6 @@ public class Loaded3DObject {
             mMode = GIF_MODE;
             startPlayingGif();
         }
-    }
-
-    // Calculates the line of best fit for data points
-    // in order to get the change in orientation that should occur
-    // for the image to switch on gyroscope movement
-    private float calculateSlope(float[] orientations) {
-
-        //TODO: fix timestamps
-        float[] timestamps = new float[orientations.length];
-        for (int i = 0; i < orientations.length; i++) {
-            timestamps[i] = i;
-        }
-
-        int N = timestamps.length;
-        float sumXY = 0;
-        long sumX = 0;
-        float sumY = 0;
-        long sumX2 = 0;
-
-        for (int i = 0; i < N; i++) {
-            float x = timestamps[i];
-            float y = orientations[i];
-            sumXY += (x * y);
-            sumX += x;
-            sumY += y;
-            sumX2 += (x * x);
-        }
-
-        Log.d("TEST_DELTA", "N " + N);
-        Log.d("TEST_DELTA", "sumXY " + sumXY);
-        Log.d("TEST_DELTA", "sumX " + sumX);
-        Log.d("TEST_DELTA", "sumY " + sumY);
-        Log.d("TEST_DELTA", "sumX2 " + sumX2);
-
-        // (NΣXY - (ΣX)(ΣY)) / (NΣX2 - (ΣX)^2)
-        float slope = ((N * sumXY) - (sumX * sumY)) / (((N * sumX2) - (sumX * sumX)));
-        Log.d("TEST_DELTA", "slopeWithOutBlends: " + slope);
-        Log.d("TEST_DELTA", "slopeWithBlends: " + (slope / (float)(mNumBlends + 1)));
-        return slope;
-
-    }
-
-    public float getDelta() {
-        Log.d("TEST_DELTA", "delta: " + (mDelta / (float)(mNumBlends + 1)));
-        return (mDelta / (float)(mNumBlends + 1));
     }
 
     public boolean isGifMode() {

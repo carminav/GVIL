@@ -17,6 +17,7 @@ import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import com.example.dgif.utils.Constants;
 import com.example.dgif.utils.MemoryManager;
 
 public class ImageGallery extends Activity {
@@ -46,7 +47,8 @@ public class ImageGallery extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(ImageGallery.this, Preview3DObject.class);
-				i.putExtra("picsSelected", mPicSelected);
+                i.putExtra(Constants.ORIGIN, Constants.FROM_GALLERY);
+				i.putExtra(Constants.SELECTED_PICS_ARRAY, mPicSelected);
 				startActivity(i);
 				
 			}

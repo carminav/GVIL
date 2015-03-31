@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.example.dgif.customviews.GyroImageView;
 import com.example.dgif.sensorlisteners.Gyro.GifGyroscopeSensor;
+import com.example.dgif.utils.Constants;
 import com.example.dgif.utils.MemoryManager;
 import com.example.dgif.utils.RenderUtils;
 
@@ -37,6 +38,8 @@ public class Preview3DObject extends Activity {
 	ArrayList<BitmapDrawable> mBitmaps;
 
     private static final String STEPS = "STEPS";
+
+    private int mOrigin;
 
     SeekBar mSpeedBar;
 	TextView mSpeedView;
@@ -83,13 +86,12 @@ public class Preview3DObject extends Activity {
 
 		setListeners();
 
-        //This returns a boolean array if previous activity was ImageGallery and null otherwise
-		mPicsSelected = getIntent().getExtras().getBooleanArray("picsSelected");
-
-        //This returns an integer if previous activity was CameraPreview and -1 otherwise
-		int lastIndices = getIntent().getExtras().getInt("lastIndices", -1);
-
-		mBitmaps = getSelectedImages(lastIndices);
+        // Get activity that lead of to Preview3DObject (this)
+        int origin = getIntent().getExtras().getInt(Constants.ORIGIN);
+        mBitmaps = getSelectedImages(origin);
+        SerializableGif rawGif = new SerializableGif(mBitmaps);
+        loaded3DObject = new Loaded3DObject(this, rawGif, mView);
+        loaded3DObject.play(true);
 
 	}
 
@@ -107,77 +109,43 @@ public class Preview3DObject extends Activity {
     }
 
 
+    private BitmapDrawable loadBitmapDrawable(String filename) {
+        Bitmap bm = m.loadScaledBitmapFromFIS(filename, 720, 1280);
+        return new BitmapDrawable(getResources(), scaledBitmap(bm));
+    }
 
-	private ArrayList<BitmapDrawable> getSelectedImages(int lastIndices) {
-		ArrayList<BitmapDrawable> list = new ArrayList<BitmapDrawable>();
+    private ArrayList<BitmapDrawable> getSelectedImages(int origin) {
+        ArrayList<BitmapDrawable> images = new ArrayList<BitmapDrawable>();
+        if (origin == Constants.FROM_CAMERA_PREVIEW) {
+            int lastIndices = getIntent().getIntExtra(Constants.LAST_PICS_SELECTED, -1);
+            int first = mFilenames.length - lastIndices;
 
-        //Previous activity: ImageGallery
-		if (lastIndices == -1) {
-            float[] orientations = new float[mPicsSelected.length];
-			for (int i = 0; i < mPicsSelected.length; i++) {
-				if (mPicsSelected[i]) {
+            for (int i = first; i < mFilenames.length; i++) {
+                images.add(loadBitmapDrawable(mFilenames[i]));
+            }
 
-                    //get name of file for easy lookup
-                    String name = mFilenames[i];
+        } else {
+            boolean[] selectedPics = getIntent().getBooleanArrayExtra(Constants.SELECTED_PICS_ARRAY);
 
-                    //Load image from memory based on filename
-                    Bitmap bm = m.loadScaledBitmapFromFIS(name, 720, 1280);
+            for (int i = 0; i < selectedPics.length; i++) {
+                if (selectedPics[i]) {
+                    images.add(loadBitmapDrawable(mFilenames[i]));
+                }
+            }
+        }
+        return images;
+    }
 
-					BitmapDrawable b = new BitmapDrawable(getResources(), scaledBitmap(bm));
-					list.add(b);
-                    orientations[i] = i;
-				}
-			}
-
-
-            SerializableGif rawGif = new SerializableGif(list, orientations);
-            loaded3DObject = new Loaded3DObject(this, rawGif, mView);
-            loaded3DObject.play(true);
-
-		} else {
-		//Previous activity: CameraPreview
-            Log.d(STEPS, " set mOrientations");
-            mOrientations = getIntent().getExtras().getFloatArray("orientations");
-
-
-			int first = mFilenames.length - lastIndices;
-			
-			for (int i = first; i < mFilenames.length; i++) {
-
-                //get name of file for easy lookup
-                String name = mFilenames[i];
-
-                //Load image from memory based on filename
-                Bitmap bm = m.loadScaledBitmapFromFIS(name, 720, 1280);
-
-				BitmapDrawable b = new BitmapDrawable(getResources(), scaledBitmap(bm));
-				list.add(b);
-			}
-
-
-            SerializableGif rawGif = new SerializableGif(list, mOrientations);
-
-            loaded3DObject = new Loaded3DObject(this, rawGif, mView);
-            loaded3DObject.play(true);
-
-		}
-		
-		return list;
-	}
 
     public Loaded3DObject getLoaded3DObject() {
         return loaded3DObject;
     }
-
-
 
     private Bitmap scaledBitmap(Bitmap bm) {
         Log.i(DEBUG_TAG, "bm size: " + bm.getWidth() + " + " + bm.getHeight());
         return Bitmap.createScaledBitmap(bm, bm.getWidth(), 900, true);
 
     }
-
-
 	
 	@Override
 	protected void onPause() {
@@ -186,31 +154,6 @@ public class Preview3DObject extends Activity {
         loaded3DObject.pause();
 
 	}
-
-//    class SetDrawableTask extends AsyncTask<ArrayList<BitmapDrawable>, Void, AnimationDrawable> {
-//        @Override
-//        protected void onPreExecute() {
-//            mProgressBar.setVisibility(View.VISIBLE);
-//            mProgressBar.bringToFront();
-//        }
-//
-//        @Override
-//        protected AnimationDrawable doInBackground(ArrayList<BitmapDrawable>... bitmaps) {
-//            return createGif(true);
-//        }
-//
-//        @Override
-//        protected void onPostExecute(AnimationDrawable animationDrawable) {
-//            mProgressBar.setVisibility(View.GONE);
-//            gif = animationDrawable;
-//            gif.setOneShot(false);
-//            mView.setBackground(gif);
-//            gif.start();
-//        }
-//    }
-
-
-
 
 	@Override
 	protected void onResume() {

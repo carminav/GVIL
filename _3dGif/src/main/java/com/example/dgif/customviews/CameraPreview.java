@@ -33,6 +33,7 @@ import android.widget.TextView;
 
 import com.example.dgif.ImageGallery;
 import com.example.dgif.sensorlisteners.Gyro.CameraPreviewGyroscopeSensor;
+import com.example.dgif.utils.Constants;
 import com.example.dgif.utils.MemoryManager;
 import com.example.dgif.R;
 import com.example.dgif.Preview3DObject;
@@ -86,14 +87,6 @@ public class CameraPreview extends Activity {
     private SensorManager mSensorManager;
 
     CameraPreviewGyroscopeSensor mCompass;
-	
-	private RelativeLayout mFrameWrapper;
-
-    private ArrayList<Float> mOrientations;
-
-
-
-
 
 
 	
@@ -115,26 +108,19 @@ public class CameraPreview extends Activity {
 		mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 		mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
-		
 		mIsPreviewing = false;
         onPauseCalled = false;
 
         addOnClickListeners();
-		
 
 		// Begin loading camera resource
 		new Thread(new LoadCameraAndPrev()).start();
-
-        mOrientations = new ArrayList<Float>();
-
-
 	}
 
 
     // Find Views by ID all in one method
     private void initViewObjects() {
 
-        mFrameWrapper = (RelativeLayout) findViewById(R.id.camera_wrapper);
         mCaptureButton = (Button) findViewById(R.id.capture_button);
         mPreviewButton = (Button) findViewById(R.id.preview_button);
         mPreviewFrame = (FrameLayout) findViewById(R.id.camera_preview);
@@ -168,7 +154,6 @@ public class CameraPreview extends Activity {
                     mOverlayView.setVisibility(View.GONE);
                 mTrashButton.setVisibility(View.GONE);
                 mPreviewButton.setVisibility(View.GONE);
-                mOrientations.clear();
 
             }
 
@@ -179,29 +164,14 @@ public class CameraPreview extends Activity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(CameraPreview.this, Preview3DObject.class);
-                i.putExtra("lastIndices", mCount);
-                float[] orientationsArray = toFloatArray(mOrientations);
-                i.putExtra("orientations",  orientationsArray);
-
-                Log.d("ORIENTATION", Arrays.toString(orientationsArray));
+                i.putExtra(Constants.ORIGIN, Constants.FROM_CAMERA_PREVIEW);
+                i.putExtra(Constants.LAST_PICS_SELECTED, mCount);
                 startActivity(i);
             }
 
         });
 
     }
-
-
-
-    private float[] toFloatArray(ArrayList<Float> arrayList) {
-        float[] array = new float[arrayList.size()];
-        for (int i = 0; i < array.length; i++) {
-            array[i] = arrayList.get(i);
-        }
-
-        return array;
-    }
-
 
     // Make sure camera and other resources restart/start
 	@Override
@@ -231,8 +201,6 @@ public class CameraPreview extends Activity {
 			mTrashButton.setVisibility(View.GONE);
 			mPreviewButton.setVisibility(View.GONE);
 		}
-
-        mOrientations.clear();
 
 		mCount = 0;
 		onPauseCalled = true;
@@ -338,7 +306,6 @@ public class CameraPreview extends Activity {
             mMemoryManager.saveImage(data);
 
 
-            mOrientations.add(mCompass.getRoll());
 
 
             //set overlay

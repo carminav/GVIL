@@ -12,30 +12,28 @@ import java.util.ArrayList;
 public class SerializableGif {
 
     private Bitmap[] mFrames;
-    private float[] mOrientations;
 
 
-    public SerializableGif(Bitmap[] frames, float[] orientations) {
+
+    public SerializableGif(Bitmap[] frames) {
         mFrames = frames;
-        mOrientations = orientations;
+
 
     }
 
-    public SerializableGif(ArrayList<BitmapDrawable> frames, float[] orientations) {
+    public SerializableGif(ArrayList<BitmapDrawable> frames) {
         mFrames = new Bitmap[frames.size()];
         for (int i = 0; i < frames.size(); i++) {
             mFrames[i] = frames.get(i).getBitmap();
         }
-        mOrientations = orientations;
+
     }
 
     public Bitmap[] getFrames() {
         return mFrames;
     }
 
-    public float[] getOrientations() {
-        return mOrientations;
-    }
+
 
 
     public void save() {
