@@ -58,8 +58,6 @@ public class Preview3DObject extends Activity {
 
     private ProgressBar mProgressBar;
 
-    private float[] mOrientations;
-
 
     private Loaded3DObject loaded3DObject = null;
 	

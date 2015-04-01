@@ -46,35 +46,33 @@ public class RenderUtils {
        Uses matrix transformations to create an intermediate byte array to be
        later decoded into a bitmap
      */
-    public static byte[] getIntermediateImageByteArray(Bitmap a, Bitmap b, double weight) {
-
-        return new byte[10];
-    }
-
-    /* GET INTERMEDIATE IMAGE
-     * Uses linear interpolation to get the intermediate blend of pics a and b
-     * based on a weight.
-     */
     public static Bitmap getIntermediateImage(Bitmap a, Bitmap b, double weight) {
-        Log.d("TEST GIF VIEW", "Intermediate Image Reached");
-        int height = a.getHeight();
         int width = a.getWidth();
-        Bitmap blend = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        int height = a.getHeight();
+        int l = width * height;
 
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
+        int[] pixelsA = new int[l];
+        int[] pixelsB = new int[l];
+        int[] pixelsBlend = new int[l];
 
-			/*Get color information for pixels at x,y*/
+        a.getPixels(pixelsA, 0, width, 0, 0, width, height);
+        b.getPixels(pixelsB, 0, width, 0, 0, width, height);
 
-		    /* Pixel A */
-                int pixelA =  a.getPixel(x, y);
+        for (int y = 0; y < a.getHeight(); y++) {
+            for (int x = 0; x < a.getWidth(); x++) {
+
+                // index corresponding to flattened array
+                int i = y * width + x;
+
+                /* Pixel A */
+                int pixelA =  pixelsA[i];
                 int redA = Color.red(pixelA);
                 int greenA = Color.green(pixelA);
                 int blueA = Color.blue(pixelA);
                 int alphaA = Color.alpha(pixelA);
 
 			/* Pixel B */
-                int pixelB = b.getPixel(x, y);
+                int pixelB = pixelsB[i];
                 int redB = Color.red(pixelB);
                 int greenB = Color.green(pixelB);
                 int blueB = Color.blue(pixelB);
@@ -86,17 +84,64 @@ public class RenderUtils {
                 int blue = (int) ((1 - weight) * blueA + weight * blueB);
                 int alpha = (int) ((1 - weight) * alphaA + weight * alphaB);
 
-                int blendedColor = Color.argb(alpha, red, green, blue);
+                pixelsBlend[i] = Color.argb(alpha, red, green, blue);
 
-
-                blend.setPixel(x, y, blendedColor);
 
             }
         }
 
+        Bitmap blend = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        blend.setPixels(pixelsBlend, 0, width, 0, 0, width, height);
 
         return blend;
     }
+
+//    /* GET INTERMEDIATE IMAGE
+//     * Uses linear interpolation to get the intermediate blend of pics a and b
+//     * based on a weight.
+//     */
+//    public static Bitmap getIntermediateImage(Bitmap a, Bitmap b, double weight) {
+//        Log.d("TEST GIF VIEW", "Intermediate Image Reached");
+//        int height = a.getHeight();
+//        int width = a.getWidth();
+//        Bitmap blend = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+//
+//        for (int y = 0; y < height; y++) {
+//            for (int x = 0; x < width; x++) {
+//
+//			/*Get color information for pixels at x,y*/
+//
+//		    /* Pixel A */
+//                int pixelA =  a.getPixel(x, y);
+//                int redA = Color.red(pixelA);
+//                int greenA = Color.green(pixelA);
+//                int blueA = Color.blue(pixelA);
+//                int alphaA = Color.alpha(pixelA);
+//
+//			/* Pixel B */
+//                int pixelB = b.getPixel(x, y);
+//                int redB = Color.red(pixelB);
+//                int greenB = Color.green(pixelB);
+//                int blueB = Color.blue(pixelB);
+//                int alphaB = Color.alpha(pixelB);
+//
+//			/* Blended Pixel */
+//                int red = (int) ((1 - weight) * redA + weight * redB);
+//                int green = (int) ((1 - weight) * greenA + weight * greenB);
+//                int blue = (int) ((1 - weight) * blueA + weight * blueB);
+//                int alpha = (int) ((1 - weight) * alphaA + weight * alphaB);
+//
+//                int blendedColor = Color.argb(alpha, red, green, blue);
+//
+//
+//                blend.setPixel(x, y, blendedColor);
+//
+//            }
+//        }
+//
+//
+//        return blend;
+//    }
 
 
 }

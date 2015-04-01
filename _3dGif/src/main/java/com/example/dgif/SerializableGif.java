@@ -15,10 +15,9 @@ public class SerializableGif {
 
 
 
+
     public SerializableGif(Bitmap[] frames) {
         mFrames = frames;
-
-
     }
 
     public SerializableGif(ArrayList<BitmapDrawable> frames) {

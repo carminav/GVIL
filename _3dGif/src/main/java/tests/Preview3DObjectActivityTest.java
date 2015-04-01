@@ -44,27 +44,6 @@ public class Preview3DObjectActivityTest extends ActivityInstrumentationTestCase
     }
 
 
-    public void testDeltaCalculation1() {
-        setUpPreview(null);
-        int n = 5;
-        byte[] array = null;
-        Bitmap a = mLoaded3DObject.getFrames()[0];
-        Bitmap b = mLoaded3DObject.getFrames()[1];
-
-        // Benchmark creation of intermediate image byte array with
-        // a transformation matrix.
-        long start = System.currentTimeMillis();
-        for (int i = 0; i < n; i++) {
-            array = RenderUtils.getIntermediateImageByteArray(a, b, 0.5);
-        }
-        long end = System.currentTimeMillis();
-        long delta = end - start;
-        Log.d("BENCHMARK", "Bitmaps to Transformation Matrix Byte Array:    " + delta);
-        assertEquals(true, true);
-    }
-
-
-
 
     private void setUpPreview(float[] orientations) {
         Intent i = new Intent();

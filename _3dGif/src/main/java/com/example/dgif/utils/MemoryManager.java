@@ -131,6 +131,7 @@ public class MemoryManager {
         //calculate inSampleSize
         int height = options.outHeight;
         int width = options.outWidth;
+
         int inSampleSize = 1;
 
         if (height > reqH || width > reqW) {
