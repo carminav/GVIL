@@ -20,22 +20,25 @@ import android.widget.ImageView;
 import com.example.dgif.utils.Constants;
 import com.example.dgif.utils.MemoryManager;
 
+import java.io.File;
+
 public class ImageGallery extends Activity {
 
     private GridView gridview;
 
 	
 	private Button testGifButton;
+    private Button deleteGifButton;
 
     private static final int NONE_SELECTED = -1;
 	
 	private Bitmap[] mPics;
-	private boolean[] mPicSelected;
+
 
     private String[] mFilenames;
 	private ImageAdapter mImageAdapter;
 
-    private int selected;
+    private int selected = NONE_SELECTED;
     private CheckBox selectedCheckBox = null;
 	
 	@Override
@@ -57,12 +60,23 @@ public class ImageGallery extends Activity {
 			}
 			
 		});
+
+        deleteGifButton = (Button) findViewById(R.id.delete_gif_button);
+        deleteGifButton.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                delete(selected);
+            }
+
+        });
 		
 		
 		mImageAdapter = new ImageAdapter(this);
 
 		mPics = m.getAllThumbnails();
-		mPicSelected = new boolean[mPics.length];
+
 		
 		gridview = (GridView) findViewById(R.id.gridview);
 		gridview.setAdapter(mImageAdapter);
@@ -71,6 +85,33 @@ public class ImageGallery extends Activity {
 		
 
 	}
+
+
+    public void delete(int index) {
+
+        File dir = getFilesDir();
+        File file = new File(dir, mFilenames[index]);
+
+        if (file.delete()) {
+
+            Bitmap[] updated = new Bitmap[mPics.length - 1];
+            int count = 0;
+            for (int i = 0; i < mPics.length; i++) {
+                if (i != index) {
+                    updated[count] = mPics[i];
+                    count++;
+                }
+            }
+
+            mPics = updated;
+            selected = NONE_SELECTED;
+            selectedCheckBox = null;
+            mFilenames = fileList();
+            mImageAdapter.notifyDataSetChanged();
+        }
+
+    }
+
 	
 	private class ImageAdapter extends BaseAdapter {
 
@@ -83,6 +124,7 @@ public class ImageGallery extends Activity {
 			mInflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			
 		}
+
 		
 		@Override
 		public int getCount() {
@@ -153,14 +195,7 @@ public class ImageGallery extends Activity {
                         selectedCheckBox = cb;
                         selected = id;
                     }
-//					if (mPicSelected[id]) {
-//						cb.setChecked(false);
-//						mPicSelected[id] = false;
-//					} else {
-//						cb.setChecked(true);
-//						mPicSelected[id] = true;
-//					}
-//
+
 				}
 				
 			});
@@ -168,7 +203,7 @@ public class ImageGallery extends Activity {
 
 			holder.imageview.setImageBitmap(mPics[position]);
             holder.imageview.setScaleType(ImageView.ScaleType.CENTER_CROP);
-			holder.checkbox.setChecked(mPicSelected[position]);
+			holder.checkbox.setChecked(position == selected);
 			holder.id = position;
 			
 			

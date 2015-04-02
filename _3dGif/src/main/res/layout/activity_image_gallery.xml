@@ -28,4 +28,13 @@
         android:alpha="1"
         />
 
+    <Button
+        android:id="@+id/delete_gif_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Delete gif"
+
+        android:alpha="1"
+        />
+
 </RelativeLayout>
