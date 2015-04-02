@@ -32,7 +32,7 @@ public class GifGyroscopeSensor extends BaseGyroscopeSensor {
 
     private int dataPoints = 0;
 
-    private float EPSILON = 10.0f;
+    private float EPSILON = 3.0f;
 
     private float mOrientation = 0;
 

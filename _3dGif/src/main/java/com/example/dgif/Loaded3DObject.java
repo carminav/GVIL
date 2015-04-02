@@ -120,6 +120,7 @@ public class Loaded3DObject {
             stopPlayingGif();
 
             mNumBlends = count;
+         //   recycleBitmaps(mFramesWithBlends);
             mFramesWithBlends = renderUpdatedFramesWithBlends();
             mPlayableGif = renderPlayableGif();
 
@@ -127,6 +128,16 @@ public class Loaded3DObject {
         }
 
     }
+
+
+    public void recycleBitmaps(ArrayList<Bitmap> bitmaps) {
+        if (bitmaps == null) return;
+        for (int i = 0; i < bitmaps.size(); i++) {
+            bitmaps.get(i).recycle();
+        }
+    }
+
+
     // Takes already rendered frames and returns it as a looping animation
     // that goes forwards then backwards.
     // This should be called only after mFramesWithBlends is updated accordingly

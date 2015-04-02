@@ -21,21 +21,26 @@ public class GyroImageView extends ImageView {
 
     private int mDirection;
 
-    private final static int MAX_DURATION = 1000; // milliseconds
+    private final static int MAX_DURATION = 600; // milliseconds
 
     private final static float MAX_VELOCITY = 150;
 
     private final static float MAX_INDEX = 5.0f;
     private final static float MIN_INDEX = 0;
 
+    private boolean initialized = false;
+
     private float functionX;
 
     private Bitmap mBitmap = null;
-    private long mDuration = MAX_DURATION;
+    private long mDuration = 500;
     private ArrayList<Bitmap> mFrames = null;
     private int index;
     private long mVeloc = 0; // Data type should be?
     private final float STEP =  1f;
+
+    private final int MAX_COUNT = 2;
+    private int count = 0;
 
     private static final long SCALAR = 100;
 
@@ -66,33 +71,73 @@ public class GyroImageView extends ImageView {
     private float calculateDuration(float velocity) {
         float x = (velocity > MAX_VELOCITY) ? 1 : (velocity / MAX_VELOCITY) * MAX_INDEX;
         functionX = MAX_INDEX - x;
-        return (float) Math.exp(functionX/3) * 100;
+        return (float) Math.exp(functionX/5) * 100;
     }
 
-    // Used by gyroscope
-    public void updateDuration(float velocity) {
-        synchronized (this) {
-            mDirection = (velocity > 0) ? RIGHT : LEFT;
-            mDuration = (long) calculateDuration(velocity);
-            Log.d("DURATION", "updat: " + mDuration);
-            h.removeCallbacksAndMessages(null);
-            h.post(r);
-        }
+    private float getFunctionX(float velocity) {
+        float x = (velocity > MAX_VELOCITY) ? 1 : (velocity / MAX_VELOCITY) * MAX_INDEX;
+        return  MAX_INDEX - x;
+    }
 
+
+    public void updateDuration(float velocity) {
+        synchronized(this) {
+            count = -1;
+        }
+        mDirection = (velocity > 0) ? RIGHT : LEFT;
+        h.removeCallbacksAndMessages(null);
+        h.post(r);
     }
 
     private Runnable r = new Runnable() {
         @Override
         public void run() {
             synchronized(this) {
-                // Update duration according to natural log function
-                functionX += STEP;
-                mDuration =  (long) Math.exp(functionX/3) * 100;
-                Log.d("DURATION", "runnat: " + mDuration);
+                count++;
             }
-            invalidate();
+           if (count < MAX_COUNT) invalidate();
         }
     };
+
+
+
+//    // Used by gyroscope
+//    public void updateDuration(float velocity) {
+//        synchronized (this) {
+//
+//
+//            float tmpX = getFunctionX(velocity);
+//            if (tmpX < functionX || !initialized) {
+//                mDirection = (velocity > 0) ? RIGHT : LEFT;
+//                initialized = true;
+//                functionX = tmpX;
+//                Log.d("INDEX", "update: " + functionX);
+//                mDuration =  (long) Math.exp(functionX/3) * 100;
+//                count = 0;
+//             //   invalidate();
+//                Log.d("VELOCITY", "" + velocity);
+//                h.removeCallbacksAndMessages(null);
+//                h.post(r);
+//           }
+//
+//        }
+//
+//    }
+
+//    private Runnable r = new Runnable() {
+//        @Override
+//        public void run() {
+//            synchronized(this) {
+//                // Update duration based on exponential model
+//
+//                mDuration =  (long) Math.exp(functionX/3) * 100;
+//                functionX += STEP;
+//              //  Log.d("DURATION", "runnat: " + mDuration);
+//            }
+//           // invalidate();
+//          //  if (functionX < 5) invalidate();
+//        }
+//    };
 
 
 
@@ -102,33 +147,21 @@ public class GyroImageView extends ImageView {
 
         if (mFrames == null) return;
 
-        // update frame in correct direction
-//        if (mVeloc > 0) index++;
-//        else index--;
+
+            if (mDirection == LEFT && index > 0) index--;
+            else if (mDirection == RIGHT && index < mFrames.size() - 1) index++;
+
+            // draw next frame
+            Bitmap b = mFrames.get(index);
+            float scaleX = c.getWidth() / (float) b.getWidth();
+            c.scale(scaleX,1,0,0);
+            c.drawBitmap(b, 0 , 0, null);
+
+            // play next frame based on logarithmic function
+            h.postDelayed(r, mDuration);
 
 
 
-        if (mDirection == LEFT && index > 0) index--;
-        else if (mDirection == RIGHT && index < mFrames.size() - 1) index++;
-
-
-        Log.d("DURATION", "index: " + index);
-
-
-        // draw next frame
-        Bitmap b = mFrames.get(index);
-        float scaleX = c.getWidth() / (float) b.getWidth();
-        c.scale(scaleX,1,0,0);
-        c.drawBitmap(b, 0 , 0, null);
-
-        // play next frame based on logarithmic function
-        h.postDelayed(r, mDuration);
-
-//        if (mBitmap != null) {
-//            float scaleX = c.getWidth() / (float) mBitmap.getWidth();
-//            c.scale(scaleX,1,0,0);
-//            c.drawBitmap(mBitmap, 0 , 0, null);
-//        }
 
     }
 }
