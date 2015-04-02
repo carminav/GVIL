@@ -1,7 +1,6 @@
 package com.example.dgif.utils;
 
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -19,7 +18,6 @@ import android.graphics.Rect;
 import android.os.Environment;
 import android.util.Log;
 
-import com.example.dgif.Loaded3DObject;
 import com.example.dgif.SerializableGif;
 
 /* @author Carmina Villaflores
@@ -63,21 +61,25 @@ public class MemoryManager {
         return filename;
     }
 
+    private Bitmap scaledBitmap(Bitmap bm) {
+        Log.i(DEBUG_TAG, "bm size: " + bm.getWidth() + " + " + bm.getHeight());
+        return Bitmap.createScaledBitmap(bm, bm.getWidth(), 900, true);
 
+    }
 
     public Bitmap[] extractFramesFromSerialGif(SerializableGif sg) {
         byte[][] rawFrames = sg.rawFrames;
         Bitmap[] bmps = new Bitmap[rawFrames.length];
         for (int i = 0; i < bmps.length; i++) {
-            bmps[i] = loadScaledBitmapFromByteArray(rawFrames[i],
-                    Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
+            bmps[i] = scaledBitmap(loadBitmapFromByteArray(rawFrames[i],
+                    506, 900));
         }
         return bmps;
     }
 
-    public Bitmap getSerialGifAvatar(SerializableGif sg) {
+    public Bitmap getSerialGifThumbnail(SerializableGif sg) {
         // Uses first frame as avatar by default
-        return loadScaledBitmapFromByteArray(sg.rawFrames[0], Constants.AVATAR_WIDTH, Constants.AVATAR_HEIGHT);
+        return loadBitmapFromByteArray(sg.rawFrames[0], Constants.AVATAR_WIDTH, Constants.AVATAR_HEIGHT);
     }
 
 
@@ -132,35 +134,20 @@ public class MemoryManager {
         return o;
     }
 
-	/*GET ALL IMAGES
-	 * Returns an array of bitmaps located in app's internal memory
-	 * Loads scaled version of each Bitmap to save memory
-	 */
-	public Bitmap[] getAllImages(int reqW, int reqH) {
 
-		String[] files = context.fileList();
-		Bitmap[] images = new Bitmap[files.length];
 
-		for (int i = 0; i < images.length; i++) {
-            String filename = files[i];
-            images[i] = loadScaledBitmapFromFIS(filename, reqW, reqH);
-        }
-
-		return images;
-
-	}
-
-    public Bitmap[] getAllAvatars() {
+    public Bitmap[] getAllThumbnails() {
         String[] files = context.fileList();
         Bitmap[] avatars = new Bitmap[files.length];
         for (int i = 0; i < avatars.length; i++) {
             SerializableGif sg = readSerializableGif(files[i]);
-            avatars[i] = getSerialGifAvatar(sg);
+            avatars[i] = getSerialGifThumbnail(sg);
         }
         return avatars;
     }
 
-    public Bitmap loadScaledBitmapFromByteArray(byte[] data, int reqW, int reqH) {
+    public Bitmap loadBitmapFromByteArray(byte[] data, int reqW, int reqH) {
+
 
         //Decode with inJustDecodeBounds = true to check dimensions
         final BitmapFactory.Options options = new BitmapFactory.Options();

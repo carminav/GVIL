@@ -847,23 +847,22 @@ containing a value of this type.
         public static final int action_menu_divider=0x7f080001;
         public static final int action_menu_presenter=0x7f080002;
         public static final int action_mode_close_button=0x7f080024;
-        public static final int action_settings=0x7f08005d;
+        public static final int action_settings=0x7f080056;
         public static final int activity_chooser_view_content=0x7f080025;
         public static final int activity_test_gif_view=0x7f08003f;
         public static final int always=0x7f080013;
-        public static final int back_button=0x7f08004f;
+        public static final int back_button=0x7f080051;
         public static final int beginning=0x7f08000f;
         public static final int blendBar=0x7f080046;
         public static final int blendView=0x7f080047;
-        public static final int blinking_arrow_view=0x7f080059;
         public static final int btn_start_gyro=0x7f080042;
+        public static final int camera_flip_button=0x7f080050;
         public static final int camera_preview=0x7f08004a;
         public static final int camera_wrapper=0x7f080049;
         public static final int capture_button=0x7f08004b;
-        public static final int checkBox=0x7f08005c;
+        public static final int checkBox=0x7f080055;
         public static final int checkbox=0x7f08002d;
         public static final int collapseActionView=0x7f080014;
-        public static final int coord_view=0x7f080051;
         public static final int default_activity_button=0x7f080028;
         public static final int dialog=0x7f080018;
         public static final int disableHome=0x7f080009;
@@ -872,20 +871,21 @@ containing a value of this type.
         public static final int end=0x7f080010;
         public static final int expand_activities_button=0x7f080026;
         public static final int expanded_menu=0x7f08002c;
-        public static final int gallery_button=0x7f08004e;
-        public static final int gridImage=0x7f08005b;
+        public static final int frame_count_view=0x7f08004e;
+        public static final int gallery_button=0x7f08004f;
+        public static final int gridImage=0x7f080054;
         public static final int gridview=0x7f08003c;
         public static final int home=0x7f080003;
         public static final int homeAsUp=0x7f08000a;
         public static final int icon=0x7f08002a;
         public static final int ifRoom=0x7f080015;
         public static final int image=0x7f080027;
-        public static final int image_overlay_view=0x7f08005a;
+        public static final int image_overlay_view=0x7f080053;
         public static final int linearLayout=0x7f080043;
         public static final int listMode=0x7f080006;
         public static final int list_item=0x7f080029;
         public static final int middle=0x7f080011;
-        public static final int movify_button=0x7f080050;
+        public static final int movify_button=0x7f080052;
         public static final int never=0x7f080016;
         public static final int none=0x7f080012;
         public static final int normal=0x7f080007;
@@ -894,7 +894,6 @@ containing a value of this type.
         public static final int progress_circular=0x7f080004;
         public static final int progress_horizontal=0x7f080005;
         public static final int radio=0x7f08002f;
-        public static final int rollLabel=0x7f080057;
         public static final int search_badge=0x7f080032;
         public static final int search_bar=0x7f080031;
         public static final int search_button=0x7f080033;
@@ -923,13 +922,7 @@ containing a value of this type.
         public static final int useLogo=0x7f08000e;
         public static final int viewTestGifButton=0x7f08003d;
         public static final int withText=0x7f080017;
-        public static final int xcoordLabel=0x7f080052;
-        public static final int xcoordView=0x7f080053;
         public static final int y_label=0x7f080048;
-        public static final int ycoordLabel=0x7f080054;
-        public static final int ycoordView=0x7f080055;
-        public static final int zcoordLabel=0x7f080056;
-        public static final int zcoordView=0x7f080058;
     }
     public static final class integer {
         public static final int abc_max_action_buttons=0x7f090000;
@@ -989,11 +982,12 @@ containing a value of this type.
         public static final int abc_shareactionprovider_share_with_application=0x7f0a000c;
         public static final int action_settings=0x7f0a000d;
         public static final int app_name=0x7f0a000e;
-        public static final int fontawesome_menu_glyph_unicode=0x7f0a000f;
-        public static final int hello_world=0x7f0a0010;
-        public static final int title_activity_image_gallery=0x7f0a0011;
-        public static final int title_activity_main=0x7f0a0012;
-        public static final int title_activity_test_gif_view=0x7f0a0013;
+        public static final int fontawesome_camera_glyph_unicode=0x7f0a000f;
+        public static final int fontawesome_menu_glyph_unicode=0x7f0a0010;
+        public static final int hello_world=0x7f0a0011;
+        public static final int title_activity_image_gallery=0x7f0a0012;
+        public static final int title_activity_main=0x7f0a0013;
+        public static final int title_activity_test_gif_view=0x7f0a0014;
     }
     public static final class style {
         /** 

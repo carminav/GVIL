@@ -22,4 +22,7 @@ public class Constants {
     public static int AVATAR_HEIGHT = 400;
 
 
+    public static String GALLERY_ICON = "fonts/fontawesome-webfont.ttf";
+
+
 }

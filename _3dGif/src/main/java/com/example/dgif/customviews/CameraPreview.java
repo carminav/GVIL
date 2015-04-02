@@ -57,6 +57,8 @@ public class CameraPreview extends Activity {
 	
     byte[] mSurfaceBytes;
 
+    private TextView mFrameCountView;
+
 	private Camera mCamera;
 	private CamView mPreview;
 
@@ -73,13 +75,13 @@ public class CameraPreview extends Activity {
     private boolean mIsPreviewing;
 
     // Views
-    private TextView mRollLabel;
 	private ImageView mOverlayView;
 
     // Buttons
     Button mCaptureButton;
     Button mTrashButton;
     Button mPreviewButton;
+    Button mCameraFlipButton;
     private Button mGalleryButton;
 
     // Sensors
@@ -87,7 +89,7 @@ public class CameraPreview extends Activity {
     private Sensor mAccelerometer;
     private SensorManager mSensorManager;
 
-    CameraPreviewGyroscopeSensor mCompass;
+
 
     private ArrayList<byte[]> mRawFrames = new ArrayList<byte[]>();
 
@@ -101,10 +103,10 @@ public class CameraPreview extends Activity {
         initViewObjects();
 
         // Use Font-Awesome glyph for gallery button
-        Typeface fontFamily = Typeface.createFromAsset(getAssets(), "fonts/fontawesome-webfont.ttf");
+        Typeface fontFamily = Typeface.createFromAsset(getAssets(), Constants.GALLERY_ICON);
 	    mGalleryButton.setTypeface(fontFamily);
+        mCameraFlipButton.setTypeface(fontFamily);
 
-        mCompass = new CameraPreviewGyroscopeSensor(this, mRollLabel);
         mHandler = new UIHandler();
 
 		mMemoryManager = new MemoryManager(this);
@@ -129,8 +131,9 @@ public class CameraPreview extends Activity {
         mPreviewFrame = (FrameLayout) findViewById(R.id.camera_preview);
         mGalleryButton = (Button) findViewById(R.id.gallery_button);
         mTrashButton = (Button) findViewById(R.id.trash_button);
-        mRollLabel = (TextView) findViewById(R.id.rollLabel);
         mOverlayView = (ImageView) findViewById(R.id.image_overlay_view);
+        mCameraFlipButton = (Button) findViewById(R.id.camera_flip_button);
+        mFrameCountView = (TextView) findViewById(R.id.frame_count_view);
 
     }
 
@@ -153,6 +156,7 @@ public class CameraPreview extends Activity {
             @Override
             public void onClick(View v) {
                 mCount = 0;
+                mFrameCountView.setText("0");
                 mRawFrames.clear();
                 if (mOverlayView.getVisibility() == View.VISIBLE)
                     mOverlayView.setVisibility(View.GONE);
@@ -188,8 +192,6 @@ public class CameraPreview extends Activity {
             Log.d("CONVERT TO ARRAY", "process byte array " + i);
             a[i] = list.get(i);
         }
-
-
         return a;
     }
 
@@ -199,8 +201,8 @@ public class CameraPreview extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-	    mCompass.start();
         if (onPauseCalled) {
+            mFrameCountView.setText(mCount + "");
         	new Thread(new LoadCameraAndPrev()).start();
         }
 	}
@@ -210,7 +212,6 @@ public class CameraPreview extends Activity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		mCompass.stop();
 		stopPreview();
 		releaseCamera();
 
@@ -245,6 +246,7 @@ public class CameraPreview extends Activity {
 			public void onClick(View v) {
 				if (mCamera != null && mIsPreviewing) {
 					mCount++;
+                    mFrameCountView.setText(mCount + "");
     				mCamera.takePicture(null, null, mPictureCallback);
 				}
 				
@@ -323,11 +325,12 @@ public class CameraPreview extends Activity {
 		public void onPictureTaken(byte[] data, Camera camera) {
 
 
-          //  Log.d("ORIENTATION", "Roll: " + mCompass.getRoll());
+
 			mIsPreviewing = false;
-          //  mMemoryManager.saveImage(data);
+
 
             mRawFrames.add(data);
+
 
 
             //set overlay
@@ -346,6 +349,8 @@ public class CameraPreview extends Activity {
 		    mCaptureButton.bringToFront();
 		    mTrashButton.bringToFront();
 		    mGalleryButton.bringToFront();
+            mCameraFlipButton.bringToFront();
+            mFrameCountView.bringToFront();
 		    
 		    if (mCount >= 2) {
 		    	mPreviewButton.setVisibility(View.VISIBLE);

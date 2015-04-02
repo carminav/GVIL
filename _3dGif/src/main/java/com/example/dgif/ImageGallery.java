@@ -61,7 +61,7 @@ public class ImageGallery extends Activity {
 		
 		mImageAdapter = new ImageAdapter(this);
 
-		mPics = m.getAllAvatars();
+		mPics = m.getAllThumbnails();
 		mPicSelected = new boolean[mPics.length];
 		
 		gridview = (GridView) findViewById(R.id.gridview);
