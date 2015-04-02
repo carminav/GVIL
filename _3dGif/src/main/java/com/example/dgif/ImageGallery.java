@@ -27,6 +27,8 @@ public class ImageGallery extends Activity {
 	private static final int SIZE = 200;
 	
 	private Button testGifButton;
+
+    private static final int NONE_SELECTED = -1;
 	
 	private Bitmap[] mPics;
 	private boolean[] mPicSelected;
@@ -34,7 +36,8 @@ public class ImageGallery extends Activity {
     private String[] mFilenames;
 	private ImageAdapter mImageAdapter;
 
-    private SerializableGif selected = null;
+    private int selected;
+    private CheckBox selectedCheckBox = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +52,7 @@ public class ImageGallery extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(ImageGallery.this, Preview3DObject.class);
-             //   i.putExtra(Constants.SERIALIZABLE_GIF, selected);
+                i.putExtra(Constants.SERIALIZABLE_GIF, mFilenames[selected]);
 				startActivity(i);
 				
 			}
@@ -142,14 +145,23 @@ public class ImageGallery extends Activity {
 				public void onClick(View v) {
 					CheckBox cb = (CheckBox)v;
 					int id = cb.getId();
-					if (mPicSelected[id]) {
-						cb.setChecked(false);
-						mPicSelected[id] = false;
-					} else {
-						cb.setChecked(true);
-						mPicSelected[id] = true;
-					}
-					
+                    if (selected == id) {
+                        cb.setChecked(false);
+                        selected = NONE_SELECTED;
+                    } else {
+                        cb.setChecked(true);
+                        if (selectedCheckBox != null) selectedCheckBox.setChecked(false);
+                        selectedCheckBox = cb;
+                        selected = id;
+                    }
+//					if (mPicSelected[id]) {
+//						cb.setChecked(false);
+//						mPicSelected[id] = false;
+//					} else {
+//						cb.setChecked(true);
+//						mPicSelected[id] = true;
+//					}
+//
 				}
 				
 			});
