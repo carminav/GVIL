@@ -18,8 +18,8 @@ public class Constants {
     public static int WINDOW_WIDTH = 720;
     public static int WINDOW_HEIGHT = 1280;
 
-    public static int AVATAR_WIDTH = 200;
-    public static int AVATAR_HEIGHT = 200;
+    public static int AVATAR_WIDTH = 400;
+    public static int AVATAR_HEIGHT = 400;
 
 
 }

@@ -23,8 +23,7 @@ import com.example.dgif.utils.MemoryManager;
 public class ImageGallery extends Activity {
 
     private GridView gridview;
-	
-	private static final int SIZE = 200;
+
 	
 	private Button testGifButton;
 
@@ -61,7 +60,7 @@ public class ImageGallery extends Activity {
 		
 		
 		mImageAdapter = new ImageAdapter(this);
-        int size = getResources().getDimensionPixelSize(R.dimen.grid_item_size);
+
 		mPics = m.getAllAvatars();
 		mPicSelected = new boolean[mPics.length];
 		
