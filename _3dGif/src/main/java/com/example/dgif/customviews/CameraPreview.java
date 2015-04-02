@@ -32,6 +32,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.dgif.ImageGallery;
+import com.example.dgif.SerializableGif;
 import com.example.dgif.sensorlisteners.Gyro.CameraPreviewGyroscopeSensor;
 import com.example.dgif.utils.Constants;
 import com.example.dgif.utils.MemoryManager;
@@ -87,6 +88,8 @@ public class CameraPreview extends Activity {
     private SensorManager mSensorManager;
 
     CameraPreviewGyroscopeSensor mCompass;
+
+    private ArrayList<byte[]> mRawFrames = new ArrayList<byte[]>();
 
 
 	
@@ -150,6 +153,7 @@ public class CameraPreview extends Activity {
             @Override
             public void onClick(View v) {
                 mCount = 0;
+                mRawFrames.clear();
                 if (mOverlayView.getVisibility() == View.VISIBLE)
                     mOverlayView.setVisibility(View.GONE);
                 mTrashButton.setVisibility(View.GONE);
@@ -163,15 +167,33 @@ public class CameraPreview extends Activity {
 
             @Override
             public void onClick(View v) {
+                SerializableGif gif = new SerializableGif(convertToArray(mRawFrames));
+                String filename = mMemoryManager.saveRaw3DObject(gif);
+                mRawFrames.clear();
                 Intent i = new Intent(CameraPreview.this, Preview3DObject.class);
-                i.putExtra(Constants.ORIGIN, Constants.FROM_CAMERA_PREVIEW);
-                i.putExtra(Constants.LAST_PICS_SELECTED, mCount);
+                i.putExtra(Constants.SERIALIZABLE_GIF, filename);
                 startActivity(i);
             }
 
         });
 
     }
+
+
+
+    public byte[][] convertToArray(ArrayList<byte[]> list) {
+        Log.d("CONVERT TO ARRAY", "enter method");
+        byte[][] a = new byte[list.size()][];
+        for (int i = 0; i < list.size(); i++) {
+            Log.d("CONVERT TO ARRAY", "process byte array " + i);
+            a[i] = list.get(i);
+        }
+
+
+        return a;
+    }
+
+
 
     // Make sure camera and other resources restart/start
 	@Override
@@ -301,11 +323,11 @@ public class CameraPreview extends Activity {
 		public void onPictureTaken(byte[] data, Camera camera) {
 
 
-            Log.d("ORIENTATION", "Roll: " + mCompass.getRoll());
+          //  Log.d("ORIENTATION", "Roll: " + mCompass.getRoll());
 			mIsPreviewing = false;
-            mMemoryManager.saveImage(data);
+          //  mMemoryManager.saveImage(data);
 
-
+            mRawFrames.add(data);
 
 
             //set overlay
@@ -314,7 +336,7 @@ public class CameraPreview extends Activity {
             matrix.postRotate(90);
 
             Bitmap scaledBitmap = Bitmap.createScaledBitmap(b,VIEW_HEIGHT,VIEW_WIDTH,true);
-            Bitmap rotatedBitmap = Bitmap.createBitmap(scaledBitmap , 0, 0, scaledBitmap .getWidth(), scaledBitmap .getHeight(), matrix, true);
+            Bitmap rotatedBitmap = Bitmap.createBitmap(scaledBitmap , 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
             mOverlayView.setImageBitmap(rotatedBitmap);
 
 			//restart preview

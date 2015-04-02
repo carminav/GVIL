@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 import com.example.dgif.customviews.GyroImageView;
 import com.example.dgif.sensorlisteners.Gyro.GifGyroscopeSensor;
+import com.example.dgif.utils.MemoryManager;
 import com.example.dgif.utils.RenderUtils;
 
 import java.util.ArrayList;
@@ -41,13 +42,15 @@ public class Loaded3DObject {
     private GifGyroscopeSensor mGyroscopeSensor = null;
 
     public Loaded3DObject(Context c, SerializableGif rawGif, GyroImageView iv) {
+        MemoryManager m = new MemoryManager(c);
        mContext = c;
        mImageView = iv;
-       mFrames = rawGif.getFrames();
+       mFrames = m.extractFramesFromSerialGif(rawGif);
        mFramesWithBlends = renderUpdatedFramesWithBlends();
        mPlayableGif = renderPlayableGif();
        mGyroscopeSensor = new GifGyroscopeSensor(c, this);
     }
+
 
 
     // Rebuild the playable gif with a different fps
@@ -129,13 +132,6 @@ public class Loaded3DObject {
 
     }
 
-
-    public void recycleBitmaps(ArrayList<Bitmap> bitmaps) {
-        if (bitmaps == null) return;
-        for (int i = 0; i < bitmaps.size(); i++) {
-            bitmaps.get(i).recycle();
-        }
-    }
 
 
     // Takes already rendered frames and returns it as a looping animation

@@ -12,5 +12,14 @@ public class Constants {
     public static String LAST_PICS_SELECTED = "last selected pics";
     public static String SELECTED_PICS_ARRAY = "selected pics array";
 
+    public static String SERIALIZABLE_GIF = "serializable gif";
+    public static String LOADED_3D_OBJECT = "loaded 3D object";
+
+    public static int WINDOW_WIDTH = 720;
+    public static int WINDOW_HEIGHT = 1280;
+
+    public static int AVATAR_WIDTH = 200;
+    public static int AVATAR_HEIGHT = 200;
+
 
 }

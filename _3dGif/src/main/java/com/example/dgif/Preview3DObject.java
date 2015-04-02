@@ -84,10 +84,8 @@ public class Preview3DObject extends Activity {
 
 		setListeners();
 
-        // Get activity that lead of to Preview3DObject (this)
-        int origin = getIntent().getExtras().getInt(Constants.ORIGIN);
-        mBitmaps = getSelectedImages(origin);
-        SerializableGif rawGif = new SerializableGif(mBitmaps);
+        String filename = (String) getIntent().getExtras().get(Constants.SERIALIZABLE_GIF);
+        SerializableGif rawGif = m.readSerializableGif(filename);
         loaded3DObject = new Loaded3DObject(this, rawGif, mView);
         loaded3DObject.play(true);
 
@@ -106,45 +104,11 @@ public class Preview3DObject extends Activity {
 
     }
 
-
-    private BitmapDrawable loadBitmapDrawable(String filename) {
-        Bitmap bm = m.loadScaledBitmapFromFIS(filename, 720, 1280);
-        return new BitmapDrawable(getResources(), scaledBitmap(bm));
-    }
-
-    private ArrayList<BitmapDrawable> getSelectedImages(int origin) {
-        ArrayList<BitmapDrawable> images = new ArrayList<BitmapDrawable>();
-        if (origin == Constants.FROM_CAMERA_PREVIEW) {
-            int lastIndices = getIntent().getIntExtra(Constants.LAST_PICS_SELECTED, -1);
-            int first = mFilenames.length - lastIndices;
-
-            for (int i = first; i < mFilenames.length; i++) {
-                images.add(loadBitmapDrawable(mFilenames[i]));
-            }
-
-        } else {
-            boolean[] selectedPics = getIntent().getBooleanArrayExtra(Constants.SELECTED_PICS_ARRAY);
-
-            for (int i = 0; i < selectedPics.length; i++) {
-                if (selectedPics[i]) {
-                    images.add(loadBitmapDrawable(mFilenames[i]));
-                }
-            }
-        }
-        return images;
-    }
-
-
     public Loaded3DObject getLoaded3DObject() {
         return loaded3DObject;
     }
 
-    private Bitmap scaledBitmap(Bitmap bm) {
-        Log.i(DEBUG_TAG, "bm size: " + bm.getWidth() + " + " + bm.getHeight());
-        return Bitmap.createScaledBitmap(bm, bm.getWidth(), 900, true);
 
-    }
-	
 	@Override
 	protected void onPause() {
 		// TODO Auto-generated method stub

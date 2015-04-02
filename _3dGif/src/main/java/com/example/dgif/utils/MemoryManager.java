@@ -19,6 +19,7 @@ import android.graphics.Rect;
 import android.os.Environment;
 import android.util.Log;
 
+import com.example.dgif.Loaded3DObject;
 import com.example.dgif.SerializableGif;
 
 /* @author Carmina Villaflores
@@ -43,6 +44,43 @@ public class MemoryManager {
 		this.context = context;
 	}
 
+
+
+    public String saveSerializableGif(SerializableGif sg) {
+        String filename = IMG_TAG + (new SimpleDateFormat("yyMMddHHmmss").format(new Date()));
+        try {
+            FileOutputStream fos = context.openFileOutput(filename, Context.MODE_PRIVATE);
+            ObjectOutputStream os = new ObjectOutputStream(fos);
+            os.writeObject(sg);
+            os.close();
+            fos.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        }
+
+        return filename;
+    }
+
+
+
+    public Bitmap[] extractFramesFromSerialGif(SerializableGif sg) {
+        byte[][] rawFrames = sg.rawFrames;
+        Bitmap[] bmps = new Bitmap[rawFrames.length];
+        for (int i = 0; i < bmps.length; i++) {
+            bmps[i] = loadScaledBitmapFromByteArray(rawFrames[i],
+                    Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
+        }
+        return bmps;
+    }
+
+    public Bitmap getSerialGifAvatar(SerializableGif sg) {
+        // Uses first frame as avatar by default
+        return loadScaledBitmapFromByteArray(sg.rawFrames[0], Constants.AVATAR_WIDTH, Constants.AVATAR_HEIGHT);
+    }
+
+
 	/*SAVE IMAGE
 	 * Saves byte array as image in internal memory
 	 */
@@ -61,7 +99,7 @@ public class MemoryManager {
 		}
 	}
 
-    public void saveRaw3DObject(SerializableGif o) {
+    public String saveRaw3DObject(SerializableGif o) {
         String filename = IMG_TAG + (new SimpleDateFormat("yyMMddHHmmss").format(new Date()));
         try {
             FileOutputStream fos = context.openFileOutput(filename, Context.MODE_PRIVATE);
@@ -74,9 +112,10 @@ public class MemoryManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return filename;
     }
 
-    public SerializableGif loadRaw3DObject(String filename) {
+    public SerializableGif readSerializableGif(String filename) {
         SerializableGif o = null;
         try {
             FileInputStream fis = context.openFileInput(filename);
@@ -110,6 +149,50 @@ public class MemoryManager {
 		return images;
 
 	}
+
+    public Bitmap[] getAllAvatars() {
+        String[] files = context.fileList();
+        Bitmap[] avatars = new Bitmap[files.length];
+        for (int i = 0; i < avatars.length; i++) {
+            SerializableGif sg = readSerializableGif(files[i]);
+            avatars[i] = getSerialGifAvatar(sg);
+        }
+        return avatars;
+    }
+
+    public Bitmap loadScaledBitmapFromByteArray(byte[] data, int reqW, int reqH) {
+
+        //Decode with inJustDecodeBounds = true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeByteArray(data, 0, data.length, options);
+
+        //calculate inSampleSize
+        int height = options.outHeight;
+        int width = options.outWidth;
+
+        int inSampleSize = 1;
+
+        if (height > reqH || width > reqW) {
+            int halfHeight = height / 2;
+            int halfWidth = width / 2;
+
+            //calculate the largest inSampleSize value that is a power of 2 and keeps both
+            //height and width largest than the requested height and width
+            while ((halfHeight / inSampleSize) > reqH
+                    && (halfWidth / inSampleSize) > reqW) {
+                inSampleSize *= 2;
+            }
+        }
+
+        options.inSampleSize = inSampleSize;
+
+        //Decode Bitmap with inSampleSize set and return
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeByteArray(data, 0, data.length, options);
+
+    }
+
 
 
     /* LOAD SCALED BITMAP FROM FILE INPUT STREAM

@@ -33,6 +33,8 @@ public class ImageGallery extends Activity {
 
     private String[] mFilenames;
 	private ImageAdapter mImageAdapter;
+
+    private SerializableGif selected = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +49,7 @@ public class ImageGallery extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(ImageGallery.this, Preview3DObject.class);
-                i.putExtra(Constants.ORIGIN, Constants.FROM_GALLERY);
-				i.putExtra(Constants.SELECTED_PICS_ARRAY, mPicSelected);
+             //   i.putExtra(Constants.SERIALIZABLE_GIF, selected);
 				startActivity(i);
 				
 			}
@@ -58,7 +59,7 @@ public class ImageGallery extends Activity {
 		
 		mImageAdapter = new ImageAdapter(this);
         int size = getResources().getDimensionPixelSize(R.dimen.grid_item_size);
-		mPics = m.getAllImages(size, size);
+		mPics = m.getAllAvatars();
 		mPicSelected = new boolean[mPics.length];
 		
 		gridview = (GridView) findViewById(R.id.gridview);
