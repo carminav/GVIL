@@ -69,7 +69,7 @@ public class GifGyroscopeSensor extends BaseGyroscopeSensor {
             // calculate velocity
             float dOrient = (fusedOrientation[2] * R2D) - mOrientation;
             float velocity = dOrient / dT;
-         //   Log.d("LOG FUNCTION", "veloc: " + velocity);
+
 
             // If enough rotation is occurring, update the GyroImageView
             if (Math.abs(velocity) > EPSILON) {
@@ -80,23 +80,6 @@ public class GifGyroscopeSensor extends BaseGyroscopeSensor {
         } else dataPoints++;
 
         mOrientation = fusedOrientation[2] * R2D;
-
-//        if (mLabel != null) mLabel.setText(" Roll: " + Math.round(fusedOrientation[2] * R2D));
-//        float roll = fusedOrientation[2] * R2D;
-//
-//        if (initialized) {
-//
-//            float diff = roll - prevRoll;
-//            if (diff <= -mDelta && index > 0) {
-//                index--;
-//            } else if (diff >= mDelta && index < mFrames.size() - 1) {
-//                index++;
-//            }
-//            mView.setBitmap(mFrames.get(index));
-//            mView.invalidate();
-//        } else initialized = true;
-//
-//        prevRoll = roll;
 
     }
 
@@ -115,7 +98,6 @@ public class GifGyroscopeSensor extends BaseGyroscopeSensor {
     @Override
     public void stop() {
         super.stop();
-       // mView.setBitmap(null);
         mView.setFrames(null);
         mRunning = false;
     }

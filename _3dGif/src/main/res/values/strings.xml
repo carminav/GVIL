@@ -17,6 +17,7 @@
     <string name="fontawesome_camera_glyph_unicode">\uf030</string>
     <string name="fontawesome_play_glyph_unicode">\uf01d</string>
     <string name="fontawesome_trash_glyph_unicode">\uf014</string>
+    <string name="fontawesome_refresh_glyph_unicode">\uf021</string>
 
 
 </resources>

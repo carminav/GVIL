@@ -97,6 +97,7 @@ public class Loaded3DObject {
             startPlayingGif();
         } else {
             stopPlayingGif();
+            mImageView.setBackground(mPlayableGif);
             mGyroscopeSensor.start();
         }
     }
@@ -120,14 +121,14 @@ public class Loaded3DObject {
         if (count < 0) Log.e(TAG, "Error: Blend count must be positive");
         else {
             mGyroscopeSensor.update();
-            stopPlayingGif();
+         //   stopPlayingGif();
 
             mNumBlends = count;
-         //   recycleBitmaps(mFramesWithBlends);
+
             mFramesWithBlends = renderUpdatedFramesWithBlends();
             mPlayableGif = renderPlayableGif();
 
-            startPlayingGif();
+            //startPlayingGif();
         }
 
     }

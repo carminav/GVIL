@@ -45,16 +45,6 @@ public class Preview3DObjectActivityTest extends ActivityInstrumentationTestCase
 
 
 
-    private void setUpPreview(float[] orientations) {
-        Intent i = new Intent();
-        i.putExtra(LAST_N_PICS_TAG, LAST_N_PICS);
-      //  i.putExtra(ORIENTATIONS_TAG, orientations);
-        setActivityIntent(i);
-        mActivity = getActivity();
-        mLoaded3DObject = mActivity.getLoaded3DObject();
-        mGyroBtn = (Button) mActivity.findViewById(R.id.btn_start_gyro);
-    }
-
 
 
 

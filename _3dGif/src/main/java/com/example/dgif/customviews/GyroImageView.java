@@ -160,8 +160,5 @@ public class GyroImageView extends ImageView {
             // play next frame based on logarithmic function
             h.postDelayed(r, mDuration);
 
-
-
-
     }
 }

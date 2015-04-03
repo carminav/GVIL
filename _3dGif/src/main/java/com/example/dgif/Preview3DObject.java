@@ -5,7 +5,9 @@ import java.util.Arrays;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
@@ -16,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -28,6 +31,7 @@ import com.example.dgif.utils.Constants;
 import com.example.dgif.utils.MemoryManager;
 import com.example.dgif.utils.RenderUtils;
 
+import org.w3c.dom.Text;
 
 
 public class Preview3DObject extends Activity {
@@ -39,18 +43,19 @@ public class Preview3DObject extends Activity {
 
     private static final String STEPS = "STEPS";
 
+    private SeekBar mBlendsBar;
 
 
-    SeekBar mSpeedBar;
-	TextView mSpeedView;
+    private TextView blend0Text;
+    private TextView blend1Text;
+    private TextView blend2Text;
+    private TextView blend3Text;
 
-    private Button mBtnGyroscope;
 
+    private ProgressBar loadingCircle;
     private Button mGalleryButton;
     private Button mCameraButton;
 	
-	SeekBar mBlendBar;
-	TextView mBlendView;
 
 
     private String[] mFilenames;
@@ -58,13 +63,16 @@ public class Preview3DObject extends Activity {
 
     private MemoryManager m;
 
-    private ProgressBar mProgressBar;
+    private static int MAX_BLENDS = 3;
 
+    private ColorStateList defaultGrey;
 
     private Loaded3DObject loaded3DObject = null;
 	
 	int mDuration; 
 	int mNumBlends;
+
+    private TextView currentBlendText;
 
     boolean mGyroMode;
 	
@@ -77,10 +85,14 @@ public class Preview3DObject extends Activity {
 
         mGyroMode = false;
 
+
 		initViewObjects();
-		
-		mDuration = mSpeedBar.getProgress();
-		mNumBlends = mBlendBar.getProgress();
+
+
+
+		/* COME BACK HERE */
+	//	mDuration = mSpeedBar.getProgress();
+		mNumBlends = mBlendsBar.getProgress();
 
 		mFilenames = fileList();
 
@@ -89,18 +101,13 @@ public class Preview3DObject extends Activity {
         String filename = (String) getIntent().getExtras().get(Constants.SERIALIZABLE_GIF);
         SerializableGif rawGif = m.readSerializableGif(filename);
         loaded3DObject = new Loaded3DObject(this, rawGif, mView);
-        loaded3DObject.play(true);
+        loaded3DObject.play(false);
 
 	}
 
     private void initViewObjects() {
 
-        mSpeedBar = (SeekBar) findViewById(R.id.speedBar);
-        mSpeedView = (TextView) findViewById(R.id.speedView);
-        mBlendBar = (SeekBar) findViewById(R.id.blendBar);
-        mBlendView = (TextView) findViewById(R.id.blendView);
-        mBtnGyroscope = (Button) findViewById(R.id.btn_start_gyro);
-        mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+
         mView = (GyroImageView) findViewById(R.id.testGifView);
         mGalleryButton = (Button) findViewById(R.id.prev_to_gallery_button);
         mCameraButton = (Button) findViewById(R.id.prev_to_cam_button);
@@ -108,6 +115,18 @@ public class Preview3DObject extends Activity {
         Typeface fontFamily = Typeface.createFromAsset(getAssets(), Constants.GALLERY_ICON);
         mGalleryButton.setTypeface(fontFamily);
         mCameraButton.setTypeface(fontFamily);
+
+        mBlendsBar = (SeekBar) findViewById(R.id.blend_seekbar);
+        blend0Text = (TextView) findViewById(R.id.blend_0_textview);
+        blend1Text = (TextView) findViewById(R.id.blend_1_textview);
+        blend2Text = (TextView) findViewById(R.id.blend_2_textview);
+        blend3Text = (TextView) findViewById(R.id.blend_3_textview);
+        currentBlendText = blend0Text;
+        defaultGrey = blend0Text.getTextColors();
+        blend0Text.setTextColor(Color.parseColor(Constants.RED));
+
+        loadingCircle = (ProgressBar) findViewById(R.id.progressBar);
+
 
     }
 
@@ -133,10 +152,40 @@ public class Preview3DObject extends Activity {
         }
 	}
 
+    private TextView getBlendTextView(int i) {
+        switch (i) {
+            case 0: return blend0Text;
+            case 1: return blend1Text;
+            case 2: return blend2Text;
+            default: return blend3Text;
+        }
+    }
 
 
     private void setListeners() {
 
+
+        mBlendsBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+
+                currentBlendText.setTextColor(defaultGrey);
+                currentBlendText = getBlendTextView(i);
+                currentBlendText.setTextColor(Color.parseColor(Constants.RED));
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                mNumBlends = seekBar.getProgress();
+                new LoadBlends().execute(loaded3DObject, mNumBlends);
+            }
+        });
 
         mGalleryButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,74 +208,38 @@ public class Preview3DObject extends Activity {
             }
         });
 
-
-
-        mBtnGyroscope.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (loaded3DObject != null) {
-                    if (mGyroMode) {
-                        loaded3DObject.play(true);
-                        mGyroMode = false;
-                        mBtnGyroscope.setText("Start Compass");
-                    } else {
-                        loaded3DObject.play(false);
-                        mGyroMode = true;
-                        mBtnGyroscope.setText("Stop Compass");
-                    }
-                }
-
-            }
-        });
-
-        mSpeedBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
-
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress,
-                                          boolean fromUser) {
-                mSpeedView.setText(""+progress);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                // TODO Auto-generated method stub
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                mDuration = seekBar.getProgress();
-                //setDrawable(false);
-                if (loaded3DObject != null) loaded3DObject.changeFrameRate(mDuration);
-            }
-        });
-
-        mBlendBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
-
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress,
-                                          boolean fromUser) {
-                mBlendView.setText(""+progress);
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                //do nothing
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                mNumBlends = seekBar.getProgress();
-              //  setDrawable(true);
-               if (loaded3DObject != null) loaded3DObject.changeBlendCount(mNumBlends);
-            }
-
-
-        });
-
     }
+
+    public class LoadBlends extends AsyncTask<Object, Void, Void> {
+
+        Loaded3DObject loaded3DObject;
+        int blendCount;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            loadingCircle.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected Void doInBackground(Object... objects) {
+            loaded3DObject = (Loaded3DObject) objects[0];
+            blendCount = (Integer) objects[1];
+            loaded3DObject.pause();
+            loaded3DObject.changeBlendCount(blendCount);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            loadingCircle.setVisibility(View.INVISIBLE);
+            loaded3DObject.resume();
+
+        }
+    }
+
+
 
 
 
