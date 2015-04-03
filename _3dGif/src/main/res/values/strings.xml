@@ -13,6 +13,10 @@
     <string name="title_activity_test_gif_view">TestGifView</string>
 
     <string name="fontawesome_menu_glyph_unicode">\uF0C9</string>
-    <string name="fontawesome_camera_glyph_unicode">\uf0e2</string>
+    <string name="fontawesome_camera_flip_glyph_unicode">\uf0e2</string>
+    <string name="fontawesome_camera_glyph_unicode">\uf030</string>
+    <string name="fontawesome_play_glyph_unicode">\uf01d</string>
+    <string name="fontawesome_trash_glyph_unicode">\uf014</string>
+
 
 </resources>

@@ -7,8 +7,6 @@
     tools:context="com.example.dgif.Main" 
     android:windowActionBar="false"
     android:windowTitleSize="0dp"
- 
-    
     >
 
 
@@ -89,7 +87,7 @@
         android:layout_alignRight="@id/camera_preview"
         android:layout_alignTop="@id/camera_preview"
         android:layout_marginTop="16dp"
-        android:text="@string/fontawesome_camera_glyph_unicode"
+        android:text="@string/fontawesome_camera_flip_glyph_unicode"
         android:textSize="40dp"
         />
 

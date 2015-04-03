@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
@@ -19,6 +21,7 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
+import com.example.dgif.customviews.CameraPreview;
 import com.example.dgif.customviews.GyroImageView;
 import com.example.dgif.sensorlisteners.Gyro.GifGyroscopeSensor;
 import com.example.dgif.utils.Constants;
@@ -32,19 +35,19 @@ public class Preview3DObject extends Activity {
     private static final String DEBUG_TAG = "TEST GIF VIEW";
 
 	GyroImageView mView;
-	AnimationDrawable gif = null;
 
-	boolean[] mPicsSelected;
-	ArrayList<BitmapDrawable> mBitmaps;
 
     private static final String STEPS = "STEPS";
 
-    private int mOrigin;
+
 
     SeekBar mSpeedBar;
 	TextView mSpeedView;
 
     private Button mBtnGyroscope;
+
+    private Button mGalleryButton;
+    private Button mCameraButton;
 	
 	SeekBar mBlendBar;
 	TextView mBlendView;
@@ -52,7 +55,6 @@ public class Preview3DObject extends Activity {
 
     private String[] mFilenames;
 
-    private TextView yLabel;
 
     private MemoryManager m;
 
@@ -99,8 +101,13 @@ public class Preview3DObject extends Activity {
         mBlendView = (TextView) findViewById(R.id.blendView);
         mBtnGyroscope = (Button) findViewById(R.id.btn_start_gyro);
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
-        yLabel = (TextView) findViewById(R.id.y_label);
         mView = (GyroImageView) findViewById(R.id.testGifView);
+        mGalleryButton = (Button) findViewById(R.id.prev_to_gallery_button);
+        mCameraButton = (Button) findViewById(R.id.prev_to_cam_button);
+
+        Typeface fontFamily = Typeface.createFromAsset(getAssets(), Constants.GALLERY_ICON);
+        mGalleryButton.setTypeface(fontFamily);
+        mCameraButton.setTypeface(fontFamily);
 
     }
 
@@ -130,6 +137,30 @@ public class Preview3DObject extends Activity {
 
     private void setListeners() {
 
+
+        mGalleryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(Preview3DObject.this, ImageGallery.class);
+                startActivity(i);
+                overridePendingTransition (android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+
+                finish();
+            }
+        });
+
+        mCameraButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(Preview3DObject.this, CameraPreview.class);
+                startActivity(i);
+                overridePendingTransition (android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                finish();
+            }
+        });
+
+
+
         mBtnGyroscope.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -139,7 +170,6 @@ public class Preview3DObject extends Activity {
                         loaded3DObject.play(true);
                         mGyroMode = false;
                         mBtnGyroscope.setText("Start Compass");
-                        yLabel.setText("Y:  ");
                     } else {
                         loaded3DObject.play(false);
                         mGyroMode = true;

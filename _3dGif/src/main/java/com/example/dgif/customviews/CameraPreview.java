@@ -144,8 +144,11 @@ public class CameraPreview extends Activity {
 
             @Override
             public void onClick(View v) {
+
                 Intent i = new Intent(CameraPreview.this, ImageGallery.class);
                 startActivity(i);
+                overridePendingTransition (android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                finish();
 
             }
 
@@ -177,6 +180,8 @@ public class CameraPreview extends Activity {
                 Intent i = new Intent(CameraPreview.this, Preview3DObject.class);
                 i.putExtra(Constants.SERIALIZABLE_GIF, filename);
                 startActivity(i);
+                overridePendingTransition (android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                finish();
             }
 
         });
@@ -205,8 +210,9 @@ public class CameraPreview extends Activity {
             mFrameCountView.setText(mCount + "");
         	new Thread(new LoadCameraAndPrev()).start();
         }
+
 	}
-	
+
 
     // Make sure camera and other resources are released
 	@Override

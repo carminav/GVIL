@@ -3,7 +3,10 @@ package com.example.dgif;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,7 +19,9 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.example.dgif.customviews.CameraPreview;
 import com.example.dgif.utils.Constants;
 import com.example.dgif.utils.MemoryManager;
 
@@ -26,14 +31,19 @@ public class ImageGallery extends Activity {
 
     private GridView gridview;
 
+    ColorStateList defaultGrey;
 	
 	private Button testGifButton;
     private Button deleteGifButton;
+
+    private TextView mSelectItemText;
+
 
     private static final int NONE_SELECTED = -1;
 	
 	private Bitmap[] mPics;
 
+    private Button mCameraButton;
 
     private String[] mFilenames;
 	private ImageAdapter mImageAdapter;
@@ -48,7 +58,29 @@ public class ImageGallery extends Activity {
 		
 		MemoryManager m = new MemoryManager(this);
 		testGifButton = (Button) findViewById(R.id.viewTestGifButton);
-		
+
+
+        mSelectItemText = (TextView) findViewById(R.id.select_item_text);
+        defaultGrey = mSelectItemText.getTextColors();
+
+
+        mCameraButton = (Button) findViewById(R.id.gallery_to_cam_button);
+        mCameraButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(ImageGallery.this, CameraPreview.class);
+                startActivity(i);
+                overridePendingTransition (android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                finish();
+            }
+        });
+
+        Typeface fontFamily = Typeface.createFromAsset(getAssets(), Constants.GALLERY_ICON);
+
+        mCameraButton.setTypeface(fontFamily);
+        testGifButton.setTypeface(fontFamily);
+
+
 		testGifButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -56,17 +88,18 @@ public class ImageGallery extends Activity {
 				Intent i = new Intent(ImageGallery.this, Preview3DObject.class);
                 i.putExtra(Constants.SERIALIZABLE_GIF, mFilenames[selected]);
 				startActivity(i);
-				
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                finish();
 			}
 			
 		});
 
         deleteGifButton = (Button) findViewById(R.id.delete_gif_button);
+        deleteGifButton.setTypeface(fontFamily);
         deleteGifButton.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-
                 delete(selected);
             }
 
@@ -82,6 +115,9 @@ public class ImageGallery extends Activity {
 		gridview.setAdapter(mImageAdapter);
 
         mFilenames = fileList();
+
+
+
 		
 
 	}
@@ -102,6 +138,14 @@ public class ImageGallery extends Activity {
                     count++;
                 }
             }
+
+
+            deleteGifButton.setEnabled(false);
+            testGifButton.setEnabled(false);
+            deleteGifButton.setTextColor(defaultGrey);
+            mSelectItemText.setTextColor(defaultGrey);
+            testGifButton.setTextColor(defaultGrey);
+
 
             mPics = updated;
             selected = NONE_SELECTED;
@@ -189,11 +233,29 @@ public class ImageGallery extends Activity {
                     if (selected == id) {
                         cb.setChecked(false);
                         selected = NONE_SELECTED;
+                        selectedCheckBox = null;
+
+                        deleteGifButton.setEnabled(false);
+                        testGifButton.setEnabled(false);
+                        deleteGifButton.setTextColor(defaultGrey);
+                        mSelectItemText.setTextColor(defaultGrey);
+                        testGifButton.setTextColor(defaultGrey);
+
+
+
                     } else {
                         cb.setChecked(true);
                         if (selectedCheckBox != null) selectedCheckBox.setChecked(false);
+                        else {
+                            deleteGifButton.setEnabled(true);
+                            testGifButton.setEnabled(true);
+                            deleteGifButton.setTextColor(Color.parseColor(Constants.RED));
+                            mSelectItemText.setTextColor(Color.parseColor(Constants.RED));
+                            testGifButton.setTextColor(Color.parseColor(Constants.RED));
+                        }
                         selectedCheckBox = cb;
                         selected = id;
+
                     }
 
 				}

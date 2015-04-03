@@ -24,5 +24,8 @@ public class Constants {
 
     public static String GALLERY_ICON = "fonts/fontawesome-webfont.ttf";
 
+    public static String RED = "#852929";
+
+
 
 }

@@ -1,14 +1,49 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#f0f0f0"
-    tools:context=".MainActivity" >
+    android:windowActionBar="false"
+    android:windowTitleSize="0dp"
+    tools:context=".MainActivity"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="100px"
+        android:orientation="horizontal"
+        android:background="#F4F9FF">
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Gallery"
+            android:fontFamily="sans-serif-light"
+            android:textSize="20dp"
+            />
+
+        <Button
+            android:id="@+id/gallery_to_cam_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:text="@string/fontawesome_camera_glyph_unicode"
+            android:textSize="20dp"
+            android:textColor="#852929"
+            android:layout_alignParentRight="true"
+            />
+
+
+    </RelativeLayout>
+
 
     <GridView
         android:id="@+id/gridview"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="900px"
         android:layout_margin="@dimen/grid_item_margin"
         android:columnWidth="@dimen/grid_item_size"
         android:gravity="center"
@@ -18,23 +53,58 @@
         android:stretchMode="columnWidth" >
     </GridView>
 
-    <Button
-        android:id="@+id/viewTestGifButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="View Test Gif"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true" 
-        android:alpha="1"
-        />
 
-    <Button
-        android:id="@+id/delete_gif_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Delete gif"
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="180px"
+        android:orientation="horizontal"
+        android:background="#F4F9FF"
+        >
 
-        android:alpha="1"
-        />
+        <Button
+            android:id="@+id/delete_gif_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:text="@string/fontawesome_trash_glyph_unicode"
+            android:textSize="50dp"
+            android:layout_alignParentLeft="true"
+            android:textColor="@android:color/secondary_text_dark"
+            android:layout_centerVertical="true"
+            android:enabled="false"
+            />
 
-</RelativeLayout>
+
+        <TextView
+            android:id="@+id/select_item_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="Select item"
+            android:fontFamily="sans-serif-light"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            />
+
+        <Button
+            android:id="@+id/viewTestGifButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/fontawesome_play_glyph_unicode"
+            android:layout_alignParentRight="true"
+            android:textSize="40dp"
+            android:textColor="@android:color/secondary_text_dark"
+            android:background="@android:color/transparent"
+            android:layout_centerVertical="true"
+            android:enabled="false"
+            />
+
+
+    </RelativeLayout>
+
+
+
+
+
+</LinearLayout>

@@ -1,26 +1,86 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_test_gif_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000"
-
+    android:orientation="vertical"
     tools:context="com.example.dgif.Preview3DObject" >
 
 
-    <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/progressBar"
-        android:visibility="visible"
-        android:layout_centerInParent="true"/>
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="100px"
+        android:orientation="horizontal"
+        android:background="#F4F9FF">
 
-    <com.example.dgif.customviews.GyroImageView
-        android:id="@+id/testGifView"
+        <Button
+        android:id="@+id/prev_to_gallery_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
+        android:background="@android:color/transparent"
+        android:text="@string/fontawesome_menu_glyph_unicode"
+        android:textSize="20dp"
+        android:textColor="#852929"
+        android:layout_alignParentLeft="true"
         />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="View"
+            android:fontFamily="sans-serif-light"
+            android:textSize="20dp"
+            />
+
+        <Button
+            android:id="@+id/prev_to_cam_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:text="@string/fontawesome_camera_glyph_unicode"
+            android:textSize="20dp"
+            android:textColor="#852929"
+            android:layout_alignParentRight="true"
+            />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <com.example.dgif.customviews.GyroImageView
+            android:id="@+id/testGifView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            />
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/progressBar"
+            android:visibility="invisible"
+            android:layout_centerInParent="true"/>
+
+
+        </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="200px"
+        android:orientation="horizontal"
+        android:background="#F4F9FF">
+     </RelativeLayout>
+
+
+
+
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -86,14 +146,7 @@
         </LinearLayout>
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Y:  "
-        android:id="@+id/y_label"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/progressBar"
-        android:layout_alignTop="@+id/btn_start_gyro" />
 
 
-</RelativeLayout>
+
+</LinearLayout>
