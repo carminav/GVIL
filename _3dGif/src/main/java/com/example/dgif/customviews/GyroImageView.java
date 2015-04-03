@@ -44,6 +44,8 @@ public class GyroImageView extends ImageView {
 
     private static final long SCALAR = 100;
 
+    private boolean running = false;
+
 
 
     public GyroImageView(Context context, AttributeSet attrs) {
@@ -85,8 +87,11 @@ public class GyroImageView extends ImageView {
             count = -1;
         }
         mDirection = (velocity > 0) ? RIGHT : LEFT;
-        h.removeCallbacksAndMessages(null);
-        h.post(r);
+     //   h.removeCallbacksAndMessages(null);
+
+
+         h.post(r);
+
     }
 
     private Runnable r = new Runnable() {
@@ -96,6 +101,7 @@ public class GyroImageView extends ImageView {
                 count++;
             }
            if (count < MAX_COUNT) invalidate();
+
         }
     };
 
