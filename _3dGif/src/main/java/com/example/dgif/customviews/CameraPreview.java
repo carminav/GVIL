@@ -74,7 +74,7 @@ public class CameraPreview extends Activity {
 	
 	private MemoryManager mMemoryManager;
 
-    public enum Direction { VERTICAL, HORIZONTAL };
+
 
 	private boolean onPauseCalled;
     private boolean mIsPreviewing;
@@ -193,6 +193,7 @@ public class CameraPreview extends Activity {
             @Override
             public void onClick(View v) {
                 SerializableGif gif = new SerializableGif(convertToArray(mRawFrames));
+               // if (CAM_ID == Constants.FRONT_CAM) gif = mMemoryManager.flipSerializableGif(gif);
                 String filename = mMemoryManager.saveRaw3DObject(gif);
                 mRawFrames.clear();
                 Intent i = new Intent(CameraPreview.this, Preview3DObject.class);
@@ -206,16 +207,9 @@ public class CameraPreview extends Activity {
 
     }
 
-    public SerializableGif adjustForFrontFace(SerializableGif gif) {
-        byte[][] rawFrames = gif.rawFrames;
-        byte[][] adjusted = new byte[rawFrames.length][];
-        for (int i = 0; i < rawFrames.length; i++) {
-
-        }
 
 
 
-    }
 
 
 
@@ -352,7 +346,7 @@ public class CameraPreview extends Activity {
             Size prevSize = mCamera.getParameters().getPreviewSize();
             Bitmap bm = Bitmap.createBitmap(prevSize.width, prevSize.height, Bitmap.Config.ARGB_8888);
             bm.copyPixelsFromBuffer(IntBuffer.wrap(mPixels));
-            if (CAM_ID == Constants.FRONT_CAM) return flip(bm, Direction.HORIZONTAL);
+            if (CAM_ID == Constants.FRONT_CAM) return mMemoryManager.flip(bm, Constants.Direction.HORIZONTAL);
             else return bm;
         }
 
@@ -442,22 +436,6 @@ public class CameraPreview extends Activity {
 		
 	}
 
-
-
-    public static Bitmap flip(Bitmap src, Direction type) {
-        Matrix matrix = new Matrix();
-
-        if(type == Direction.VERTICAL) {
-            matrix.preScale(1.0f, -1.0f);
-        }
-        else if(type == Direction.HORIZONTAL) {
-            matrix.preScale(-1.0f, 1.0f);
-        } else {
-            return src;
-        }
-
-        return Bitmap.createBitmap(src, 0, 0, src.getWidth(), src.getHeight(), matrix, true);
-    }
 
 	/*UI HANDLER CLASS
 	 * Responsible for posting tasks to UI's task queue from another thread

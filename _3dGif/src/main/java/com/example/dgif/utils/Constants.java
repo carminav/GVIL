@@ -29,6 +29,7 @@ public class Constants {
     public static int BACK_CAM = 0;
     public static int FRONT_CAM = 1;
 
+    public enum Direction { VERTICAL, HORIZONTAL };
 
 
 }

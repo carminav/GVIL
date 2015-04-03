@@ -47,6 +47,8 @@ public class RenderUtils {
        later decoded into a bitmap
      */
     public static Bitmap getIntermediateImage(Bitmap a, Bitmap b, double weight) {
+        System.gc();
+
         int width = a.getWidth();
         int height = a.getHeight();
         int l = width * height;

@@ -72,6 +72,7 @@ public class ImageGallery extends Activity {
                 startActivity(i);
                 overridePendingTransition (android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 finish();
+                System.gc();
             }
         });
 
@@ -90,6 +91,7 @@ public class ImageGallery extends Activity {
 				startActivity(i);
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 finish();
+                System.gc();
 			}
 			
 		});

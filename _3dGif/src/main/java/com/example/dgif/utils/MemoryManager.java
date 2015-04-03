@@ -1,12 +1,14 @@
 package com.example.dgif.utils;
 
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -14,6 +16,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.os.Environment;
 import android.util.Log;
@@ -68,6 +71,7 @@ public class MemoryManager {
     }
 
     public Bitmap[] extractFramesFromSerialGif(SerializableGif sg) {
+        System.gc();
         byte[][] rawFrames = sg.rawFrames;
         Bitmap[] bmps = new Bitmap[rawFrames.length];
         for (int i = 0; i < bmps.length; i++) {
@@ -75,6 +79,36 @@ public class MemoryManager {
                     506, 900));
         }
         return bmps;
+    }
+
+    public static Bitmap flip(Bitmap src, Constants.Direction type) {
+        Matrix matrix = new Matrix();
+
+        if(type == Constants.Direction.VERTICAL) {
+            matrix.preScale(1.0f, -1.0f);
+        }
+        else if(type == Constants.Direction.HORIZONTAL) {
+            matrix.preScale(-1.0f, 1.0f);
+        } else {
+            return src;
+        }
+
+        return Bitmap.createBitmap(src, 0, 0, src.getWidth(), src.getHeight(), matrix, true);
+    }
+
+    public SerializableGif flipSerializableGif(SerializableGif sg) {
+        byte[][] rawFrames = sg.rawFrames;
+        byte[][] flippedFrames = new byte[sg.rawFrames.length][];
+        for (int i = 0; i < sg.rawFrames.length; i++) {
+            Bitmap orig = BitmapFactory.decodeByteArray(rawFrames[i], 0, rawFrames[i].length);
+            Bitmap b = flip(orig, Constants.Direction.HORIZONTAL);
+
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            b.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] byteArray = stream.toByteArray();
+            flippedFrames[i] = byteArray;
+        }
+        return new SerializableGif(flippedFrames);
     }
 
     public Bitmap getSerialGifThumbnail(SerializableGif sg) {
@@ -137,6 +171,7 @@ public class MemoryManager {
 
 
     public Bitmap[] getAllThumbnails() {
+        System.gc();
         String[] files = context.fileList();
         Bitmap[] avatars = new Bitmap[files.length];
         for (int i = 0; i < avatars.length; i++) {

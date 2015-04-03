@@ -76,7 +76,7 @@ public class Loaded3DObject {
 
     // Stop the gif animation and detach it from its image view
     private void stopPlayingGif() {
-        if (mPlayableGif.isRunning()) {
+        if (mPlayableGif != null && mPlayableGif.isRunning()) {
             mPlayableGif.stop();
         }
     }
@@ -120,13 +120,18 @@ public class Loaded3DObject {
 
         if (count < 0) Log.e(TAG, "Error: Blend count must be positive");
         else {
+
+
             mGyroscopeSensor.update();
          //   stopPlayingGif();
 
             mNumBlends = count;
 
+            mFramesWithBlends = null;
+            System.gc();
             mFramesWithBlends = renderUpdatedFramesWithBlends();
-            mPlayableGif = renderPlayableGif();
+            System.gc();
+          //  mPlayableGif = renderPlayableGif();
 
             //startPlayingGif();
         }
@@ -168,6 +173,7 @@ public class Loaded3DObject {
             frames.add(mFrames[i]);
             for (int j = 0; j < mNumBlends; j++) {
                 double weight = ((1 / (double)(mNumBlends + 1))) * (j + 1);
+
                 frames.add(RenderUtils.getIntermediateImage(mFrames[i], mFrames[i + 1], weight));
             }
         }

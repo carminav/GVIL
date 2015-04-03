@@ -140,6 +140,8 @@ public class Preview3DObject extends Activity {
 		// TODO Auto-generated method stub
 		super.onPause();
         loaded3DObject.pause();
+        loaded3DObject = null;
+        System.gc();
 
 	}
 
@@ -226,6 +228,7 @@ public class Preview3DObject extends Activity {
             loaded3DObject = (Loaded3DObject) objects[0];
             blendCount = (Integer) objects[1];
             loaded3DObject.pause();
+            if (blendCount != 0) loaded3DObject.changeBlendCount(0);
             loaded3DObject.changeBlendCount(blendCount);
             return null;
         }
