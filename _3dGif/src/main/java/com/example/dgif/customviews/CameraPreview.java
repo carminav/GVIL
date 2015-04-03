@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.ImageFormat;
 import android.graphics.Matrix;
+import android.graphics.Path;
 import android.graphics.Typeface;
 import android.hardware.Camera;
 import android.hardware.Camera.Size;
@@ -47,6 +48,8 @@ public class CameraPreview extends Activity {
 	
 	private static final String DEBUG_TAG = "Preview";
 
+    public static int CAM_ID = Constants.BACK_CAM;
+
     protected static final int LOAD_CAM_PREV = 0;
 
     // Hardcoded values for Samsung Galaxy Nexus
@@ -70,7 +73,9 @@ public class CameraPreview extends Activity {
     int mCount = 0;
 	
 	private MemoryManager mMemoryManager;
-	
+
+    public enum Direction { VERTICAL, HORIZONTAL };
+
 	private boolean onPauseCalled;
     private boolean mIsPreviewing;
 
@@ -154,6 +159,19 @@ public class CameraPreview extends Activity {
 
         });
 
+        mCameraFlipButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CAM_ID = (CAM_ID == Constants.BACK_CAM) ? Constants.FRONT_CAM : Constants.BACK_CAM;
+                Intent i = new Intent(CameraPreview.this, CameraPreview.class);
+                stopPreview();
+                releaseCamera();
+                startActivity(i);
+                finish();
+
+            }
+        });
+
         mTrashButton.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -185,6 +203,17 @@ public class CameraPreview extends Activity {
             }
 
         });
+
+    }
+
+    public SerializableGif adjustForFrontFace(SerializableGif gif) {
+        byte[][] rawFrames = gif.rawFrames;
+        byte[][] adjusted = new byte[rawFrames.length][];
+        for (int i = 0; i < rawFrames.length; i++) {
+
+        }
+
+
 
     }
 
@@ -248,17 +277,17 @@ public class CameraPreview extends Activity {
 		
 		mCaptureButton.setOnClickListener(new OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				if (mCamera != null && mIsPreviewing) {
-					mCount++;
+            @Override
+            public void onClick(View v) {
+                if (mCamera != null && mIsPreviewing) {
+                    mCount++;
                     mFrameCountView.setText(mCount + "");
-    				mCamera.takePicture(null, null, mPictureCallback);
-				}
-				
-			}
-			
-		});
+                    mCamera.takePicture(null, null, mPictureCallback);
+                }
+
+            }
+
+        });
 		
 
 
@@ -323,7 +352,8 @@ public class CameraPreview extends Activity {
             Size prevSize = mCamera.getParameters().getPreviewSize();
             Bitmap bm = Bitmap.createBitmap(prevSize.width, prevSize.height, Bitmap.Config.ARGB_8888);
             bm.copyPixelsFromBuffer(IntBuffer.wrap(mPixels));
-            return bm;
+            if (CAM_ID == Constants.FRONT_CAM) return flip(bm, Direction.HORIZONTAL);
+            else return bm;
         }
 
 
@@ -386,7 +416,7 @@ public class CameraPreview extends Activity {
 			
 			//Open Camera
 			try {
-				mCamera = Camera.open();
+				mCamera = Camera.open(CAM_ID);
 			} catch (RuntimeException e) {
 				Log.e(DEBUG_TAG, "Camera will not open. onCreate");
 				finish();
@@ -411,7 +441,24 @@ public class CameraPreview extends Activity {
 		}
 		
 	}
-	
+
+
+
+    public static Bitmap flip(Bitmap src, Direction type) {
+        Matrix matrix = new Matrix();
+
+        if(type == Direction.VERTICAL) {
+            matrix.preScale(1.0f, -1.0f);
+        }
+        else if(type == Direction.HORIZONTAL) {
+            matrix.preScale(-1.0f, 1.0f);
+        } else {
+            return src;
+        }
+
+        return Bitmap.createBitmap(src, 0, 0, src.getWidth(), src.getHeight(), matrix, true);
+    }
+
 	/*UI HANDLER CLASS
 	 * Responsible for posting tasks to UI's task queue from another thread
 	 */

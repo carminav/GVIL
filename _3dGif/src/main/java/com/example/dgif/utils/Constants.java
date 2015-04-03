@@ -26,6 +26,9 @@ public class Constants {
 
     public static String RED = "#852929";
 
+    public static int BACK_CAM = 0;
+    public static int FRONT_CAM = 1;
+
 
 
 }

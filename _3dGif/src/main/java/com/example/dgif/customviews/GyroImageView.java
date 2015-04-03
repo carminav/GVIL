@@ -26,20 +26,20 @@ public class GyroImageView extends ImageView {
     private final static float MAX_VELOCITY = 150;
 
     private final static float MAX_INDEX = 5.0f;
-    private final static float MIN_INDEX = 0;
+    private final static float MIN_INDEX = 1;
 
     private boolean initialized = false;
 
     private float functionX;
 
     private Bitmap mBitmap = null;
-    private long mDuration = 500;
+    private long mDuration = 100;
     private ArrayList<Bitmap> mFrames = null;
     private int index;
     private long mVeloc = 0; // Data type should be?
     private final float STEP =  1f;
 
-    private final int MAX_COUNT = 2;
+    private final int MAX_COUNT = 1;
     private int count = 0;
 
     private static final long SCALAR = 100;
